@@ -1,0 +1,79 @@
+\hypertarget{structtmf882x__msg__histogram}{}\doxysection{tmf882x\+\_\+msg\+\_\+histogram Struct Reference}
+\label{structtmf882x__msg__histogram}\index{tmf882x\_msg\_histogram@{tmf882x\_msg\_histogram}}
+
+
+TMF882X histogram message type.  
+
+
+
+
+{\ttfamily \#include $<$tmf882x.\+h$>$}
+
+
+
+Collaboration diagram for tmf882x\+\_\+msg\+\_\+histogram\+:
+% FIG 0
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structtmf882x__msg__histogram_a0d275e5317e92f5eafff617770cde34f}\label{structtmf882x__msg__histogram_a0d275e5317e92f5eafff617770cde34f}} 
+struct \mbox{\hyperlink{structtmf882x__msg__header}{tmf882x\+\_\+msg\+\_\+header}} \mbox{\hyperlink{structtmf882x__msg__histogram_a0d275e5317e92f5eafff617770cde34f}{hdr}}
+\begin{DoxyCompactList}\small\item\em This is the message header struct \mbox{\hyperlink{structtmf882x__msg__header}{tmf882x\+\_\+msg\+\_\+header}}. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__histogram_a827bfef6e99e336ed8fa3133cab889d2}{capture\+\_\+num}}
+\begin{DoxyCompactList}\small\item\em This is the capture number that this set of histograms is associated with. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__histogram_afc3b6d5d513ab5bf75e739d24c7fa7f7}{sub\+\_\+capture}}
+\begin{DoxyCompactList}\small\item\em This is the time-\/multiplexed sub-\/capture index of this set of histograms. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__histogram_a1361ef70f7bfcf9bb2dcbb9a04952508}\label{structtmf882x__msg__histogram_a1361ef70f7bfcf9bb2dcbb9a04952508}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__histogram_a1361ef70f7bfcf9bb2dcbb9a04952508}{histogram\+\_\+type}}
+\begin{DoxyCompactList}\small\item\em This is the histogram type identifier code enum tmf882x\+\_\+histogram\+\_\+type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__histogram_ab657bdb8144070ba4fa120ecd115ec1e}\label{structtmf882x__msg__histogram_ab657bdb8144070ba4fa120ecd115ec1e}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__histogram_ab657bdb8144070ba4fa120ecd115ec1e}{num\+\_\+tdc}}
+\begin{DoxyCompactList}\small\item\em This is the number of TDC histograms being published. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__histogram_aa1d0d71a7146ae769fad6465e55646cb}\label{structtmf882x__msg__histogram_aa1d0d71a7146ae769fad6465e55646cb}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__histogram_aa1d0d71a7146ae769fad6465e55646cb}{num\+\_\+bins}}
+\begin{DoxyCompactList}\small\item\em This is the number of bins in the histograms being published. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__histogram_a46b51a7e306554edcf427f3bd8ca00b3}{bins}} \mbox{[}1\mbox{]}\mbox{[}1\mbox{]}
+\begin{DoxyCompactList}\small\item\em These are the histogram bin values for each TDC. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+TMF882X histogram message type. 
+
+This message is returned by the core driver for each set of historams that are received by the core driver from the device. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structtmf882x__msg__histogram_a46b51a7e306554edcf427f3bd8ca00b3}\label{structtmf882x__msg__histogram_a46b51a7e306554edcf427f3bd8ca00b3}} 
+\index{tmf882x\_msg\_histogram@{tmf882x\_msg\_histogram}!bins@{bins}}
+\index{bins@{bins}!tmf882x\_msg\_histogram@{tmf882x\_msg\_histogram}}
+\doxysubsubsection{\texorpdfstring{bins}{bins}}
+{\footnotesize\ttfamily tmf882x\+\_\+msg\+\_\+histogram\+::bins}
+
+
+
+These are the histogram bin values for each TDC. 
+
+There are two channels per TDC, the first channel histogram occupies bins \mbox{[}0 \+: TMF882\+X\+\_\+\+HIST\+\_\+\+NUM\+\_\+\+BINS/2 -\/ 1\mbox{]}, the 2nd channel occupies bins \mbox{[}TMF882\+X\+\_\+\+HIST\+\_\+\+NUM\+\_\+\+BINS/2 \+: \mbox{\hyperlink{tmf882x_8h_a65f02da3cad752da3a838accfe5f3010}{TMF882\+X\+\_\+\+HIST\+\_\+\+NUM\+\_\+\+BINS}} -\/ 1\mbox{]} \mbox{\Hypertarget{structtmf882x__msg__histogram_a827bfef6e99e336ed8fa3133cab889d2}\label{structtmf882x__msg__histogram_a827bfef6e99e336ed8fa3133cab889d2}} 
+\index{tmf882x\_msg\_histogram@{tmf882x\_msg\_histogram}!capture\_num@{capture\_num}}
+\index{capture\_num@{capture\_num}!tmf882x\_msg\_histogram@{tmf882x\_msg\_histogram}}
+\doxysubsubsection{\texorpdfstring{capture\_num}{capture\_num}}
+{\footnotesize\ttfamily tmf882x\+\_\+msg\+\_\+histogram\+::capture\+\_\+num}
+
+
+
+This is the capture number that this set of histograms is associated with. 
+
+The capture\+\_\+num will match the struct \mbox{\hyperlink{structtmf882x__msg__meas__results_aa755f5a9da3d5bf47a2d5e6845f73516}{tmf882x\+\_\+msg\+\_\+meas\+\_\+results\+::result\+\_\+num}} \mbox{\Hypertarget{structtmf882x__msg__histogram_afc3b6d5d513ab5bf75e739d24c7fa7f7}\label{structtmf882x__msg__histogram_afc3b6d5d513ab5bf75e739d24c7fa7f7}} 
+\index{tmf882x\_msg\_histogram@{tmf882x\_msg\_histogram}!sub\_capture@{sub\_capture}}
+\index{sub\_capture@{sub\_capture}!tmf882x\_msg\_histogram@{tmf882x\_msg\_histogram}}
+\doxysubsubsection{\texorpdfstring{sub\_capture}{sub\_capture}}
+{\footnotesize\ttfamily tmf882x\+\_\+msg\+\_\+histogram\+::sub\+\_\+capture}
+
+
+
+This is the time-\/multiplexed sub-\/capture index of this set of histograms. 
+
+For non-\/time-\/multiplexed measurements this value is always zero. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/linux/i2c/ams/\mbox{\hyperlink{tmf882x_8h}{tmf882x.\+h}}\end{DoxyCompactItemize}

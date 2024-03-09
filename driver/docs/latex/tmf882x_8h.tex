@@ -1,0 +1,161 @@
+\hypertarget{tmf882x_8h}{}\doxysection{include/linux/i2c/ams/tmf882x.h File Reference}
+\label{tmf882x_8h}\index{include/linux/i2c/ams/tmf882x.h@{include/linux/i2c/ams/tmf882x.h}}
+{\ttfamily \#include $<$linux/i2c/ams/tmf882x\+\_\+config.\+h$>$}\newline
+{\ttfamily \#include $<$linux/i2c/ams/tmf882x\+\_\+ioctl.\+h$>$}\newline
+Include dependency graph for tmf882x.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtmf882x__msg__header}{tmf882x\+\_\+msg\+\_\+header}}
+\begin{DoxyCompactList}\small\item\em TMF882X message header type. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__msg__error}{tmf882x\+\_\+msg\+\_\+error}}
+\begin{DoxyCompactList}\small\item\em TMF882X error message type. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__msg__histogram}{tmf882x\+\_\+msg\+\_\+histogram}}
+\begin{DoxyCompactList}\small\item\em TMF882X histogram message type. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__meas__result}{tmf882x\+\_\+meas\+\_\+result}}
+\begin{DoxyCompactList}\small\item\em TMF882X measure result This represents an individual target measurement result. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__msg__meas__results}{tmf882x\+\_\+msg\+\_\+meas\+\_\+results}}
+\begin{DoxyCompactList}\small\item\em TMF882X measure results message type. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__msg__meas__stats}{tmf882x\+\_\+msg\+\_\+meas\+\_\+stats}}
+\begin{DoxyCompactList}\small\item\em TMF882X measure statistics message type. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__msg}{tmf882x\+\_\+msg}}
+\begin{DoxyCompactList}\small\item\em TMF882X message type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x_8h_a65f02da3cad752da3a838accfe5f3010}\label{tmf882x_8h_a65f02da3cad752da3a838accfe5f3010}} 
+\#define \mbox{\hyperlink{tmf882x_8h_a65f02da3cad752da3a838accfe5f3010}{TMF882\+X\+\_\+\+HIST\+\_\+\+NUM\+\_\+\+BINS}}~256
+\begin{DoxyCompactList}\small\item\em Number of histogram bins. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x_8h_a11cf465fcefa34d80b2060375d5f5d66}\label{tmf882x_8h_a11cf465fcefa34d80b2060375d5f5d66}} 
+\#define \mbox{\hyperlink{tmf882x_8h_a11cf465fcefa34d80b2060375d5f5d66}{TMF882\+X\+\_\+\+HIST\+\_\+\+NUM\+\_\+\+TDC}}~5
+\begin{DoxyCompactList}\small\item\em Number of TDCs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x_8h_abcb5e82db7244121325c408f2b2410bc}\label{tmf882x_8h_abcb5e82db7244121325c408f2b2410bc}} 
+\#define \mbox{\hyperlink{tmf882x_8h_abcb5e82db7244121325c408f2b2410bc}{TMF882\+X\+\_\+\+BYTES\+\_\+\+PER\+\_\+\+BIN}}~4
+\begin{DoxyCompactList}\small\item\em Number of Bytes per histogram bin. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x_8h_a3090c0c3078863a0fa50a2264ff25755}\label{tmf882x_8h_a3090c0c3078863a0fa50a2264ff25755}} 
+\#define \mbox{\hyperlink{tmf882x_8h_a3090c0c3078863a0fa50a2264ff25755}{TMF882\+X\+\_\+\+MAX\+\_\+\+MEAS\+\_\+\+RESULTS}}~36
+\begin{DoxyCompactList}\small\item\em Maximum number of measurement result targets that can be reported at once. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x_8h_a04c7f33f5d2474965dcc282e6cd8dcde}\label{tmf882x_8h_a04c7f33f5d2474965dcc282e6cd8dcde}} 
+\#define \mbox{\hyperlink{tmf882x_8h_a04c7f33f5d2474965dcc282e6cd8dcde}{TMF882\+X\+\_\+\+NUM\+\_\+\+CH\+\_\+\+PER\+\_\+\+TDC}}~2
+\begin{DoxyCompactList}\small\item\em Number of channels per TDC. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x_8h_a423a8bfa77b2470281f9fd06d99195d3}\label{tmf882x_8h_a423a8bfa77b2470281f9fd06d99195d3}} 
+\#define \mbox{\hyperlink{tmf882x_8h_a423a8bfa77b2470281f9fd06d99195d3}{TMF882\+X\+\_\+\+NUM\+\_\+\+CH}}~((\mbox{\hyperlink{tmf882x_8h_a11cf465fcefa34d80b2060375d5f5d66}{TMF882\+X\+\_\+\+HIST\+\_\+\+NUM\+\_\+\+TDC}})$\ast$(\mbox{\hyperlink{tmf882x_8h_a04c7f33f5d2474965dcc282e6cd8dcde}{TMF882\+X\+\_\+\+NUM\+\_\+\+CH\+\_\+\+PER\+\_\+\+TDC}}))
+\begin{DoxyCompactList}\small\item\em Total Number of channels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x_8h_af06b17c74626f0add76f3c75fdeb645d}\label{tmf882x_8h_af06b17c74626f0add76f3c75fdeb645d}} 
+\#define \mbox{\hyperlink{tmf882x_8h_af06b17c74626f0add76f3c75fdeb645d}{TMF882\+X\+\_\+\+MAX\+\_\+\+MSG\+\_\+\+SIZE}}~(1024)
+\begin{DoxyCompactList}\small\item\em Max message size is a set of histograms + header info. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x_8h_a8f924a1e01ae460f292ddc1ffaa85cbd}\label{tmf882x_8h_a8f924a1e01ae460f292ddc1ffaa85cbd}} 
+\#define {\bfseries TMF882\+X\+\_\+\+MSG\+\_\+\+HEADER\+\_\+\+SIZE}~sizeof(struct \mbox{\hyperlink{structtmf882x__msg__header}{tmf882x\+\_\+msg\+\_\+header}})
+\item 
+\#define {\bfseries TOF\+\_\+\+ZERO\+\_\+\+MSG}(msg)
+\item 
+\#define {\bfseries TOF\+\_\+\+INIT\+\_\+\+MSG}(msg)
+\item 
+\#define {\bfseries TOF\+\_\+\+SET\+\_\+\+MSG\+\_\+\+HDR}(msg,  id,  type)
+\item 
+\#define {\bfseries TOF\+\_\+\+SET\+\_\+\+ERR\+\_\+\+MSG}(msg,  errid)
+\item 
+\#define {\bfseries TOF\+\_\+\+SET\+\_\+\+HISTOGRAM\+\_\+\+MSG}(msg,  hist\+\_\+type)
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x_8h_a2e9dd63862c6e2a6388ea5a7e8864d30}\label{tmf882x_8h_a2e9dd63862c6e2a6388ea5a7e8864d30}} 
+enum \mbox{\hyperlink{tmf882x_8h_a2e9dd63862c6e2a6388ea5a7e8864d30}{tmf882x\+\_\+msg\+\_\+id}} \{ {\bfseries ID\+\_\+\+MEAS\+\_\+\+RESULTS} = 0x01
+, {\bfseries ID\+\_\+\+MEAS\+\_\+\+STATS} = 0x02
+, {\bfseries ID\+\_\+\+HISTOGRAM} = 0x03
+, {\bfseries ID\+\_\+\+ERROR} = 0x0F
+ \}
+\begin{DoxyCompactList}\small\item\em Output message identifier codes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x_8h_a5448a95835e905eb9f64e47303d0abbd}\label{tmf882x_8h_a5448a95835e905eb9f64e47303d0abbd}} 
+enum \mbox{\hyperlink{tmf882x_8h_a5448a95835e905eb9f64e47303d0abbd}{tmf882x\+\_\+histogram\+\_\+type}} \{ {\bfseries HIST\+\_\+\+TYPE\+\_\+\+RAW} = 0
+, {\bfseries HIST\+\_\+\+TYPE\+\_\+\+ELEC\+\_\+\+CAL} = 1
+, {\bfseries TMF882\+X\+\_\+\+NUM\+\_\+\+HIST\+\_\+\+TYPES}
+ \}
+\begin{DoxyCompactList}\small\item\em Histogram message type identifier codes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x_8h_afd6241ac2da1c68e7fd808bc72a02988}\label{tmf882x_8h_afd6241ac2da1c68e7fd808bc72a02988}} 
+enum \mbox{\hyperlink{tmf882x_8h_afd6241ac2da1c68e7fd808bc72a02988}{tmf882x\+\_\+msg\+\_\+error\+\_\+codes}} \{ {\bfseries ERR\+\_\+\+COMM} = 0x\+FD
+, {\bfseries ERR\+\_\+\+RETRIES} = 0x\+FE
+, {\bfseries ERR\+\_\+\+BUF\+\_\+\+OVERFLOW} = 0x\+FF
+ \}
+\begin{DoxyCompactList}\small\item\em Error message type identifier codes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tmf882x_8h_a2d7adcef0812aa38a530946dbd1d1f03}\label{tmf882x_8h_a2d7adcef0812aa38a530946dbd1d1f03}} 
+\index{tmf882x.h@{tmf882x.h}!TOF\_INIT\_MSG@{TOF\_INIT\_MSG}}
+\index{TOF\_INIT\_MSG@{TOF\_INIT\_MSG}!tmf882x.h@{tmf882x.h}}
+\doxysubsubsection{\texorpdfstring{TOF\_INIT\_MSG}{TOF\_INIT\_MSG}}
+{\footnotesize\ttfamily \#define TOF\+\_\+\+INIT\+\_\+\+MSG(\begin{DoxyParamCaption}\item[{}]{msg }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{(\{ \(\backslash\)}
+\DoxyCodeLine{    struct \mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}} *\_\_m = (\textcolor{keyword}{struct }\mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}} *)(msg); \(\backslash\)}
+\DoxyCodeLine{    memset(\&\_\_m-\/>hdr, 0, TMF882X\_MSG\_HEADER\_SIZE); \(\backslash\)}
+\DoxyCodeLine{\})}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{tmf882x_8h_a4036506619a12b3e7f8e4c7aa6606af0}\label{tmf882x_8h_a4036506619a12b3e7f8e4c7aa6606af0}} 
+\index{tmf882x.h@{tmf882x.h}!TOF\_SET\_ERR\_MSG@{TOF\_SET\_ERR\_MSG}}
+\index{TOF\_SET\_ERR\_MSG@{TOF\_SET\_ERR\_MSG}!tmf882x.h@{tmf882x.h}}
+\doxysubsubsection{\texorpdfstring{TOF\_SET\_ERR\_MSG}{TOF\_SET\_ERR\_MSG}}
+{\footnotesize\ttfamily \#define TOF\+\_\+\+SET\+\_\+\+ERR\+\_\+\+MSG(\begin{DoxyParamCaption}\item[{}]{msg,  }\item[{}]{errid }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{(\{ \(\backslash\)}
+\DoxyCodeLine{    struct \mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}} *\_\_m = (\textcolor{keyword}{struct }\mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}} *)(msg); \(\backslash\)}
+\DoxyCodeLine{    TOF\_SET\_MSG\_HDR(msg, ID\_ERROR, \textcolor{keyword}{struct} \mbox{\hyperlink{structtmf882x__msg__error}{tmf882x\_msg\_error}}); \(\backslash\)}
+\DoxyCodeLine{    \_\_m-\/>err\_msg.err\_code = errid; \(\backslash\)}
+\DoxyCodeLine{ \})}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{tmf882x_8h_a69241485ac0cde3a1d54a979fc276ea4}\label{tmf882x_8h_a69241485ac0cde3a1d54a979fc276ea4}} 
+\index{tmf882x.h@{tmf882x.h}!TOF\_SET\_HISTOGRAM\_MSG@{TOF\_SET\_HISTOGRAM\_MSG}}
+\index{TOF\_SET\_HISTOGRAM\_MSG@{TOF\_SET\_HISTOGRAM\_MSG}!tmf882x.h@{tmf882x.h}}
+\doxysubsubsection{\texorpdfstring{TOF\_SET\_HISTOGRAM\_MSG}{TOF\_SET\_HISTOGRAM\_MSG}}
+{\footnotesize\ttfamily \#define TOF\+\_\+\+SET\+\_\+\+HISTOGRAM\+\_\+\+MSG(\begin{DoxyParamCaption}\item[{}]{msg,  }\item[{}]{hist\+\_\+type }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{(\{ \(\backslash\)}
+\DoxyCodeLine{    struct \mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}} *\_\_m = (\textcolor{keyword}{struct }\mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}} *)(msg); \(\backslash\)}
+\DoxyCodeLine{    TOF\_SET\_MSG\_HDR(msg, ID\_HISTOGRAM, \textcolor{keyword}{struct} \mbox{\hyperlink{structtmf882x__msg__histogram}{tmf882x\_msg\_histogram}}); \(\backslash\)}
+\DoxyCodeLine{    \_\_m-\/>hist\_msg.histogram\_type = hist\_type; \(\backslash\)}
+\DoxyCodeLine{ \})}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{tmf882x_8h_a8e6aaaeb8b397f37a3ff2637aaddeea1}\label{tmf882x_8h_a8e6aaaeb8b397f37a3ff2637aaddeea1}} 
+\index{tmf882x.h@{tmf882x.h}!TOF\_SET\_MSG\_HDR@{TOF\_SET\_MSG\_HDR}}
+\index{TOF\_SET\_MSG\_HDR@{TOF\_SET\_MSG\_HDR}!tmf882x.h@{tmf882x.h}}
+\doxysubsubsection{\texorpdfstring{TOF\_SET\_MSG\_HDR}{TOF\_SET\_MSG\_HDR}}
+{\footnotesize\ttfamily \#define TOF\+\_\+\+SET\+\_\+\+MSG\+\_\+\+HDR(\begin{DoxyParamCaption}\item[{}]{msg,  }\item[{}]{id,  }\item[{}]{type }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{(\{ \(\backslash\)}
+\DoxyCodeLine{    struct \mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}} *\_\_m = (\textcolor{keyword}{struct }\mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}} *)(msg); \(\backslash\)}
+\DoxyCodeLine{    TOF\_INIT\_MSG(msg); \(\backslash\)}
+\DoxyCodeLine{    \_\_m-\/>hdr.msg\_id = id; \(\backslash\)}
+\DoxyCodeLine{    \_\_m-\/>hdr.msg\_len = \textcolor{keyword}{sizeof}(type); \(\backslash\)}
+\DoxyCodeLine{\})}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{tmf882x_8h_aae8e18df88fc244d7ba068d917bbcdd2}\label{tmf882x_8h_aae8e18df88fc244d7ba068d917bbcdd2}} 
+\index{tmf882x.h@{tmf882x.h}!TOF\_ZERO\_MSG@{TOF\_ZERO\_MSG}}
+\index{TOF\_ZERO\_MSG@{TOF\_ZERO\_MSG}!tmf882x.h@{tmf882x.h}}
+\doxysubsubsection{\texorpdfstring{TOF\_ZERO\_MSG}{TOF\_ZERO\_MSG}}
+{\footnotesize\ttfamily \#define TOF\+\_\+\+ZERO\+\_\+\+MSG(\begin{DoxyParamCaption}\item[{}]{msg }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{(\{ \(\backslash\)}
+\DoxyCodeLine{    struct \mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}} *\_\_m = (\textcolor{keyword}{struct }\mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}} *)(msg); \(\backslash\)}
+\DoxyCodeLine{    memset(\_\_m, 0, \textcolor{keyword}{sizeof}(\textcolor{keyword}{struct} \mbox{\hyperlink{structtmf882x__msg}{tmf882x\_msg}})); \(\backslash\)}
+\DoxyCodeLine{\})}
+
+\end{DoxyCode}

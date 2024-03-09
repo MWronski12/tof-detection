@@ -1,0 +1,217 @@
+\hypertarget{tmf882x__mode__app__protocol_8h}{}\doxysection{tmf882x\+\_\+mode\+\_\+app\+\_\+protocol.\+h File Reference}
+\label{tmf882x__mode__app__protocol_8h}\index{tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}}
+{\ttfamily \#include \char`\"{}tmf8x2x\+\_\+application\+\_\+registers.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf8x2x\+\_\+config\+\_\+page\+\_\+common.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf8x2x\+\_\+config\+\_\+page\+\_\+\+SPAD.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf8x2x\+\_\+config\+\_\+page\+\_\+factory.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf8x2x\+\_\+electrical\+\_\+calibration.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf8x2x\+\_\+histogram\+\_\+registers.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf8x2x\+\_\+result\+\_\+registers.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf8x2x\+\_\+statistic\+\_\+registers.\+h\char`\"{}}\newline
+Include dependency graph for tmf882x\+\_\+mode\+\_\+app\+\_\+protocol.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a0142d66e385f8148d315e7fb764002ae}\label{tmf882x__mode__app__protocol_8h_a0142d66e385f8148d315e7fb764002ae}} 
+\#define {\bfseries BITFIELD}(R,  V)~(((V)\&((1UL$<$$<$R\#\#\+\_\+\+\_\+\+WIDTH)-\/1))$<$$<$R\#\#\+\_\+\+\_\+\+SHIFT)
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_af0951d56902babdcd6b165da94b10727}\label{tmf882x__mode__app__protocol_8h_af0951d56902babdcd6b165da94b10727}} 
+\#define {\bfseries BITMASKSHIFTED}(R)~((R\#\#\+\_\+\+\_\+\+MASK)$>$$>$(R\#\#\+\_\+\+\_\+\+SHIFT))
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a5f07f2c2bfa4b2b9fafe2fc0e561ad7a}\label{tmf882x__mode__app__protocol_8h_a5f07f2c2bfa4b2b9fafe2fc0e561ad7a}} 
+\#define {\bfseries SET\+\_\+\+BITFIELD}(R,  D,  V)~(((D)\&$\sim$((((1UL$<$$<$R\#\#\+\_\+\+\_\+\+WIDTH)-\/1)$<$$<$R\#\#\+\_\+\+\_\+\+SHIFT)))$\vert$(((V)\&((1UL$<$$<$R\#\#\+\_\+\+\_\+\+WIDTH)-\/1))$<$$<$R\#\#\+\_\+\+\_\+\+SHIFT))
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_aa9e0245fa926ba691381aaa37a885b28}\label{tmf882x__mode__app__protocol_8h_aa9e0245fa926ba691381aaa37a885b28}} 
+\#define {\bfseries GET\+\_\+\+BITFIELD}(R,  D)~(((D)$>$$>$R\#\#\+\_\+\+\_\+\+SHIFT)\&((1UL$<$$<$R\#\#\+\_\+\+\_\+\+WIDTH)-\/1))
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a3c328ade4318dcf9c63b9ed46377d15d}\label{tmf882x__mode__app__protocol_8h_a3c328ade4318dcf9c63b9ed46377d15d}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+BIT\+\_\+\+MASK}(BF)~( ( ( 1UL $<$$<$ (BF\#\#\+\_\+\+\_\+\+WIDTH) ) -\/ 1 ) $<$$<$ (BF\#\#\+\_\+\+\_\+\+SHIFT) )
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a0fa892201bb67f0adbb5e5be0185896d}\label{tmf882x__mode__app__protocol_8h_a0fa892201bb67f0adbb5e5be0185896d}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+BIT\+\_\+\+ONLY}(BF)~( 1UL $<$$<$ (BF\#\#\+\_\+\+\_\+\+SHIFT) )
+\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__protocol_8h_ad5091da0bc429b86da5e98daf39af51b}{TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HEADER\+\_\+\+SIZE}}~((TMF8\+X2\+X\+\_\+\+COM\+\_\+\+SIZE\+\_\+\+MSB) -\/ (TMF8\+X2\+X\+\_\+\+COM\+\_\+\+CONFIG\+\_\+\+RESULT) + 1)
+\begin{DoxyCompactList}\small\item\em Protocol Structure for results/readout are\+: If the size fits into one packet (i.\+e. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_ad3632445f995ada96d3a1c57afb4f732}\label{tmf882x__mode__app__protocol_8h_ad3632445f995ada96d3a1c57afb4f732}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HEADER\+\_\+\+PLUS\+\_\+\+PAYLOAD}~((0x\+DF) -\/ (TMF8\+X2\+X\+\_\+\+COM\+\_\+\+CONFIG\+\_\+\+RESULT) + 1)
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a9cb1a67bf8f2b21c41d76d2c97c5c3e7}\label{tmf882x__mode__app__protocol_8h_a9cb1a67bf8f2b21c41d76d2c97c5c3e7}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HEADER\+\_\+\+PLUS\+\_\+\+RESULT\+\_\+\+PAYLOAD}~((TMF8\+X2\+X\+\_\+\+COM\+\_\+\+RES\+\_\+\+DISTANCE\+\_\+35\+\_\+\+MSB) -\/ (TMF8\+X2\+X\+\_\+\+COM\+\_\+\+CONFIG\+\_\+\+RESULT) + 1)
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a22c9b7345c74d2ca90a31a8173f3930e}\label{tmf882x__mode__app__protocol_8h_a22c9b7345c74d2ca90a31a8173f3930e}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HEADER\+\_\+\+PLUS\+\_\+\+HIST\+\_\+\+PAYLOAD}~((128) + (\mbox{\hyperlink{tmf882x__mode__app__protocol_8h_ad5091da0bc429b86da5e98daf39af51b}{TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HEADER\+\_\+\+SIZE}}) + (\mbox{\hyperlink{tmf882x__mode__app__protocol_8h_a5885ae54e2d4ca4e6c6ec09ad5c95274}{TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+HEADER\+\_\+\+SIZE}}))
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a2a95510a86bbb382983ec8767ea034da}\label{tmf882x__mode__app__protocol_8h_a2a95510a86bbb382983ec8767ea034da}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+MAX\+\_\+\+PAYLOAD}~((TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HEADER\+\_\+\+PLUS\+\_\+\+PAYLOAD) -\/ (\mbox{\hyperlink{tmf882x__mode__app__protocol_8h_ad5091da0bc429b86da5e98daf39af51b}{TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HEADER\+\_\+\+SIZE}}))
+\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__protocol_8h_a5885ae54e2d4ca4e6c6ec09ad5c95274}{TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+HEADER\+\_\+\+SIZE}}~3                               /$\ast$$\ast$ if there is a sub-\/packet, this is the size of the sub-\/packet header $\ast$/
+\begin{DoxyCompactList}\small\item\em If the RID has the TMF8\+X2\+X\+\_\+\+COM\+\_\+\+SUB\+\_\+\+PACKET\+\_\+\+HEADER\+\_\+\+MASK bit set, than there is a subheader immediatly after the header. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a173cf830fe8f041331058bf57ad550e3}\label{tmf882x__mode__app__protocol_8h_a173cf830fe8f041331058bf57ad550e3}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+HEADER\+\_\+\+MASK}~(0x80)                          /$\ast$$\ast$ this is the bit that has to be set to indicated in the RID that there is a sub-\/packet header $\ast$/
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a275febb77de3f92596c812d3f0ed8d39}\label{tmf882x__mode__app__protocol_8h_a275febb77de3f92596c812d3f0ed8d39}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+NUMBER\+\_\+\+ADDRESS}~((TMF8\+X2\+X\+\_\+\+COM\+\_\+\+SIZE\+\_\+\+LSB)+2)  /$\ast$$\ast$ the sub-\/packet header is right after the packet header $\ast$/
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a4549be4192ab614e55f5ee72d48f7563}\label{tmf882x__mode__app__protocol_8h_a4549be4192ab614e55f5ee72d48f7563}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+PAYLOAD\+\_\+\+ADDRESS}~((TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+NUMBER\+\_\+\+ADDRESS)+1)   /$\ast$$\ast$ the size of the payload in the sub-\/packet comes as 2nd byte of the sub-\/packet header $\ast$/
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a23049b3927b0cf5fb740c4c989c711e1}\label{tmf882x__mode__app__protocol_8h_a23049b3927b0cf5fb740c4c989c711e1}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+CONFIG\+\_\+\+ID\+\_\+\+ADDRESS}~((TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+NUMBER\+\_\+\+ADDRESS)+2)   /$\ast$$\ast$ the CONFIG ID is the subcapture number of this subpacket message or breakpoint \#$\ast$/
+\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__protocol_8h_ac17df36fdc6aa085bf4204049360925b}{TMF8\+X2\+X\+\_\+\+COM\+\_\+\+RID\+\_\+\+FOR\+\_\+\+HISTOGRAM}}(hist\+Type)~( (TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+HEADER\+\_\+\+MASK) $\vert$ (hist\+Type) )
+\begin{DoxyCompactList}\small\item\em Histogram types. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_ae80abad75830c209141a9f64efeb8ffc}\label{tmf882x__mode__app__protocol_8h_ae80abad75830c209141a9f64efeb8ffc}} 
+\#define \mbox{\hyperlink{tmf882x__mode__app__protocol_8h_ae80abad75830c209141a9f64efeb8ffc}{TMF8\+X2\+X\+\_\+\+COM\+\_\+\+RID\+\_\+\+RAW\+\_\+\+HISTOGRAM\+\_\+24\+\_\+\+BITS}}~( \mbox{\hyperlink{tmf882x__mode__app__protocol_8h_ac17df36fdc6aa085bf4204049360925b}{TMF8\+X2\+X\+\_\+\+COM\+\_\+\+RID\+\_\+\+FOR\+\_\+\+HISTOGRAM}}( TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HIST\+\_\+\+DUMP\+\_\+\+\_\+histogram\+\_\+\+\_\+raw\+\_\+24\+\_\+bit\+\_\+histogram ) )
+\begin{DoxyCompactList}\small\item\em The combination of the original RID + sub-\/packet indication. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_ad6681b067f2191efb0e4b4dba7bdc76c}\label{tmf882x__mode__app__protocol_8h_ad6681b067f2191efb0e4b4dba7bdc76c}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+RID\+\_\+\+ELECTRICAL\+\_\+\+CALIBRATION\+\_\+24\+\_\+\+BITS}~( \mbox{\hyperlink{tmf882x__mode__app__protocol_8h_ac17df36fdc6aa085bf4204049360925b}{TMF8\+X2\+X\+\_\+\+COM\+\_\+\+RID\+\_\+\+FOR\+\_\+\+HISTOGRAM}}( TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HIST\+\_\+\+DUMP\+\_\+\+\_\+histogram\+\_\+\+\_\+electrical\+\_\+calibration\+\_\+24\+\_\+bit\+\_\+histogram ) )
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a6a4f5dc93e9883a631653affba68a3a6}\label{tmf882x__mode__app__protocol_8h_a6a4f5dc93e9883a631653affba68a3a6}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+RID\+\_\+\+BREAKPOINT\+\_\+\+HIT}~( \mbox{\hyperlink{tmf882x__mode__app__protocol_8h_ac17df36fdc6aa085bf4204049360925b}{TMF8\+X2\+X\+\_\+\+COM\+\_\+\+RID\+\_\+\+FOR\+\_\+\+HISTOGRAM}}( TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HIST\+\_\+\+DUMP\+\_\+\+\_\+histogram\+\_\+\+\_\+breakpoint\+\_\+hit ) )    /$\ast$$\ast$ Breakpoint information -\/ generic format $\ast$/
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a2df10148961d0249d0065d504acb5658}\label{tmf882x__mode__app__protocol_8h_a2df10148961d0249d0065d504acb5658}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+MAX\+\_\+\+MEASUREMENT\+\_\+\+RESULTS}~(36)
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a672ee6cabdf63307c0681d600d2fd067}\label{tmf882x__mode__app__protocol_8h_a672ee6cabdf63307c0681d600d2fd067}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+MAX\+\_\+\+SPAD\+\_\+\+XSIZE}~(18)
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a4cde05bafc45682d04cea99916a5b0ef}\label{tmf882x__mode__app__protocol_8h_a4cde05bafc45682d04cea99916a5b0ef}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+MAX\+\_\+\+SPAD\+\_\+\+YSIZE}~(10)
+\item 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+COM\+\_\+\+MAX\+\_\+\+SPAD\+\_\+\+SIZE}
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_aefa57f674bd54a416a4f8399384463a1}\label{tmf882x__mode__app__protocol_8h_aefa57f674bd54a416a4f8399384463a1}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+MAX\+\_\+\+CONFIGURATIONS}~2
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a51dc548a4f0488f0041bb18f88d73b03}\label{tmf882x__mode__app__protocol_8h_a51dc548a4f0488f0041bb18f88d73b03}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+MAIN\+\_\+\+SPAD\+\_\+\+VERTICAL\+\_\+\+LSB\+\_\+\+SHIFT}~( 0 )
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_aea5173e931eeea921208e10f10510fc9}\label{tmf882x__mode__app__protocol_8h_aea5173e931eeea921208e10f10510fc9}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+MAIN\+\_\+\+SPAD\+\_\+\+VERTICAL\+\_\+\+MID\+\_\+\+SHIFT}~( 10 )
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a1c99f999892061ce122652f48b4e8a55}\label{tmf882x__mode__app__protocol_8h_a1c99f999892061ce122652f48b4e8a55}} 
+\#define {\bfseries TMF8\+X2\+X\+\_\+\+MAIN\+\_\+\+SPAD\+\_\+\+VERTICAL\+\_\+\+MSB\+\_\+\+SHIFT}~( 20 )
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_ad8647d064f91ebf0f18ac66b18e39e1d}\label{tmf882x__mode__app__protocol_8h_ad8647d064f91ebf0f18ac66b18e39e1d}} 
+\#define \mbox{\hyperlink{tmf882x__mode__app__protocol_8h_ad8647d064f91ebf0f18ac66b18e39e1d}{TMF8\+X2\+X\+\_\+\+MAIN\+\_\+\+SPAD\+\_\+\+BITS\+\_\+\+PER\+\_\+\+CHANNEL}}~( 3 )
+\begin{DoxyCompactList}\small\item\em each channel can be encoded in 3 bits \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__protocol_8h_a9313907dba2b0e3b2e5a9bc9661fae9e}{TMF8\+X2\+X\+\_\+\+MAIN\+\_\+\+SPAD\+\_\+\+ENCODE\+\_\+\+CHANNEL}}(channel,  y\+Position)
+\begin{DoxyCompactList}\small\item\em to encode a single channel, we need to set 3 bits at specific positions in the 32-\/bit word \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__protocol_8h_aa3b14f638e29bf38b3422fbb4f51af5e}{TMF8\+X2\+X\+\_\+\+MAIN\+\_\+\+SPAD\+\_\+\+DECODE\+\_\+\+CHANNEL}}(config,  y\+Position)
+\begin{DoxyCompactList}\small\item\em to decode a single channel, we need to get 3 bits at specific positions in the 32-\/bit word \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_ad5091da0bc429b86da5e98daf39af51b}\label{tmf882x__mode__app__protocol_8h_ad5091da0bc429b86da5e98daf39af51b}} 
+\index{tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}!TMF8X2X\_COM\_HEADER\_SIZE@{TMF8X2X\_COM\_HEADER\_SIZE}}
+\index{TMF8X2X\_COM\_HEADER\_SIZE@{TMF8X2X\_COM\_HEADER\_SIZE}!tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}}
+\doxysubsubsection{\texorpdfstring{TMF8X2X\_COM\_HEADER\_SIZE}{TMF8X2X\_COM\_HEADER\_SIZE}}
+{\footnotesize\ttfamily \#define TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HEADER\+\_\+\+SIZE~((TMF8\+X2\+X\+\_\+\+COM\+\_\+\+SIZE\+\_\+\+MSB) -\/ (TMF8\+X2\+X\+\_\+\+COM\+\_\+\+CONFIG\+\_\+\+RESULT) + 1)}
+
+
+
+Protocol Structure for results/readout are\+: If the size fits into one packet (i.\+e. 
+
+is less than 0x\+C0, than there is no payload field).
+
++-\/-\/---+-\/-\/---+-\/-\/-\/---+-\/-\/-\/---+-\/-\/-\/-\/---+-\/-\/-\/-\/---+-\/...-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---+
+
+$\vert$ RID $\vert$ TID $\vert$ Size $\vert$ Size $\vert$ Data0 $\vert$ Data1 $\vert$ ... $\vert$ Data\mbox{[}Size-\/1\mbox{]} $\vert$
+
+$\vert$ a $\vert$ $\vert$ LSB $\vert$ MSB $\vert$ $\vert$ $\vert$ $\vert$ $\vert$
+
++-\/-\/---+-\/-\/---+-\/-\/-\/---+-\/-\/-\/---+-\/-\/-\/-\/---+-\/-\/-\/-\/---+-\/...-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---+
+
+If the data to be transferred does not fit in one I2C Chunk, i.\+e. is Bigger than (0x\+E0 -\/ 0x20)=0x\+C0, than it is split into the following records (each record starts at address TMF8\+X2\+C\+\_\+\+COM\+\_\+\+RESULT\+\_\+\+ADDRESS\+:
+
++-\/-\/---+-\/-\/---+-\/-\/-\/---+-\/-\/-\/---+-\/-\/-\/-\/-\/-\/---+-\/-\/-\/-\/-\/-\/---+-\/-\/-\/-\/-\/-\/---+-\/...-\/+-\/-\/-\/-\/-\/-\/-\/-\/---+
+
+$\vert$ RID $\vert$ TID $\vert$ Total Size $\vert$ Payload $\vert$ Data\mbox{[}0\mbox{]} $\vert$ Data\mbox{[}1\mbox{]} $\vert$ ... $\vert$ Data\mbox{[}m-\/1\mbox{]} $\vert$
+
+$\vert$ b $\vert$ n $\vert$ LSB $\vert$ MSB $\vert$ m $\vert$ $\vert$ $\vert$ $\vert$ $\vert$
+
++-\/-\/---+-\/-\/---+-\/-\/-\/---+-\/-\/-\/---+-\/-\/-\/-\/-\/-\/---+-\/-\/-\/-\/-\/-\/---+-\/-\/-\/-\/-\/-\/---+-\/...-\/+-\/-\/-\/-\/-\/-\/-\/-\/---+
+
++-\/-\/---+-\/-\/---+-\/-\/-\/---+-\/-\/-\/---+-\/-\/-\/-\/-\/-\/---+-\/-\/-\/-\/-\/-\/---+-\/-\/-\/-\/-\/-\/-\/-\/---+-\/...-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---+
+
+$\vert$ RID $\vert$ RID $\vert$ Total Size $\vert$ Payload $\vert$ Data\mbox{[}m\mbox{]} $\vert$ Data\mbox{[}m+1\mbox{]} $\vert$ ... $\vert$ Data\mbox{[}m + (m+1)\mbox{]} $\vert$
+
+$\vert$ b $\vert$ n+1 $\vert$ -\/ Payload m $\vert$ m+1 $\vert$ $\vert$ $\vert$ $\vert$ $\vert$
+
++-\/-\/---+-\/-\/---+-\/-\/-\/---+-\/-\/-\/---+-\/-\/-\/-\/-\/-\/---+-\/-\/-\/-\/-\/-\/---+-\/-\/-\/-\/-\/-\/-\/-\/---+-\/...-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---+
+
+....
+
+Note that the TID changes with each new packet, the Size is reduced with each new packet, the payload may change with each packet (most likely it stays the same -\/ and only changes with the last packet -\/ if at all), and the RID always stays the same. TID (1Byte), RID (1Byte), Size (2Bytes) every response has this header (4 bytes) \mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a056541d0db548051e5e40c93ce160f0e}\label{tmf882x__mode__app__protocol_8h_a056541d0db548051e5e40c93ce160f0e}} 
+\index{tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}!TMF8X2X\_COM\_MAX\_SPAD\_SIZE@{TMF8X2X\_COM\_MAX\_SPAD\_SIZE}}
+\index{TMF8X2X\_COM\_MAX\_SPAD\_SIZE@{TMF8X2X\_COM\_MAX\_SPAD\_SIZE}!tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}}
+\doxysubsubsection{\texorpdfstring{TMF8X2X\_COM\_MAX\_SPAD\_SIZE}{TMF8X2X\_COM\_MAX\_SPAD\_SIZE}}
+{\footnotesize\ttfamily \#define TMF8\+X2\+X\+\_\+\+COM\+\_\+\+MAX\+\_\+\+SPAD\+\_\+\+SIZE}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                              (TMF8X2X\_COM\_MAX\_SPAD\_XSIZE * \(\backslash\)}
+\DoxyCodeLine{                                              TMF8X2X\_COM\_MAX\_SPAD\_YSIZE)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a5885ae54e2d4ca4e6c6ec09ad5c95274}\label{tmf882x__mode__app__protocol_8h_a5885ae54e2d4ca4e6c6ec09ad5c95274}} 
+\index{tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}!TMF8X2X\_COM\_OPTIONAL\_SUBPACKET\_HEADER\_SIZE@{TMF8X2X\_COM\_OPTIONAL\_SUBPACKET\_HEADER\_SIZE}}
+\index{TMF8X2X\_COM\_OPTIONAL\_SUBPACKET\_HEADER\_SIZE@{TMF8X2X\_COM\_OPTIONAL\_SUBPACKET\_HEADER\_SIZE}!tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}}
+\doxysubsubsection{\texorpdfstring{TMF8X2X\_COM\_OPTIONAL\_SUBPACKET\_HEADER\_SIZE}{TMF8X2X\_COM\_OPTIONAL\_SUBPACKET\_HEADER\_SIZE}}
+{\footnotesize\ttfamily \#define TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+HEADER\+\_\+\+SIZE~3                               /$\ast$$\ast$ if there is a sub-\/packet, this is the size of the sub-\/packet header $\ast$/}
+
+
+
+If the RID has the TMF8\+X2\+X\+\_\+\+COM\+\_\+\+SUB\+\_\+\+PACKET\+\_\+\+HEADER\+\_\+\+MASK bit set, than there is a subheader immediatly after the header. 
+
+The optional sub-\/packet header consists of 2 bytes\+: A running number identifying which chunk of the complete packet is transitted. A payload byte giving the amount of data that is following in this sub-\/packet.
+
+Note\+: The total size written to TMF8\+X2\+X\+\_\+\+COM\+\_\+\+SIZE\+\_\+\+LSB {\itshape excludes} the sub-\/packet headers! This makes it easier, otherwise we would need to calculate into how many sub-\/packets we cut the complete packet before starting to send. \mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_ac17df36fdc6aa085bf4204049360925b}\label{tmf882x__mode__app__protocol_8h_ac17df36fdc6aa085bf4204049360925b}} 
+\index{tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}!TMF8X2X\_COM\_RID\_FOR\_HISTOGRAM@{TMF8X2X\_COM\_RID\_FOR\_HISTOGRAM}}
+\index{TMF8X2X\_COM\_RID\_FOR\_HISTOGRAM@{TMF8X2X\_COM\_RID\_FOR\_HISTOGRAM}!tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}}
+\doxysubsubsection{\texorpdfstring{TMF8X2X\_COM\_RID\_FOR\_HISTOGRAM}{TMF8X2X\_COM\_RID\_FOR\_HISTOGRAM}}
+{\footnotesize\ttfamily \#define TMF8\+X2\+X\+\_\+\+COM\+\_\+\+RID\+\_\+\+FOR\+\_\+\+HISTOGRAM(\begin{DoxyParamCaption}\item[{}]{hist\+Type }\end{DoxyParamCaption})~( (TMF8\+X2\+X\+\_\+\+COM\+\_\+\+OPTIONAL\+\_\+\+SUBPACKET\+\_\+\+HEADER\+\_\+\+MASK) $\vert$ (hist\+Type) )}
+
+
+
+Histogram types. 
+
+build the RID for histograms from select bit + sub-\/packet header mask\+: histograms never fit in 1 I2C packet \mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_aa3b14f638e29bf38b3422fbb4f51af5e}\label{tmf882x__mode__app__protocol_8h_aa3b14f638e29bf38b3422fbb4f51af5e}} 
+\index{tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}!TMF8X2X\_MAIN\_SPAD\_DECODE\_CHANNEL@{TMF8X2X\_MAIN\_SPAD\_DECODE\_CHANNEL}}
+\index{TMF8X2X\_MAIN\_SPAD\_DECODE\_CHANNEL@{TMF8X2X\_MAIN\_SPAD\_DECODE\_CHANNEL}!tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}}
+\doxysubsubsection{\texorpdfstring{TMF8X2X\_MAIN\_SPAD\_DECODE\_CHANNEL}{TMF8X2X\_MAIN\_SPAD\_DECODE\_CHANNEL}}
+{\footnotesize\ttfamily \#define TMF8\+X2\+X\+\_\+\+MAIN\+\_\+\+SPAD\+\_\+\+DECODE\+\_\+\+CHANNEL(\begin{DoxyParamCaption}\item[{}]{config,  }\item[{}]{y\+Position }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        ( ( ( ( (config) >> ( (TMF8X2X\_MAIN\_SPAD\_VERTICAL\_LSB\_SHIFT) + (yPosition) ) )      ) \& 1 \textcolor{comment}{/*LSB*/} )          \(\backslash\)}
+\DoxyCodeLine{        | ( ( ( (config) >> ( (TMF8X2X\_MAIN\_SPAD\_VERTICAL\_MID\_SHIFT) + (yPosition) ) ) << 1 ) \& 2 \textcolor{comment}{/*Mid*/} )          \(\backslash\)}
+\DoxyCodeLine{        | ( ( ( (config) >> ( (TMF8X2X\_MAIN\_SPAD\_VERTICAL\_MSB\_SHIFT) + (yPosition) ) ) << 2 ) \& 4 \textcolor{comment}{/*MSB*/} )          \(\backslash\)}
+\DoxyCodeLine{        )}
+
+\end{DoxyCode}
+
+
+to decode a single channel, we need to get 3 bits at specific positions in the 32-\/bit word 
+
+\mbox{\Hypertarget{tmf882x__mode__app__protocol_8h_a9313907dba2b0e3b2e5a9bc9661fae9e}\label{tmf882x__mode__app__protocol_8h_a9313907dba2b0e3b2e5a9bc9661fae9e}} 
+\index{tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}!TMF8X2X\_MAIN\_SPAD\_ENCODE\_CHANNEL@{TMF8X2X\_MAIN\_SPAD\_ENCODE\_CHANNEL}}
+\index{TMF8X2X\_MAIN\_SPAD\_ENCODE\_CHANNEL@{TMF8X2X\_MAIN\_SPAD\_ENCODE\_CHANNEL}!tmf882x\_mode\_app\_protocol.h@{tmf882x\_mode\_app\_protocol.h}}
+\doxysubsubsection{\texorpdfstring{TMF8X2X\_MAIN\_SPAD\_ENCODE\_CHANNEL}{TMF8X2X\_MAIN\_SPAD\_ENCODE\_CHANNEL}}
+{\footnotesize\ttfamily \#define TMF8\+X2\+X\+\_\+\+MAIN\+\_\+\+SPAD\+\_\+\+ENCODE\+\_\+\+CHANNEL(\begin{DoxyParamCaption}\item[{}]{channel,  }\item[{}]{y\+Position }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        ( ( ( ( (channel) \& 1 \textcolor{comment}{/*LSB*/} )      ) << ( (TMF8X2X\_MAIN\_SPAD\_VERTICAL\_LSB\_SHIFT) + (yPosition) ) )         \(\backslash\)}
+\DoxyCodeLine{        | ( ( ( (channel) \& 2 \textcolor{comment}{/*Mid*/} ) >> 1 ) << ( (TMF8X2X\_MAIN\_SPAD\_VERTICAL\_MID\_SHIFT) + (yPosition) ) )         \(\backslash\)}
+\DoxyCodeLine{        | ( ( ( (channel) \& 4 \textcolor{comment}{/*MSB*/} ) >> 2 ) << ( (TMF8X2X\_MAIN\_SPAD\_VERTICAL\_MSB\_SHIFT) + (yPosition) ) )         \(\backslash\)}
+\DoxyCodeLine{        )}
+
+\end{DoxyCode}
+
+
+to encode a single channel, we need to set 3 bits at specific positions in the 32-\/bit word 
+

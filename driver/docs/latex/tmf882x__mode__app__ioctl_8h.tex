@@ -1,0 +1,630 @@
+\hypertarget{tmf882x__mode__app__ioctl_8h}{}\doxysection{tmf882x\+\_\+mode\+\_\+app\+\_\+ioctl.\+h File Reference}
+\label{tmf882x__mode__app__ioctl_8h}\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+
+
+TMF882X APP mode ioctl definitions.  
+
+
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+mode.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+mode\+\_\+app\+\_\+protocol.\+h\char`\"{}}\newline
+Include dependency graph for tmf882x\+\_\+mode\+\_\+app\+\_\+ioctl.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__app__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+config}}
+\begin{DoxyCompactList}\small\item\em This is the Application mode config structure that holds all configuration parameters for the application. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__mode__app__spad__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+spad\+\_\+config}}
+\begin{DoxyCompactList}\small\item\em This is the Application mode spad config structure that holds the complete spad configuration for the application. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__mode__app__spad__config_1_1tmf882x__mode__app__single__spad__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+spad\+\_\+config\+::tmf882x\+\_\+mode\+\_\+app\+\_\+single\+\_\+spad\+\_\+config}}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__app__calib}{tmf882x\+\_\+mode\+\_\+app\+\_\+calib}}
+\begin{DoxyCompactList}\small\item\em This is the Application mode calibration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__mode__app__dev__UID}{tmf882x\+\_\+mode\+\_\+app\+\_\+dev\+\_\+\+UID}}
+\begin{DoxyCompactList}\small\item\em This is the Application mode structure to hold the device Unique ID. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}\label{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}} 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882\+X\+\_\+\+IOCTL\+\_\+\+APP\+\_\+\+MODE}}~0x02U
+\begin{DoxyCompactList}\small\item\em APP mode IOCTL ID. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_aa1b04effe6b0d7d4527da6225f96345a}\label{tmf882x__mode__app__ioctl_8h_aa1b04effe6b0d7d4527da6225f96345a}} 
+\#define {\bfseries VERIFY\+\_\+\+IOCAPP}(nr)~(\+\_\+\+IOCTL\+\_\+\+MODE(nr) == \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882\+X\+\_\+\+IOCTL\+\_\+\+APP\+\_\+\+MODE}})
+\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a20a97a93ce9f57adea584f460c9d840d}{IOCAPP\+\_\+\+SET\+\_\+\+CFG}}~\+\_\+\+IOCTL\+\_\+W( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882\+X\+\_\+\+IOCTL\+\_\+\+APP\+\_\+\+MODE}}, APP\+\_\+\+SET\+\_\+\+CFG, struct \mbox{\hyperlink{structtmf882x__mode__app__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+config}} )
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Write a configuration to the application mode. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_ac540baa3309386f0a25521cd0bb70256}{IOCAPP\+\_\+\+GET\+\_\+\+CFG}}~\+\_\+\+IOCTL\+\_\+R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882\+X\+\_\+\+IOCTL\+\_\+\+APP\+\_\+\+MODE}}, APP\+\_\+\+GET\+\_\+\+CFG, struct \mbox{\hyperlink{structtmf882x__mode__app__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+config}} )
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Read a configuration from the application mode. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a2e301487aef0070f80dbc3816fbae1ef}{IOCAPP\+\_\+\+SET\+\_\+\+SPADCFG}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Write a spad configuration to the application mode. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_ad731ae7b8d76e1394c8788aa69a07763}{IOCAPP\+\_\+\+GET\+\_\+\+SPADCFG}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Read the spad configuration from the application mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a6b59efcd557454617e757baf288d1ee4}\label{tmf882x__mode__app__ioctl_8h_a6b59efcd557454617e757baf288d1ee4}} 
+\#define {\bfseries TMF882\+X\+\_\+\+MAX\+\_\+\+CALIB\+\_\+\+SIZE}~(188 $\ast$ 4)
+\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_ad5e712202b5e60312ca22051dbec90d4}{IOCAPP\+\_\+\+SET\+\_\+\+CALIB}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Write the calibration data to the application mode. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a745bd5cef20dc6db59e14a051b7d7ffd}{IOCAPP\+\_\+\+GET\+\_\+\+CALIB}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Read the current calibration data from the application mode. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a509f531bbeef89903dc2b90688afb6d7}{IOCAPP\+\_\+\+DO\+\_\+\+FACCAL}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Perform Factory Calibration and get the new calibration data. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_ac6a5197d32e1cb7a17f3c9386adf1c0e}{IOCAPP\+\_\+\+IS\+\_\+\+MEAS}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Return whether the application mode is currently measuring. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a79eaa470657ce1bcca8a812bfa247727}{IOCAPP\+\_\+\+DEV\+\_\+\+UID}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Retrieve the device Unique Identifier (UID) \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a9d9cbd6eccbc989c401c8e881ff96a49}{IOCAPP\+\_\+\+IS\+\_\+\+CLKADJ}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Read the clock compensation enable state. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_af2821be1622f2a3b011cfd545dda7889}{IOCAPP\+\_\+\+SET\+\_\+\+CLKADJ}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Set the clock compensation enable state. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a59042180db5b4a62a2cac47f17bab4ba}{IOCAPP\+\_\+\+SET\+\_\+8\+X8\+MODE}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Set the 8x8 operating mode (TMF8828) \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a463a4c12b718ec9b4c1747e7bb94bc6f}{IOCAPP\+\_\+\+IS\+\_\+8\+X8\+MODE}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Read the 8x8 operating mode state (TMF8828) \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_ab4937f4abeb8fffd6bb0f6ca2dd39a3a}{IOCAPP\+\_\+\+GET\+\_\+\+OSC\+\_\+\+FREQ}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to read the target device oscillator freq in Hz. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a4be633799b0c8db58551159813503cc9}{IOCAPP\+\_\+\+SET\+\_\+\+OSC\+\_\+\+FREQ}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to write the target device oscillator freq in Hz. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a89d3d0f65ffb50999e129d3cf229f109}{IOCAPP\+\_\+\+STANDBY}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to set the device to STANDBY (low power sleep) state. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_ae281f4cbbade652a982584b3f8bd3f62}{IOCAPP\+\_\+\+WAKEUP}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to WAKEUP the device from STANDBY state. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a6c84e71d4da19ea1255510a1504664a5}{IOCAPP\+\_\+\+SET\+\_\+\+SHORTRANGE}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Set the short-\/range mode. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a9589662adb6b201356c5ff004c623a60}{IOCAPP\+\_\+\+IS\+\_\+\+SHORTRANGE}}
+\begin{DoxyCompactList}\small\item\em IOCTL command code to Read the short-\/range operating mode state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a4dc8414d5302df3299f6b112d3a0ae2b}{\+\_\+tmf882x\+\_\+mode\+\_\+app\+\_\+iocnr}} \{ \newline
+{\bfseries APP\+\_\+\+SET\+\_\+\+CFG}
+, {\bfseries APP\+\_\+\+GET\+\_\+\+CFG}
+, {\bfseries APP\+\_\+\+SET\+\_\+\+SPADCFG}
+, {\bfseries APP\+\_\+\+GET\+\_\+\+SPADCFG}
+, \newline
+{\bfseries APP\+\_\+\+SET\+\_\+\+CALIB}
+, {\bfseries APP\+\_\+\+GET\+\_\+\+CALIB}
+, {\bfseries APP\+\_\+\+DO\+\_\+\+FACCAL}
+, {\bfseries APP\+\_\+\+IS\+\_\+\+MEAS}
+, \newline
+{\bfseries APP\+\_\+\+DEV\+\_\+\+UID}
+, {\bfseries APP\+\_\+\+IS\+\_\+\+CLKADJ}
+, {\bfseries APP\+\_\+\+SET\+\_\+\+CLKADJ}
+, {\bfseries APP\+\_\+\+SET\+\_\+8\+X8\+MODE}
+, \newline
+{\bfseries APP\+\_\+\+IS\+\_\+8\+X8\+MODE}
+, {\bfseries APP\+\_\+\+GET\+\_\+\+OSC\+\_\+\+FREQ}
+, {\bfseries APP\+\_\+\+SET\+\_\+\+OSC\+\_\+\+FREQ}
+, {\bfseries APP\+\_\+\+STANDBY}
+, \newline
+{\bfseries APP\+\_\+\+WAKEUP}
+, {\bfseries APP\+\_\+\+SET\+\_\+\+SHORTRANGE}
+, {\bfseries APP\+\_\+\+IS\+\_\+\+SHORTRANGE}
+, {\bfseries NUM\+\_\+\+APP\+\_\+\+IOCTL}
+ \}
+\begin{DoxyCompactList}\small\item\em These are the command code numberings in the ioctl bit fields. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+TMF882X APP mode ioctl definitions. 
+
+See \mbox{\hyperlink{tmf882x__interface_8h_ac28a3ae344eba64ec56b0a9a2c3b66d7}{tmf882x\+\_\+ioctl()}} for how to pass input and output parameters to IOCTL driver mode functions.
+
+\+\_\+\+IOCTL\+\_\+R = IOCTL where driver returns data to the client through output param \+\_\+\+IOCTL\+\_\+W = IOCTL where client writes data to the driver through input param \+\_\+\+IOCTL\+\_\+\+RW = IOCTL data is both written by the client though the input param and data is returned through the output param \+\_\+\+IOCTL\+\_\+N = IOCTL where no data is written or returned 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a79eaa470657ce1bcca8a812bfa247727}\label{tmf882x__mode__app__ioctl_8h_a79eaa470657ce1bcca8a812bfa247727}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_DEV\_UID@{IOCAPP\_DEV\_UID}}
+\index{IOCAPP\_DEV\_UID@{IOCAPP\_DEV\_UID}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_DEV\_UID}{IOCAPP\_DEV\_UID}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+DEV\+\_\+\+UID}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                     \_IOCTL\_R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                     APP\_DEV\_UID, \(\backslash\)}
+\DoxyCodeLine{                                     \textcolor{keyword}{struct} \mbox{\hyperlink{structtmf882x__mode__app__dev__UID}{tmf882x\_mode\_app\_dev\_UID}} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Retrieve the device Unique Identifier (UID) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: struct \mbox{\hyperlink{structtmf882x__mode__app__dev__UID}{tmf882x\+\_\+mode\+\_\+app\+\_\+dev\+\_\+\+UID}} $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a509f531bbeef89903dc2b90688afb6d7}\label{tmf882x__mode__app__ioctl_8h_a509f531bbeef89903dc2b90688afb6d7}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_DO\_FACCAL@{IOCAPP\_DO\_FACCAL}}
+\index{IOCAPP\_DO\_FACCAL@{IOCAPP\_DO\_FACCAL}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_DO\_FACCAL}{IOCAPP\_DO\_FACCAL}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+DO\+\_\+\+FACCAL}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                       \_IOCTL\_R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                       APP\_DO\_FACCAL, \(\backslash\)}
+\DoxyCodeLine{                                       \textcolor{keyword}{struct} \mbox{\hyperlink{structtmf882x__mode__app__calib}{tmf882x\_mode\_app\_calib}} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Perform Factory Calibration and get the new calibration data. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: struct \mbox{\hyperlink{structtmf882x__mode__app__calib}{tmf882x\+\_\+mode\+\_\+app\+\_\+calib}} $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a745bd5cef20dc6db59e14a051b7d7ffd}\label{tmf882x__mode__app__ioctl_8h_a745bd5cef20dc6db59e14a051b7d7ffd}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_GET\_CALIB@{IOCAPP\_GET\_CALIB}}
+\index{IOCAPP\_GET\_CALIB@{IOCAPP\_GET\_CALIB}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_GET\_CALIB}{IOCAPP\_GET\_CALIB}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+GET\+\_\+\+CALIB}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                       \_IOCTL\_R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                       APP\_GET\_CALIB, \(\backslash\)}
+\DoxyCodeLine{                                       \textcolor{keyword}{struct} \mbox{\hyperlink{structtmf882x__mode__app__calib}{tmf882x\_mode\_app\_calib}} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Read the current calibration data from the application mode. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: struct \mbox{\hyperlink{structtmf882x__mode__app__calib}{tmf882x\+\_\+mode\+\_\+app\+\_\+calib}} $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_ac540baa3309386f0a25521cd0bb70256}\label{tmf882x__mode__app__ioctl_8h_ac540baa3309386f0a25521cd0bb70256}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_GET\_CFG@{IOCAPP\_GET\_CFG}}
+\index{IOCAPP\_GET\_CFG@{IOCAPP\_GET\_CFG}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_GET\_CFG}{IOCAPP\_GET\_CFG}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+GET\+\_\+\+CFG~\+\_\+\+IOCTL\+\_\+R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882\+X\+\_\+\+IOCTL\+\_\+\+APP\+\_\+\+MODE}}, APP\+\_\+\+GET\+\_\+\+CFG, struct \mbox{\hyperlink{structtmf882x__mode__app__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+config}} )}
+
+
+
+IOCTL command code to Read a configuration from the application mode. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: struct \mbox{\hyperlink{structtmf882x__mode__app__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+config}} $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_ab4937f4abeb8fffd6bb0f6ca2dd39a3a}\label{tmf882x__mode__app__ioctl_8h_ab4937f4abeb8fffd6bb0f6ca2dd39a3a}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_GET\_OSC\_FREQ@{IOCAPP\_GET\_OSC\_FREQ}}
+\index{IOCAPP\_GET\_OSC\_FREQ@{IOCAPP\_GET\_OSC\_FREQ}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_GET\_OSC\_FREQ}{IOCAPP\_GET\_OSC\_FREQ}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+GET\+\_\+\+OSC\+\_\+\+FREQ}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                          \_IOCTL\_R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                          APP\_GET\_OSC\_FREQ, \(\backslash\)}
+\DoxyCodeLine{                                          uint32\_t )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to read the target device oscillator freq in Hz. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: uint32\+\_\+t $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_ad731ae7b8d76e1394c8788aa69a07763}\label{tmf882x__mode__app__ioctl_8h_ad731ae7b8d76e1394c8788aa69a07763}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_GET\_SPADCFG@{IOCAPP\_GET\_SPADCFG}}
+\index{IOCAPP\_GET\_SPADCFG@{IOCAPP\_GET\_SPADCFG}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_GET\_SPADCFG}{IOCAPP\_GET\_SPADCFG}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+GET\+\_\+\+SPADCFG}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                       \_IOCTL\_R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                       APP\_GET\_SPADCFG, \(\backslash\)}
+\DoxyCodeLine{                                       \textcolor{keyword}{struct} \mbox{\hyperlink{structtmf882x__mode__app__spad__config}{tmf882x\_mode\_app\_spad\_config}} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Read the spad configuration from the application mode. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: struct \mbox{\hyperlink{structtmf882x__mode__app__spad__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+spad\+\_\+config}} $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a463a4c12b718ec9b4c1747e7bb94bc6f}\label{tmf882x__mode__app__ioctl_8h_a463a4c12b718ec9b4c1747e7bb94bc6f}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_IS\_8X8MODE@{IOCAPP\_IS\_8X8MODE}}
+\index{IOCAPP\_IS\_8X8MODE@{IOCAPP\_IS\_8X8MODE}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_IS\_8X8MODE}{IOCAPP\_IS\_8X8MODE}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+IS\+\_\+8\+X8\+MODE}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                        \_IOCTL\_R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                        APP\_IS\_8X8MODE, \(\backslash\)}
+\DoxyCodeLine{                                        \textcolor{keywordtype}{bool} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Read the 8x8 operating mode state (TMF8828) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: bool $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a9d9cbd6eccbc989c401c8e881ff96a49}\label{tmf882x__mode__app__ioctl_8h_a9d9cbd6eccbc989c401c8e881ff96a49}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_IS\_CLKADJ@{IOCAPP\_IS\_CLKADJ}}
+\index{IOCAPP\_IS\_CLKADJ@{IOCAPP\_IS\_CLKADJ}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_IS\_CLKADJ}{IOCAPP\_IS\_CLKADJ}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+IS\+\_\+\+CLKADJ}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                       \_IOCTL\_R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                       APP\_IS\_CLKADJ, \(\backslash\)}
+\DoxyCodeLine{                                       \textcolor{keywordtype}{bool} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Read the clock compensation enable state. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: bool $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_ac6a5197d32e1cb7a17f3c9386adf1c0e}\label{tmf882x__mode__app__ioctl_8h_ac6a5197d32e1cb7a17f3c9386adf1c0e}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_IS\_MEAS@{IOCAPP\_IS\_MEAS}}
+\index{IOCAPP\_IS\_MEAS@{IOCAPP\_IS\_MEAS}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_IS\_MEAS}{IOCAPP\_IS\_MEAS}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+IS\+\_\+\+MEAS}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                     \_IOCTL\_R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                     APP\_IS\_MEAS, \(\backslash\)}
+\DoxyCodeLine{                                     \textcolor{keywordtype}{bool} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Return whether the application mode is currently measuring. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: bool $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a9589662adb6b201356c5ff004c623a60}\label{tmf882x__mode__app__ioctl_8h_a9589662adb6b201356c5ff004c623a60}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_IS\_SHORTRANGE@{IOCAPP\_IS\_SHORTRANGE}}
+\index{IOCAPP\_IS\_SHORTRANGE@{IOCAPP\_IS\_SHORTRANGE}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_IS\_SHORTRANGE}{IOCAPP\_IS\_SHORTRANGE}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+IS\+\_\+\+SHORTRANGE}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                           \_IOCTL\_R( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                           APP\_IS\_SHORTRANGE, \(\backslash\)}
+\DoxyCodeLine{                                           \textcolor{keywordtype}{bool} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Read the short-\/range operating mode state. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: bool $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a59042180db5b4a62a2cac47f17bab4ba}\label{tmf882x__mode__app__ioctl_8h_a59042180db5b4a62a2cac47f17bab4ba}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_SET\_8X8MODE@{IOCAPP\_SET\_8X8MODE}}
+\index{IOCAPP\_SET\_8X8MODE@{IOCAPP\_SET\_8X8MODE}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_SET\_8X8MODE}{IOCAPP\_SET\_8X8MODE}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+SET\+\_\+8\+X8\+MODE}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                         \_IOCTL\_W( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                         APP\_SET\_8X8MODE, \(\backslash\)}
+\DoxyCodeLine{                                         \textcolor{keywordtype}{bool} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Set the 8x8 operating mode (TMF8828) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: bool $\ast$ \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: none \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise @warn Note that changing to/from 8x8 mode will reset the device configuration to its default. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_ad5e712202b5e60312ca22051dbec90d4}\label{tmf882x__mode__app__ioctl_8h_ad5e712202b5e60312ca22051dbec90d4}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_SET\_CALIB@{IOCAPP\_SET\_CALIB}}
+\index{IOCAPP\_SET\_CALIB@{IOCAPP\_SET\_CALIB}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_SET\_CALIB}{IOCAPP\_SET\_CALIB}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+SET\+\_\+\+CALIB}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                       \_IOCTL\_W( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                       APP\_SET\_CALIB, \(\backslash\)}
+\DoxyCodeLine{                                       \textcolor{keyword}{struct} \mbox{\hyperlink{structtmf882x__mode__app__calib}{tmf882x\_mode\_app\_calib}} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Write the calibration data to the application mode. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: struct \mbox{\hyperlink{structtmf882x__mode__app__calib}{tmf882x\+\_\+mode\+\_\+app\+\_\+calib}} $\ast$ \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: none \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a20a97a93ce9f57adea584f460c9d840d}\label{tmf882x__mode__app__ioctl_8h_a20a97a93ce9f57adea584f460c9d840d}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_SET\_CFG@{IOCAPP\_SET\_CFG}}
+\index{IOCAPP\_SET\_CFG@{IOCAPP\_SET\_CFG}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_SET\_CFG}{IOCAPP\_SET\_CFG}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+SET\+\_\+\+CFG~\+\_\+\+IOCTL\+\_\+W( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882\+X\+\_\+\+IOCTL\+\_\+\+APP\+\_\+\+MODE}}, APP\+\_\+\+SET\+\_\+\+CFG, struct \mbox{\hyperlink{structtmf882x__mode__app__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+config}} )}
+
+
+
+IOCTL command code to Write a configuration to the application mode. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: struct \mbox{\hyperlink{structtmf882x__mode__app__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+config}} $\ast$ \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: none \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_af2821be1622f2a3b011cfd545dda7889}\label{tmf882x__mode__app__ioctl_8h_af2821be1622f2a3b011cfd545dda7889}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_SET\_CLKADJ@{IOCAPP\_SET\_CLKADJ}}
+\index{IOCAPP\_SET\_CLKADJ@{IOCAPP\_SET\_CLKADJ}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_SET\_CLKADJ}{IOCAPP\_SET\_CLKADJ}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+SET\+\_\+\+CLKADJ}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                        \_IOCTL\_W( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                        APP\_SET\_CLKADJ, \(\backslash\)}
+\DoxyCodeLine{                                        \textcolor{keywordtype}{bool} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Set the clock compensation enable state. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: bool $\ast$ \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: none \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a4be633799b0c8db58551159813503cc9}\label{tmf882x__mode__app__ioctl_8h_a4be633799b0c8db58551159813503cc9}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_SET\_OSC\_FREQ@{IOCAPP\_SET\_OSC\_FREQ}}
+\index{IOCAPP\_SET\_OSC\_FREQ@{IOCAPP\_SET\_OSC\_FREQ}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_SET\_OSC\_FREQ}{IOCAPP\_SET\_OSC\_FREQ}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+SET\+\_\+\+OSC\+\_\+\+FREQ}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                          \_IOCTL\_W( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                          APP\_SET\_OSC\_FREQ, \(\backslash\)}
+\DoxyCodeLine{                                          uint32\_t )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to write the target device oscillator freq in Hz. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: uint32\+\_\+t $\ast$ \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: none \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a6c84e71d4da19ea1255510a1504664a5}\label{tmf882x__mode__app__ioctl_8h_a6c84e71d4da19ea1255510a1504664a5}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_SET\_SHORTRANGE@{IOCAPP\_SET\_SHORTRANGE}}
+\index{IOCAPP\_SET\_SHORTRANGE@{IOCAPP\_SET\_SHORTRANGE}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_SET\_SHORTRANGE}{IOCAPP\_SET\_SHORTRANGE}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+SET\+\_\+\+SHORTRANGE}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                            \_IOCTL\_W( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                            APP\_SET\_SHORTRANGE, \(\backslash\)}
+\DoxyCodeLine{                                            \textcolor{keywordtype}{bool} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Set the short-\/range mode. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: bool $\ast$ \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: none \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise @warn Note that changing to/from short-\/range mode will clear the device calibration 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a2e301487aef0070f80dbc3816fbae1ef}\label{tmf882x__mode__app__ioctl_8h_a2e301487aef0070f80dbc3816fbae1ef}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_SET\_SPADCFG@{IOCAPP\_SET\_SPADCFG}}
+\index{IOCAPP\_SET\_SPADCFG@{IOCAPP\_SET\_SPADCFG}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_SET\_SPADCFG}{IOCAPP\_SET\_SPADCFG}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+SET\+\_\+\+SPADCFG}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                       \_IOCTL\_W( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                       APP\_SET\_SPADCFG, \(\backslash\)}
+\DoxyCodeLine{                                       \textcolor{keyword}{struct} \mbox{\hyperlink{structtmf882x__mode__app__spad__config}{tmf882x\_mode\_app\_spad\_config}} )}
+
+\end{DoxyCode}
+
+
+IOCTL command code to Write a spad configuration to the application mode. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: struct \mbox{\hyperlink{structtmf882x__mode__app__spad__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+spad\+\_\+config}} $\ast$ \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: none \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a89d3d0f65ffb50999e129d3cf229f109}\label{tmf882x__mode__app__ioctl_8h_a89d3d0f65ffb50999e129d3cf229f109}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_STANDBY@{IOCAPP\_STANDBY}}
+\index{IOCAPP\_STANDBY@{IOCAPP\_STANDBY}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_STANDBY}{IOCAPP\_STANDBY}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+STANDBY}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                     \_IOCTL\_N( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                     APP\_STANDBY)}
+
+\end{DoxyCode}
+
+
+IOCTL command code to set the device to STANDBY (low power sleep) state. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: none \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+No operations are permitted until WAKEUP ioctl operation is performed 
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_ae281f4cbbade652a982584b3f8bd3f62}\label{tmf882x__mode__app__ioctl_8h_ae281f4cbbade652a982584b3f8bd3f62}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!IOCAPP\_WAKEUP@{IOCAPP\_WAKEUP}}
+\index{IOCAPP\_WAKEUP@{IOCAPP\_WAKEUP}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{IOCAPP\_WAKEUP}{IOCAPP\_WAKEUP}}
+{\footnotesize\ttfamily \#define IOCAPP\+\_\+\+WAKEUP}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                    \_IOCTL\_N( \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a0f435cef4a073d8cf2c5909447ce999f}{TMF882X\_IOCTL\_APP\_MODE}}, \(\backslash\)}
+\DoxyCodeLine{                                    APP\_WAKEUP)}
+
+\end{DoxyCode}
+
+
+IOCTL command code to WAKEUP the device from STANDBY state. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em input} & type\+: none \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & type\+: none \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero for success, fail otherwise 
+\end{DoxyReturn}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{tmf882x__mode__app__ioctl_8h_a4dc8414d5302df3299f6b112d3a0ae2b}\label{tmf882x__mode__app__ioctl_8h_a4dc8414d5302df3299f6b112d3a0ae2b}} 
+\index{tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}!\_tmf882x\_mode\_app\_iocnr@{\_tmf882x\_mode\_app\_iocnr}}
+\index{\_tmf882x\_mode\_app\_iocnr@{\_tmf882x\_mode\_app\_iocnr}!tmf882x\_mode\_app\_ioctl.h@{tmf882x\_mode\_app\_ioctl.h}}
+\doxysubsubsection{\texorpdfstring{\_tmf882x\_mode\_app\_iocnr}{\_tmf882x\_mode\_app\_iocnr}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h_a4dc8414d5302df3299f6b112d3a0ae2b}{\+\_\+tmf882x\+\_\+mode\+\_\+app\+\_\+iocnr}}}
+
+
+
+These are the command code numberings in the ioctl bit fields. 
+
+Do not use these directly, use the IOCTL bitmasks IOCAPP\+\_\+$\ast$. 

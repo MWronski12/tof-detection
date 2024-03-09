@@ -1,0 +1,62 @@
+\hypertarget{structtmf882x__mode__app_1_1volat__data}{}\doxysection{tmf882x\+\_\+mode\+\_\+app\+::volat\+\_\+data Struct Reference}
+\label{structtmf882x__mode__app_1_1volat__data}\index{tmf882x\_mode\_app::volat\_data@{tmf882x\_mode\_app::volat\_data}}
+
+
+Collaboration diagram for tmf882x\+\_\+mode\+\_\+app\+::volat\+\_\+data\+:
+% FIG 0
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_a66fb05543eafa0d599ad0d6fd480192a}\label{structtmf882x__mode__app_1_1volat__data_a66fb05543eafa0d599ad0d6fd480192a}} 
+bool \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_a66fb05543eafa0d599ad0d6fd480192a}{is\+\_\+open}}
+\begin{DoxyCompactList}\small\item\em This member is whether the application mode is open. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_a4485dde9eddc44c37f49e2ade731cc78}\label{structtmf882x__mode__app_1_1volat__data_a4485dde9eddc44c37f49e2ade731cc78}} 
+bool \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_a4485dde9eddc44c37f49e2ade731cc78}{is\+\_\+measuring}}
+\begin{DoxyCompactList}\small\item\em This member is whether the application mode is currently measuring. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_aa664bb31ada6595699c22d886b1432dc}\label{structtmf882x__mode__app_1_1volat__data_aa664bb31ada6595699c22d886b1432dc}} 
+bool \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_aa664bb31ada6595699c22d886b1432dc}{clk\+\_\+corr\+\_\+enabled}}
+\begin{DoxyCompactList}\small\item\em This member is whether the application mode is compensating results for clock skew. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_a6b837790623c75283b4ef0251bff0963}\label{structtmf882x__mode__app_1_1volat__data_a6b837790623c75283b4ef0251bff0963}} 
+bool \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_a6b837790623c75283b4ef0251bff0963}{mode\+\_\+8x8}}
+\begin{DoxyCompactList}\small\item\em This member represents whether the device is currently in 8x8 mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_ab007144a6abd08f6bb41e38c99d03d94}\label{structtmf882x__mode__app_1_1volat__data_ab007144a6abd08f6bb41e38c99d03d94}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_ab007144a6abd08f6bb41e38c99d03d94}{irq}}
+\begin{DoxyCompactList}\small\item\em This member is the cached IRQ status while servicing device interrupts. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_a9d5fc456ac068e91780a2e84f254c223}\label{structtmf882x__mode__app_1_1volat__data_a9d5fc456ac068e91780a2e84f254c223}} 
+struct \mbox{\hyperlink{structtmf882x__clk__corr}{tmf882x\+\_\+clk\+\_\+corr}} {\bfseries clk\+\_\+cr}
+\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_a0ad3d5776bd1e9f745b362b99ede5b02}\label{structtmf882x__mode__app_1_1volat__data_a0ad3d5776bd1e9f745b362b99ede5b02}} 
+struct \mbox{\hyperlink{structtmf882x__msg}{tmf882x\+\_\+msg}} \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_a0ad3d5776bd1e9f745b362b99ede5b02}{msg}}
+\begin{DoxyCompactList}\small\item\em This member is the \mbox{\hyperlink{structtmf882x__msg}{tmf882x\+\_\+msg}} for return data output from the device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_a518975b108e60609bad6677776ba2713}\label{structtmf882x__mode__app_1_1volat__data_a518975b108e60609bad6677776ba2713}} 
+struct \mbox{\hyperlink{structtmf882x__mode__app__i2c__msg}{tmf882x\+\_\+mode\+\_\+app\+\_\+i2c\+\_\+msg}} \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_a518975b108e60609bad6677776ba2713}{i2c\+\_\+msg}}
+\begin{DoxyCompactList}\small\item\em This member is the \mbox{\hyperlink{structtmf882x__mode__app__i2c__msg}{tmf882x\+\_\+mode\+\_\+app\+\_\+i2c\+\_\+msg}} for sending/receiving i2c messages from the application mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_a3f6f6822f313ac2f434f6d03ca38b570}\label{structtmf882x__mode__app_1_1volat__data_a3f6f6822f313ac2f434f6d03ca38b570}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_a3f6f6822f313ac2f434f6d03ca38b570}{capture\+\_\+num}}
+\begin{DoxyCompactList}\small\item\em This member is the monotonically-\/increasing capture number for each result. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__mode__app__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+config}} \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_a07ac1c6329cfa1b21c5b091ba7284451}{cfg}}
+\begin{DoxyCompactList}\small\item\em This member is the \mbox{\hyperlink{structtmf882x__mode__app__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+config}} configuration used for writing/reading configuration from the application mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_a60656133c03cfd07a545afd7ee267993}\label{structtmf882x__mode__app_1_1volat__data_a60656133c03cfd07a545afd7ee267993}} 
+uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_a60656133c03cfd07a545afd7ee267993}{uid}} \mbox{[}sizeof(uint32\+\_\+t)\mbox{]}
+\begin{DoxyCompactList}\small\item\em Buffer for reading out the Device UID. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_a8285a90958e0124dd1cb63f2ee186d51}\label{structtmf882x__mode__app_1_1volat__data_a8285a90958e0124dd1cb63f2ee186d51}} 
+struct timespec64 \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data_a8285a90958e0124dd1cb63f2ee186d51}{timestamp}}
+\begin{DoxyCompactList}\small\item\em This member is the cached previous timestamp used in clock correction. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structtmf882x__mode__app_1_1volat__data_a07ac1c6329cfa1b21c5b091ba7284451}\label{structtmf882x__mode__app_1_1volat__data_a07ac1c6329cfa1b21c5b091ba7284451}} 
+\index{tmf882x\_mode\_app::volat\_data@{tmf882x\_mode\_app::volat\_data}!cfg@{cfg}}
+\index{cfg@{cfg}!tmf882x\_mode\_app::volat\_data@{tmf882x\_mode\_app::volat\_data}}
+\doxysubsubsection{\texorpdfstring{cfg}{cfg}}
+{\footnotesize\ttfamily tmf882x\+\_\+mode\+\_\+app\+::volat\+\_\+data\+::cfg}
+
+
+
+This member is the \mbox{\hyperlink{structtmf882x__mode__app__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+config}} configuration used for writing/reading configuration from the application mode. 
+
+Two configuration structure tables are supported by the device 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tmf882x__mode__app_8h}{tmf882x\+\_\+mode\+\_\+app.\+h}}\end{DoxyCompactItemize}

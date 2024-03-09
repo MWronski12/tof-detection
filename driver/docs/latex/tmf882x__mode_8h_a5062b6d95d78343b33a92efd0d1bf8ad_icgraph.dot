@@ -1,0 +1,19 @@
+digraph "tmf882x_mode"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="tmf882x_mode",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Return this mode's information record mode ID."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="tmf882x_get_mode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf882x__interface_8h.html#a45cc49f55c2304c98c8287223e40b317",tooltip="Return the current mode."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="tmf882x_mode_switch",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf882x__interface_8h.html#a6ab6c817006f3f97d5f80082bce12efb",tooltip="Perform an application mode switch operation on the current running application mode."];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="tmf882x_open",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf882x__interface_8h.html#a7cb9356cd7d2286475bfb1fdfdfe8917",tooltip="Open the firmware core driver interface."];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="tmf882x_fwdl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf882x__interface_8h.html#adcfeff783712f5e9d92358e7a368afec",tooltip="Download new firmware."];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="tmf882x_mode_maj_ver",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf882x__mode_8h.html#a0ba0ddf18df591969b40d5df4fbb0ba9",tooltip="Return this mode's major version number."];
+}

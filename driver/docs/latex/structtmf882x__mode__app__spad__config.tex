@@ -1,0 +1,52 @@
+\hypertarget{structtmf882x__mode__app__spad__config}{}\doxysection{tmf882x\+\_\+mode\+\_\+app\+\_\+spad\+\_\+config Struct Reference}
+\label{structtmf882x__mode__app__spad__config}\index{tmf882x\_mode\_app\_spad\_config@{tmf882x\_mode\_app\_spad\_config}}
+
+
+This is the Application mode spad config structure that holds the complete spad configuration for the application.  
+
+
+
+
+{\ttfamily \#include $<$tmf882x\+\_\+mode\+\_\+app\+\_\+ioctl.\+h$>$}
+
+
+
+Collaboration diagram for tmf882x\+\_\+mode\+\_\+app\+\_\+spad\+\_\+config\+:
+% FIG 0
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__app__spad__config_1_1tmf882x__mode__app__single__spad__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+single\+\_\+spad\+\_\+config}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__spad__config_a8669606a985773af8b23fed7e62a01b1}\label{structtmf882x__mode__app__spad__config_a8669606a985773af8b23fed7e62a01b1}} 
+struct \mbox{\hyperlink{structtmf882x__mode__app__spad__config_1_1tmf882x__mode__app__single__spad__config}{tmf882x\+\_\+mode\+\_\+app\+\_\+spad\+\_\+config\+::tmf882x\+\_\+mode\+\_\+app\+\_\+single\+\_\+spad\+\_\+config}} \mbox{\hyperlink{structtmf882x__mode__app__spad__config_a8669606a985773af8b23fed7e62a01b1}{spad\+\_\+configs}} \mbox{[}TMF8\+X2\+X\+\_\+\+MAX\+\_\+\+CONFIGURATIONS\mbox{]}
+\begin{DoxyCompactList}\small\item\em The list of spad configurations. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__spad__config_a10a69538da8e61619066a705bcffff39}{num\+\_\+spad\+\_\+configs}}
+\begin{DoxyCompactList}\small\item\em The number of spad configurations in tmf882x\+\_\+mode\+\_\+app\+\_\+spad\+\_\+configs\+::spad\+\_\+configs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is the Application mode spad config structure that holds the complete spad configuration for the application. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structtmf882x__mode__app__spad__config_a10a69538da8e61619066a705bcffff39}\label{structtmf882x__mode__app__spad__config_a10a69538da8e61619066a705bcffff39}} 
+\index{tmf882x\_mode\_app\_spad\_config@{tmf882x\_mode\_app\_spad\_config}!num\_spad\_configs@{num\_spad\_configs}}
+\index{num\_spad\_configs@{num\_spad\_configs}!tmf882x\_mode\_app\_spad\_config@{tmf882x\_mode\_app\_spad\_config}}
+\doxysubsubsection{\texorpdfstring{num\_spad\_configs}{num\_spad\_configs}}
+{\footnotesize\ttfamily tmf882x\+\_\+mode\+\_\+app\+\_\+spad\+\_\+config\+::num\+\_\+spad\+\_\+configs}
+
+
+
+The number of spad configurations in tmf882x\+\_\+mode\+\_\+app\+\_\+spad\+\_\+configs\+::spad\+\_\+configs. 
+
+\begin{DoxyNote}{Note}
+The spad enable mask and map size should be \textquotesingle{}ysize\textquotesingle{} $\ast$ \textquotesingle{}xsize\textquotesingle{} in length 
+\end{DoxyNote}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tmf882x__mode__app__ioctl_8h}{tmf882x\+\_\+mode\+\_\+app\+\_\+ioctl.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,70 @@
+\hypertarget{structtmf882x__msg__meas__results}{}\doxysection{tmf882x\+\_\+msg\+\_\+meas\+\_\+results Struct Reference}
+\label{structtmf882x__msg__meas__results}\index{tmf882x\_msg\_meas\_results@{tmf882x\_msg\_meas\_results}}
+
+
+TMF882X measure results message type.  
+
+
+
+
+{\ttfamily \#include $<$tmf882x.\+h$>$}
+
+
+
+Collaboration diagram for tmf882x\+\_\+msg\+\_\+meas\+\_\+results\+:
+% FIG 0
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__results_a73b01221c5b3f04d4fb00562e4b00e5a}\label{structtmf882x__msg__meas__results_a73b01221c5b3f04d4fb00562e4b00e5a}} 
+struct \mbox{\hyperlink{structtmf882x__msg__header}{tmf882x\+\_\+msg\+\_\+header}} \mbox{\hyperlink{structtmf882x__msg__meas__results_a73b01221c5b3f04d4fb00562e4b00e5a}{hdr}}
+\begin{DoxyCompactList}\small\item\em This is the message header struct \mbox{\hyperlink{structtmf882x__msg__header}{tmf882x\+\_\+msg\+\_\+header}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__results_aa755f5a9da3d5bf47a2d5e6845f73516}\label{structtmf882x__msg__meas__results_aa755f5a9da3d5bf47a2d5e6845f73516}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__results_aa755f5a9da3d5bf47a2d5e6845f73516}{result\+\_\+num}}
+\begin{DoxyCompactList}\small\item\em This is the result number reported by the device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__results_afa580d14ee526eee8afea36502f1b487}\label{structtmf882x__msg__meas__results_afa580d14ee526eee8afea36502f1b487}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__results_afa580d14ee526eee8afea36502f1b487}{temperature}}
+\begin{DoxyCompactList}\small\item\em This is the temperature reported by the device (in Celsius) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__results_ad57347a526fc986cac05511ae05cf8fe}\label{structtmf882x__msg__meas__results_ad57347a526fc986cac05511ae05cf8fe}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__results_ad57347a526fc986cac05511ae05cf8fe}{ambient\+\_\+light}}
+\begin{DoxyCompactList}\small\item\em This is the ambient light level reported by the device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__results_a1eeed6ed89a37361ebe3f1924ce1ba1d}\label{structtmf882x__msg__meas__results_a1eeed6ed89a37361ebe3f1924ce1ba1d}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__results_a1eeed6ed89a37361ebe3f1924ce1ba1d}{photon\+\_\+count}}
+\begin{DoxyCompactList}\small\item\em This is the photon count reported by the device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__results_a2929db7d4e75c3ef2b1acb0e1c4725ab}\label{structtmf882x__msg__meas__results_a2929db7d4e75c3ef2b1acb0e1c4725ab}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__results_a2929db7d4e75c3ef2b1acb0e1c4725ab}{ref\+\_\+photon\+\_\+count}}
+\begin{DoxyCompactList}\small\item\em This is the reference channel photon count reported by the device. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__results_aa72181acba61d9490581a5edb1901ba8}{sys\+\_\+ticks}}
+\begin{DoxyCompactList}\small\item\em This is the system tick counter (5MHz counter) reported by the device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__results_a2f40d2e501abafeda4b0005f0e672bb6}\label{structtmf882x__msg__meas__results_a2f40d2e501abafeda4b0005f0e672bb6}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__results_a2f40d2e501abafeda4b0005f0e672bb6}{valid\+\_\+results}}
+\begin{DoxyCompactList}\small\item\em This is the number of targets reported by the device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__results_a9bdc98f4b8fa023eb4bd179c863fe063}\label{structtmf882x__msg__meas__results_a9bdc98f4b8fa023eb4bd179c863fe063}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__results_a9bdc98f4b8fa023eb4bd179c863fe063}{num\+\_\+results}}
+\begin{DoxyCompactList}\small\item\em This is the number of non-\/zero targets counted by the core driver. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__results_ac432f393954b7ccdda649d6240facb97}\label{structtmf882x__msg__meas__results_ac432f393954b7ccdda649d6240facb97}} 
+struct \mbox{\hyperlink{structtmf882x__meas__result}{tmf882x\+\_\+meas\+\_\+result}} \mbox{\hyperlink{structtmf882x__msg__meas__results_ac432f393954b7ccdda649d6240facb97}{results}} \mbox{[}\mbox{\hyperlink{tmf882x_8h_a3090c0c3078863a0fa50a2264ff25755}{TMF882\+X\+\_\+\+MAX\+\_\+\+MEAS\+\_\+\+RESULTS}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em This is the list of measurement targets struct \mbox{\hyperlink{structtmf882x__meas__result}{tmf882x\+\_\+meas\+\_\+result}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+TMF882X measure results message type. 
+
+This message is returned by the core driver for each set of measurement results that are received by the core driver from the device. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structtmf882x__msg__meas__results_aa72181acba61d9490581a5edb1901ba8}\label{structtmf882x__msg__meas__results_aa72181acba61d9490581a5edb1901ba8}} 
+\index{tmf882x\_msg\_meas\_results@{tmf882x\_msg\_meas\_results}!sys\_ticks@{sys\_ticks}}
+\index{sys\_ticks@{sys\_ticks}!tmf882x\_msg\_meas\_results@{tmf882x\_msg\_meas\_results}}
+\doxysubsubsection{\texorpdfstring{sys\_ticks}{sys\_ticks}}
+{\footnotesize\ttfamily tmf882x\+\_\+msg\+\_\+meas\+\_\+results\+::sys\+\_\+ticks}
+
+
+
+This is the system tick counter (5MHz counter) reported by the device. 
+
+This is used by the core driver to perform clock compensation correction on the measurement results. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/linux/i2c/ams/\mbox{\hyperlink{tmf882x_8h}{tmf882x.\+h}}\end{DoxyCompactItemize}

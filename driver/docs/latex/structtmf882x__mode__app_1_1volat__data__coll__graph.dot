@@ -1,0 +1,32 @@
+digraph "tmf882x_mode_app::volat_data"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="tmf882x_mode_app::volat_data",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" clk_cr" ];
+  Node2 [label="tmf882x_clk_corr",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__clk__corr.html",tooltip="This is the Context structure for the clock correction machine."];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" cfg" ];
+  Node3 [label="tmf882x_mode_app_config",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__mode__app__config.html",tooltip="This is the Application mode config structure that holds all configuration parameters for the applica..."];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" msg" ];
+  Node4 [label="tmf882x_msg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg.html",tooltip="TMF882X message type."];
+  Node5 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hist_msg" ];
+  Node5 [label="tmf882x_msg_histogram",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg__histogram.html",tooltip="TMF882X histogram message type."];
+  Node6 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hdr" ];
+  Node6 [label="tmf882x_msg_header",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg__header.html",tooltip="TMF882X message header type."];
+  Node7 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" meas_result_msg" ];
+  Node7 [label="tmf882x_msg_meas_results",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg__meas__results.html",tooltip="TMF882X measure results message type."];
+  Node8 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" results" ];
+  Node8 [label="tmf882x_meas_result",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__meas__result.html",tooltip="TMF882X measure result This represents an individual target measurement result."];
+  Node6 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hdr" ];
+  Node6 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hdr" ];
+  Node9 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" err_msg" ];
+  Node9 [label="tmf882x_msg_error",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg__error.html",tooltip="TMF882X error message type."];
+  Node6 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hdr" ];
+  Node10 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" meas_stat_msg" ];
+  Node10 [label="tmf882x_msg_meas_stats",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg__meas__stats.html",tooltip="TMF882X measure statistics message type."];
+  Node6 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hdr" ];
+  Node11 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" i2c_msg" ];
+  Node11 [label="tmf882x_mode_app_i2c_msg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__mode__app__i2c__msg.html",tooltip="App mode i2c message."];
+}

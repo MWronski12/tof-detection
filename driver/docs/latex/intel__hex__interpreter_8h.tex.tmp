@@ -1,0 +1,141 @@
+\hypertarget{intel__hex__interpreter_8h}{}\doxysection{intel\+\_\+hex\+\_\+interpreter.\+h File Reference}
+\label{intel__hex__interpreter_8h}\index{intel\_hex\_interpreter.h@{intel\_hex\_interpreter.h}}
+This graph shows which files directly or indirectly include this file\+:
+% FIG 0
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct__intelHexRecord}{\+\_\+intel\+Hex\+Record}}
+\item 
+struct \mbox{\hyperlink{structintel__hex__interpreter}{intel\+\_\+hex\+\_\+interpreter}}
+\begin{DoxyCompactList}\small\item\em This is the Base mode behavioral function pointer structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_ac4276a9686217036fb722311caa0a242}\label{intel__hex__interpreter_8h_ac4276a9686217036fb722311caa0a242}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+TYPE\+\_\+\+DATA}~0
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_abb7c20d88b56a951c2a304d388f4e113}\label{intel__hex__interpreter_8h_abb7c20d88b56a951c2a304d388f4e113}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+TYPE\+\_\+\+EOF}~1
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a654655c72834c648bd54c6997233ae09}\label{intel__hex__interpreter_8h_a654655c72834c648bd54c6997233ae09}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+TYPE\+\_\+\+EXT\+\_\+\+LIN\+\_\+\+ADDR}~4
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_aebd40a2b11b3ffbfca4a4860a8f890b0}\label{intel__hex__interpreter_8h_aebd40a2b11b3ffbfca4a4860a8f890b0}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+TYPE\+\_\+\+START\+\_\+\+LIN\+\_\+\+ADDR}~5
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a717f6ae295787da53a941fcc13eba668}\label{intel__hex__interpreter_8h_a717f6ae295787da53a941fcc13eba668}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+EOF}~1       /$\ast$ end of file -\/$>$ reset $\ast$/
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a5ccd3324e783ba329e9c71e90f2df80b}\label{intel__hex__interpreter_8h_a5ccd3324e783ba329e9c71e90f2df80b}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+CONTINUE}~0       /$\ast$ continue reading in $\ast$/
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a5a0a6a97c677e75c64d8ca7c25a18047}\label{intel__hex__interpreter_8h_a5a0a6a97c677e75c64d8ca7c25a18047}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+ERR\+\_\+\+NOT\+\_\+\+A\+\_\+\+NUMBER}~-\/1
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a3e0b52ba3d0bd2bd9124108195d5f820}\label{intel__hex__interpreter_8h_a3e0b52ba3d0bd2bd9124108195d5f820}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+ERR\+\_\+\+TOO\+\_\+\+SHORT}~-\/2
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a72f59811a4cdd6838109baa8aafe4211}\label{intel__hex__interpreter_8h_a72f59811a4cdd6838109baa8aafe4211}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+ERR\+\_\+\+CRC\+\_\+\+ERR}~-\/3
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a2a500c76694a9dbb76b0b30cddb71bf5}\label{intel__hex__interpreter_8h_a2a500c76694a9dbb76b0b30cddb71bf5}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+ERR\+\_\+\+UNKNOWN\+\_\+\+TYPE}~-\/4
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a57c65923761746f09b84f5cf9971712b}\label{intel__hex__interpreter_8h_a57c65923761746f09b84f5cf9971712b}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+WRITE\+\_\+\+FAILED}~-\/5
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a2586f2836d27cf41f8818b8000d5b3bf}\label{intel__hex__interpreter_8h_a2586f2836d27cf41f8818b8000d5b3bf}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+ULBA}(adr)~( (adr) \& 0x\+FFFF0000\+UL )
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_aa1d98e5d9ce8dca0d970994a783f29b0}\label{intel__hex__interpreter_8h_aa1d98e5d9ce8dca0d970994a783f29b0}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+MIN\+\_\+\+RECORD\+\_\+\+SIZE}~11
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a0e1470d0e2386300cb90cee6d74b8fb4}\label{intel__hex__interpreter_8h_a0e1470d0e2386300cb90cee6d74b8fb4}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+MIN\+\_\+\+LAST\+\_\+\+ADDRESS}~((INTEL\+\_\+\+HEX\+\_\+\+MIN\+\_\+\+RECORD\+\_\+\+SIZE) -\/ 1 )
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_ac3cc8e1e24e475b2b1773d0ad44204cf}\label{intel__hex__interpreter_8h_ac3cc8e1e24e475b2b1773d0ad44204cf}} 
+\#define {\bfseries INTEL\+\_\+\+HEX\+\_\+\+MAX\+\_\+\+RECORD\+\_\+\+DATA\+\_\+\+SIZE}~(128)
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a25115eb2118114742b52d68c6f467096}\label{intel__hex__interpreter_8h_a25115eb2118114742b52d68c6f467096}} 
+typedef struct \mbox{\hyperlink{struct__intelHexRecord}{\+\_\+intel\+Hex\+Record}} {\bfseries intel\+Record}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{intel__hex__interpreter_8h_a27af62d972f57985222ead357967ca49}{ihexi\+\_\+init}} (struct \mbox{\hyperlink{structintel__hex__interpreter}{intel\+\_\+hex\+\_\+interpreter}} $\ast$hex, const uint8\+\_\+t $\ast$hex\+\_\+records, uint32\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Initialize an intel hex interpreter. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{intel__hex__interpreter_8h_ab3129d24f94c36af8182f1d1ae422b35}{ihexi\+\_\+get\+\_\+next\+\_\+bin}} (struct \mbox{\hyperlink{structintel__hex__interpreter}{intel\+\_\+hex\+\_\+interpreter}} $\ast$hex, uint8\+\_\+t $\ast$buf, uint32\+\_\+t length, uint32\+\_\+t $\ast$addr)
+\begin{DoxyCompactList}\small\item\em Parses an Intel Hex Record file records at a time and outputs binary data blobs. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{intel__hex__interpreter_8h_a9405153cfe7f37cdba2ccabe21627426}{ihexi\+\_\+is\+\_\+eof}} (struct \mbox{\hyperlink{structintel__hex__interpreter}{intel\+\_\+hex\+\_\+interpreter}} $\ast$hex)
+\begin{DoxyCompactList}\small\item\em Return whether EOF record was reached by the parser. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{intel__hex__interpreter_8h_ab3129d24f94c36af8182f1d1ae422b35}\label{intel__hex__interpreter_8h_ab3129d24f94c36af8182f1d1ae422b35}} 
+\index{intel\_hex\_interpreter.h@{intel\_hex\_interpreter.h}!ihexi\_get\_next\_bin@{ihexi\_get\_next\_bin}}
+\index{ihexi\_get\_next\_bin@{ihexi\_get\_next\_bin}!intel\_hex\_interpreter.h@{intel\_hex\_interpreter.h}}
+\doxysubsubsection{\texorpdfstring{ihexi\_get\_next\_bin()}{ihexi\_get\_next\_bin()}}
+{\footnotesize\ttfamily int32\+\_\+t ihexi\+\_\+get\+\_\+next\+\_\+bin (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structintel__hex__interpreter}{intel\+\_\+hex\+\_\+interpreter}} $\ast$}]{hex,  }\item[{uint8\+\_\+t $\ast$}]{buf,  }\item[{uint32\+\_\+t}]{length,  }\item[{uint32\+\_\+t $\ast$}]{addr }\end{DoxyParamCaption})}
+
+
+
+Parses an Intel Hex Record file records at a time and outputs binary data blobs. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em hex} & pointer to string of Intel Hex Records \\
+\hline
+\mbox{\texttt{ out}}  & {\em buf} & buffer to place data blob \\
+\hline
+\mbox{\texttt{ in}}  & {\em length} & size of buf \\
+\hline
+\mbox{\texttt{ out}}  & {\em addr} & address of data blob in buf \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of Bytes copied to buf, negative if error occurs, 0 indicates EOF 
+\end{DoxyReturn}
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a27af62d972f57985222ead357967ca49}\label{intel__hex__interpreter_8h_a27af62d972f57985222ead357967ca49}} 
+\index{intel\_hex\_interpreter.h@{intel\_hex\_interpreter.h}!ihexi\_init@{ihexi\_init}}
+\index{ihexi\_init@{ihexi\_init}!intel\_hex\_interpreter.h@{intel\_hex\_interpreter.h}}
+\doxysubsubsection{\texorpdfstring{ihexi\_init()}{ihexi\_init()}}
+{\footnotesize\ttfamily void ihexi\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structintel__hex__interpreter}{intel\+\_\+hex\+\_\+interpreter}} $\ast$}]{hex,  }\item[{const uint8\+\_\+t $\ast$}]{hex\+\_\+records,  }\item[{uint32\+\_\+t}]{size }\end{DoxyParamCaption})}
+
+
+
+Initialize an intel hex interpreter. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em hex} & pointer to intel hex interpreter context structure \\
+\hline
+\mbox{\texttt{ in}}  & {\em hex\+\_\+records} & pointer to string of hex to decode \\
+\hline
+\mbox{\texttt{ in}}  & {\em size} & size of hex\+\_\+records buffer \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{intel__hex__interpreter_8h_a9405153cfe7f37cdba2ccabe21627426}\label{intel__hex__interpreter_8h_a9405153cfe7f37cdba2ccabe21627426}} 
+\index{intel\_hex\_interpreter.h@{intel\_hex\_interpreter.h}!ihexi\_is\_eof@{ihexi\_is\_eof}}
+\index{ihexi\_is\_eof@{ihexi\_is\_eof}!intel\_hex\_interpreter.h@{intel\_hex\_interpreter.h}}
+\doxysubsubsection{\texorpdfstring{ihexi\_is\_eof()}{ihexi\_is\_eof()}}
+{\footnotesize\ttfamily bool ihexi\+\_\+is\+\_\+eof (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structintel__hex__interpreter}{intel\+\_\+hex\+\_\+interpreter}} $\ast$}]{hex }\end{DoxyParamCaption})}
+
+
+
+Return whether EOF record was reached by the parser. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em hex} & pointer to intel hex interpreter context structure \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+This function should always be called by the client to verify a complete set of hex records have been parsed 
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+bool Hex record(s) EOF status 
+\end{DoxyReturn}

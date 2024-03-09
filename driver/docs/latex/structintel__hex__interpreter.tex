@@ -1,0 +1,44 @@
+\hypertarget{structintel__hex__interpreter}{}\doxysection{intel\+\_\+hex\+\_\+interpreter Struct Reference}
+\label{structintel__hex__interpreter}\index{intel\_hex\_interpreter@{intel\_hex\_interpreter}}
+
+
+This is the Base mode behavioral function pointer structure.  
+
+
+
+
+{\ttfamily \#include $<$intel\+\_\+hex\+\_\+interpreter.\+h$>$}
+
+
+
+Collaboration diagram for intel\+\_\+hex\+\_\+interpreter\+:
+% FIG 0
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structintel__hex__interpreter_af42d549085c26a21f12ba0e15549c32f}\label{structintel__hex__interpreter_af42d549085c26a21f12ba0e15549c32f}} 
+const uint8\+\_\+t $\ast$ \mbox{\hyperlink{structintel__hex__interpreter_af42d549085c26a21f12ba0e15549c32f}{hex\+\_\+records}}
+\begin{DoxyCompactList}\small\item\em This member points to the string buffer containing all of the new-\/line separated hex records. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structintel__hex__interpreter_af954d15265396fb9b20bb2f771488fa7}\label{structintel__hex__interpreter_af954d15265396fb9b20bb2f771488fa7}} 
+uint32\+\_\+t \mbox{\hyperlink{structintel__hex__interpreter_af954d15265396fb9b20bb2f771488fa7}{hex\+\_\+size}}
+\begin{DoxyCompactList}\small\item\em This member contains the size of the string in \mbox{\hyperlink{structintel__hex__interpreter_af42d549085c26a21f12ba0e15549c32f}{intel\+\_\+hex\+\_\+interpreter\+::hex\+\_\+records}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structintel__hex__interpreter_aa9f8f9cf764d6f398ecdae00f24cae9b}\label{structintel__hex__interpreter_aa9f8f9cf764d6f398ecdae00f24cae9b}} 
+uint32\+\_\+t \mbox{\hyperlink{structintel__hex__interpreter_aa9f8f9cf764d6f398ecdae00f24cae9b}{count}}
+\begin{DoxyCompactList}\small\item\em This member tracks the position of the interpreter in the parser. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structintel__hex__interpreter_a39fd5f717acd2510ef694761b9cdddec}\label{structintel__hex__interpreter_a39fd5f717acd2510ef694761b9cdddec}} 
+uint32\+\_\+t {\bfseries last\+\_\+addr}
+\item 
+\mbox{\Hypertarget{structintel__hex__interpreter_af5eb0a443982f2995b83cad91b960cc5}\label{structintel__hex__interpreter_af5eb0a443982f2995b83cad91b960cc5}} 
+bool {\bfseries eof\+\_\+reached}
+\item 
+\mbox{\Hypertarget{structintel__hex__interpreter_ae847e579cf177dfe4b7d0406a9bc5243}\label{structintel__hex__interpreter_ae847e579cf177dfe4b7d0406a9bc5243}} 
+\mbox{\hyperlink{structintelRecord}{intel\+Record}} \mbox{\hyperlink{structintel__hex__interpreter_ae847e579cf177dfe4b7d0406a9bc5243}{rec}}
+\begin{DoxyCompactList}\small\item\em This member is used as a temporary buffer for parsing individual records. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is the Base mode behavioral function pointer structure. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{intel__hex__interpreter_8h}{intel\+\_\+hex\+\_\+interpreter.\+h}}\end{DoxyCompactItemize}

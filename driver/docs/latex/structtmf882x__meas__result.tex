@@ -1,0 +1,87 @@
+\hypertarget{structtmf882x__meas__result}{}\doxysection{tmf882x\+\_\+meas\+\_\+result Struct Reference}
+\label{structtmf882x__meas__result}\index{tmf882x\_meas\_result@{tmf882x\_meas\_result}}
+
+
+TMF882X measure result This represents an individual target measurement result.  
+
+
+
+
+{\ttfamily \#include $<$tmf882x.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__meas__result_af76b38122b97e87d47768a2b9102656c}{confidence}}
+\begin{DoxyCompactList}\small\item\em This is the confidence level of the result reported. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__meas__result_ade4e1b836276ca520a83dd1f375666ac}{distance\+\_\+mm}}
+\begin{DoxyCompactList}\small\item\em This is the distance reported in millimeters. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__meas__result_a2a89a29f5f6d2a2bf7b094480d4a902a}{channel}}
+\begin{DoxyCompactList}\small\item\em This is the channel that reported the target. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__meas__result_a413d30a1cb3aa77949dfcf1a728a3d72}{ch\+\_\+target\+\_\+idx}}
+\begin{DoxyCompactList}\small\item\em This is the index of the target detected if the channel detected more than one target. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__meas__result_a3eaaed0fbc2bbb824128f71e7817fd1f}{sub\+\_\+capture}}
+\begin{DoxyCompactList}\small\item\em This is the time-\/multiplexed sub\+\_\+capture index of the channel that detected the target. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+TMF882X measure result This represents an individual target measurement result. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structtmf882x__meas__result_a413d30a1cb3aa77949dfcf1a728a3d72}\label{structtmf882x__meas__result_a413d30a1cb3aa77949dfcf1a728a3d72}} 
+\index{tmf882x\_meas\_result@{tmf882x\_meas\_result}!ch\_target\_idx@{ch\_target\_idx}}
+\index{ch\_target\_idx@{ch\_target\_idx}!tmf882x\_meas\_result@{tmf882x\_meas\_result}}
+\doxysubsubsection{\texorpdfstring{ch\_target\_idx}{ch\_target\_idx}}
+{\footnotesize\ttfamily tmf882x\+\_\+meas\+\_\+result\+::ch\+\_\+target\+\_\+idx}
+
+
+
+This is the index of the target detected if the channel detected more than one target. 
+
+indicates target index in a given channel \mbox{\Hypertarget{structtmf882x__meas__result_a2a89a29f5f6d2a2bf7b094480d4a902a}\label{structtmf882x__meas__result_a2a89a29f5f6d2a2bf7b094480d4a902a}} 
+\index{tmf882x\_meas\_result@{tmf882x\_meas\_result}!channel@{channel}}
+\index{channel@{channel}!tmf882x\_meas\_result@{tmf882x\_meas\_result}}
+\doxysubsubsection{\texorpdfstring{channel}{channel}}
+{\footnotesize\ttfamily tmf882x\+\_\+meas\+\_\+result\+::channel}
+
+
+
+This is the channel that reported the target. 
+
+channel of result \mbox{\Hypertarget{structtmf882x__meas__result_af76b38122b97e87d47768a2b9102656c}\label{structtmf882x__meas__result_af76b38122b97e87d47768a2b9102656c}} 
+\index{tmf882x\_meas\_result@{tmf882x\_meas\_result}!confidence@{confidence}}
+\index{confidence@{confidence}!tmf882x\_meas\_result@{tmf882x\_meas\_result}}
+\doxysubsubsection{\texorpdfstring{confidence}{confidence}}
+{\footnotesize\ttfamily tmf882x\+\_\+meas\+\_\+result\+::confidence}
+
+
+
+This is the confidence level of the result reported. 
+
+confidence level 0 .. no confidence, 0x\+FFFF .. highest confidence \mbox{\Hypertarget{structtmf882x__meas__result_ade4e1b836276ca520a83dd1f375666ac}\label{structtmf882x__meas__result_ade4e1b836276ca520a83dd1f375666ac}} 
+\index{tmf882x\_meas\_result@{tmf882x\_meas\_result}!distance\_mm@{distance\_mm}}
+\index{distance\_mm@{distance\_mm}!tmf882x\_meas\_result@{tmf882x\_meas\_result}}
+\doxysubsubsection{\texorpdfstring{distance\_mm}{distance\_mm}}
+{\footnotesize\ttfamily tmf882x\+\_\+meas\+\_\+result\+::distance\+\_\+mm}
+
+
+
+This is the distance reported in millimeters. 
+
+distance in mm \mbox{\Hypertarget{structtmf882x__meas__result_a3eaaed0fbc2bbb824128f71e7817fd1f}\label{structtmf882x__meas__result_a3eaaed0fbc2bbb824128f71e7817fd1f}} 
+\index{tmf882x\_meas\_result@{tmf882x\_meas\_result}!sub\_capture@{sub\_capture}}
+\index{sub\_capture@{sub\_capture}!tmf882x\_meas\_result@{tmf882x\_meas\_result}}
+\doxysubsubsection{\texorpdfstring{sub\_capture}{sub\_capture}}
+{\footnotesize\ttfamily tmf882x\+\_\+meas\+\_\+result\+::sub\+\_\+capture}
+
+
+
+This is the time-\/multiplexed sub\+\_\+capture index of the channel that detected the target. 
+
+indicates which sub-\/capture of time-\/multiplexed measurement
+
+For non-\/time-\/multiplexed measurements this value is zero. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/linux/i2c/ams/\mbox{\hyperlink{tmf882x_8h}{tmf882x.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,374 @@
+\hypertarget{tmf882x__mode_8h}{}\doxysection{tmf882x\+\_\+mode.\+h File Reference}
+\label{tmf882x__mode_8h}\index{tmf882x\_mode.h@{tmf882x\_mode.h}}
+
+
+TMF882X generic mode interface.  
+
+
+{\ttfamily \#include $<$linux/stddef.\+h$>$}\newline
+Include dependency graph for tmf882x\+\_\+mode.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmode__vtable}{mode\+\_\+vtable}}
+\begin{DoxyCompactList}\small\item\em This is the Base mode behavioral function pointer structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__info__record}{tmf882x\+\_\+info\+\_\+record}}
+\begin{DoxyCompactList}\small\item\em This is the Base mode information record data. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}}
+\begin{DoxyCompactList}\small\item\em This is the Base mode context structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a5bd5b2d507cb44d9460d82aa1429824a}\label{tmf882x__mode_8h_a5bd5b2d507cb44d9460d82aa1429824a}} 
+\#define \mbox{\hyperlink{tmf882x__mode_8h_a5bd5b2d507cb44d9460d82aa1429824a}{MAX\+\_\+\+REGS}}~(256)
+\begin{DoxyCompactList}\small\item\em max number of i2c registers \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a92ec71ae426ba7e918c3a154f01ff24c}\label{tmf882x__mode_8h_a92ec71ae426ba7e918c3a154f01ff24c}} 
+\#define \mbox{\hyperlink{tmf882x__mode_8h_a92ec71ae426ba7e918c3a154f01ff24c}{member\+\_\+of}}(ptr,  type,  member)~    ((type $\ast$)((uint8\+\_\+t $\ast$)(ptr)-\/offsetof(type, member)))
+\begin{DoxyCompactList}\small\item\em macro to return pointer to parent struct from an embedded struct \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_abbee7781fc27585f6817b135df89aedd}\label{tmf882x__mode_8h_abbee7781fc27585f6817b135df89aedd}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+NRBITS}~8
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a6d29fc7203906ac8efa50da3c07a4d3c}\label{tmf882x__mode_8h_a6d29fc7203906ac8efa50da3c07a4d3c}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+MODEBITS}~2
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a1cfae62d81f77c285e537256592afd94}\label{tmf882x__mode_8h_a1cfae62d81f77c285e537256592afd94}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+ISIZEBITS}~10
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a50e0a34b7093a94512391a1998faf34d}\label{tmf882x__mode_8h_a50e0a34b7093a94512391a1998faf34d}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+OSIZEBITS}~10
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a9cf9597b967d51154c0c418704731968}\label{tmf882x__mode_8h_a9cf9597b967d51154c0c418704731968}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+DIRBITS}~2
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a4bf7aca1786c01a5c0d08893219c7f03}\label{tmf882x__mode_8h_a4bf7aca1786c01a5c0d08893219c7f03}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+NRMASK}~((1 $<$$<$ \+\_\+\+IOCTL\+\_\+\+NRBITS) -\/ 1)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a73fc1d3829ef7744dd7979cb859cd9d7}\label{tmf882x__mode_8h_a73fc1d3829ef7744dd7979cb859cd9d7}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+MODEMASK}~((1 $<$$<$ \+\_\+\+IOCTL\+\_\+\+MODEBITS) -\/ 1)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a16550c43f2084b7e3c9106ad1c4364e0}\label{tmf882x__mode_8h_a16550c43f2084b7e3c9106ad1c4364e0}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+ISIZEMASK}~((1 $<$$<$ \+\_\+\+IOCTL\+\_\+\+ISIZEBITS) -\/ 1)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_ad3de42206c9a85660d3256613a59c099}\label{tmf882x__mode_8h_ad3de42206c9a85660d3256613a59c099}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+OSIZEMASK}~((1 $<$$<$ \+\_\+\+IOCTL\+\_\+\+OSIZEBITS) -\/ 1)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_af6e5342d3f3607a6d048559768c6d8f9}\label{tmf882x__mode_8h_af6e5342d3f3607a6d048559768c6d8f9}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+DIRMASK}~((1 $<$$<$ \+\_\+\+IOCTL\+\_\+\+DIRBITS) -\/ 1)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_aa0895abc82322df4717982dbe3d7cc32}\label{tmf882x__mode_8h_aa0895abc82322df4717982dbe3d7cc32}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+NRSHIFT}~0
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a9659f0c20474219e6b0ed44ab2b322f0}\label{tmf882x__mode_8h_a9659f0c20474219e6b0ed44ab2b322f0}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+MODESHIFT}~(\+\_\+\+IOCTL\+\_\+\+NRSHIFT + \+\_\+\+IOCTL\+\_\+\+NRBITS)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_afcb740a289a56c938389b010717d8a77}\label{tmf882x__mode_8h_afcb740a289a56c938389b010717d8a77}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+ISIZESHIFT}~(\+\_\+\+IOCTL\+\_\+\+MODESHIFT + \+\_\+\+IOCTL\+\_\+\+MODEBITS)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a0a284a7e43f2ec8483b8634338328f7f}\label{tmf882x__mode_8h_a0a284a7e43f2ec8483b8634338328f7f}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+OSIZESHIFT}~(\+\_\+\+IOCTL\+\_\+\+ISIZESHIFT + \+\_\+\+IOCTL\+\_\+\+ISIZEBITS)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a7d6c4e905f5391335f61844f1968dfbc}\label{tmf882x__mode_8h_a7d6c4e905f5391335f61844f1968dfbc}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+DIRSHIFT}~(\+\_\+\+IOCTL\+\_\+\+OSIZESHIFT + \+\_\+\+IOCTL\+\_\+\+OSIZEBITS)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_aa31b08d98f45affccfe2d534e504900d}\label{tmf882x__mode_8h_aa31b08d98f45affccfe2d534e504900d}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+READ}~2U
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a93d3d9b97967e9586e8766f3bc030f76}\label{tmf882x__mode_8h_a93d3d9b97967e9586e8766f3bc030f76}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+WRITE}~1U
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a89a6b85ed961903d3a902e91e5514c03}\label{tmf882x__mode_8h_a89a6b85ed961903d3a902e91e5514c03}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+NONE}~0U
+\item 
+\#define {\bfseries \+\_\+\+IOCTL}(mode,  nr,  dir,  isize,  osize)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_ab1e440c0e4962d73245d711b94cca73b}\label{tmf882x__mode_8h_ab1e440c0e4962d73245d711b94cca73b}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+N}(mode,  nr)~\+\_\+\+IOCTL((mode), (nr), \+\_\+\+IOCTL\+\_\+\+NONE, 0, 0)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a559bb18c91603a575d47b130dd7fce5a}\label{tmf882x__mode_8h_a559bb18c91603a575d47b130dd7fce5a}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+R}(mode,  nr,  otype)~\+\_\+\+IOCTL((mode), (nr), \+\_\+\+IOCTL\+\_\+\+READ, 0, sizeof(otype))
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_acbee7d179fa2665cbccc8ec1e3a49687}\label{tmf882x__mode_8h_acbee7d179fa2665cbccc8ec1e3a49687}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+W}(mode,  nr,  itype)~\+\_\+\+IOCTL((mode), (nr), \+\_\+\+IOCTL\+\_\+\+WRITE, sizeof(itype), 0)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a6f06ef778898b73c6f48f9e4d38f2cfc}\label{tmf882x__mode_8h_a6f06ef778898b73c6f48f9e4d38f2cfc}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+RW}(mode,  nr,  itype,  otype)~\+\_\+\+IOCTL((mode), (nr), \+\_\+\+IOCTL\+\_\+\+READ $\vert$ \+\_\+\+IOCTL\+\_\+\+WRITE, sizeof(itype), sizeof(otype))
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a4bb0615c54b8e520f0e504e34341c2f1}\label{tmf882x__mode_8h_a4bb0615c54b8e520f0e504e34341c2f1}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+MODE}(nr)~(((nr) $>$$>$ \+\_\+\+IOCTL\+\_\+\+MODESHIFT) \& \+\_\+\+IOCTL\+\_\+\+MODEMASK)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_ae6fb09896ba18307405bce33c1729128}\label{tmf882x__mode_8h_ae6fb09896ba18307405bce33c1729128}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+DIR}(nr)~(((nr) $>$$>$ \+\_\+\+IOCTL\+\_\+\+DIRSHIFT) \& \+\_\+\+IOCTL\+\_\+\+DIRMASK)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_aadcaa669f58eb226ab11b4b4bc6573fb}\label{tmf882x__mode_8h_aadcaa669f58eb226ab11b4b4bc6573fb}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+NR}(nr)~(((nr) $>$$>$ \+\_\+\+IOCTL\+\_\+\+NRSHIFT) \& \+\_\+\+IOCTL\+\_\+\+NRMASK)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a8a072365ea42ba50a4a94d8fe1a67e9c}\label{tmf882x__mode_8h_a8a072365ea42ba50a4a94d8fe1a67e9c}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+ISIZE}(nr)~(((nr) $>$$>$ \+\_\+\+IOCTL\+\_\+\+ISIZESHIFT) \& \+\_\+\+IOCTL\+\_\+\+ISIZEMASK)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_aa41b48a05d4ede706e67e778562a3915}\label{tmf882x__mode_8h_aa41b48a05d4ede706e67e778562a3915}} 
+\#define {\bfseries \+\_\+\+IOCTL\+\_\+\+OSIZE}(nr)~(((nr) $>$$>$ \+\_\+\+IOCTL\+\_\+\+OSIZESHIFT) \& \+\_\+\+IOCTL\+\_\+\+OSIZEMASK)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a167565318e4adae50bba95778440c7c9}\label{tmf882x__mode_8h_a167565318e4adae50bba95778440c7c9}} 
+\#define {\bfseries tmf882x\+\_\+dump\+\_\+data}(...)
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_afe021fb2bc1af77dd3cc84c4a1ebe978}\label{tmf882x__mode_8h_afe021fb2bc1af77dd3cc84c4a1ebe978}} 
+\#define {\bfseries tmf882x\+\_\+dump\+\_\+i2c\+\_\+regs}(...)
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_a02e8353787e1a05abbb03eeb13960dc7}\label{tmf882x__mode_8h_a02e8353787e1a05abbb03eeb13960dc7}} 
+typedef enum \mbox{\hyperlink{tmf882x__mode_8h_acc1045b91c04231e28de821a6d8bfdcd}{tmf882x\+\_\+pwr\+\_\+mode\+\_\+t}} {\bfseries tmf882x\+\_\+pwr\+\_\+mode\+\_\+t}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x__mode_8h_acc1045b91c04231e28de821a6d8bfdcd}\label{tmf882x__mode_8h_acc1045b91c04231e28de821a6d8bfdcd}} 
+enum \mbox{\hyperlink{tmf882x__mode_8h_acc1045b91c04231e28de821a6d8bfdcd}{tmf882x\+\_\+pwr\+\_\+mode\+\_\+t}} \{ {\bfseries TOF\+\_\+\+STANDBY} = 0x00
+, {\bfseries TOF\+\_\+\+WAKEUP} = 0x01
+ \}
+\begin{DoxyCompactList}\small\item\em Indicate which power mode to switch to. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tmf882x__mode_8h_ad5a624e2820d4c05a5912f35083d09d6}{tmf882x\+\_\+mode\+\_\+init}} (struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self, struct \mbox{\hyperlink{structmode__vtable}{mode\+\_\+vtable}} const $\ast$ops, void $\ast$priv)
+\begin{DoxyCompactList}\small\item\em initialize a \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context structure \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{tmf882x__mode_8h_af3d3d5ac6d33836efdbc9dc1506471de}{tmf882x\+\_\+mode\+\_\+priv}} (struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self)
+\begin{DoxyCompactList}\small\item\em Return this mode\textquotesingle{}s private context pointer. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{tmf882x__mode_8h_a5062b6d95d78343b33a92efd0d1bf8ad}{tmf882x\+\_\+mode}} (struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self)
+\begin{DoxyCompactList}\small\item\em Return this mode\textquotesingle{}s information record mode ID. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{tmf882x__mode_8h_a0ba0ddf18df591969b40d5df4fbb0ba9}{tmf882x\+\_\+mode\+\_\+maj\+\_\+ver}} (struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self)
+\begin{DoxyCompactList}\small\item\em Return this mode\textquotesingle{}s major version number. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__mode_8h_adcdfef7021e57287aab527bf86456319}{tmf882x\+\_\+mode\+\_\+standby\+\_\+operation}} (struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self, \mbox{\hyperlink{tmf882x__mode_8h_acc1045b91c04231e28de821a6d8bfdcd}{tmf882x\+\_\+pwr\+\_\+mode\+\_\+t}} mode)
+\begin{DoxyCompactList}\small\item\em Configure a chip poweron/standby operation. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__mode_8h_a02cfeb1b5a2f66c5667cf600821eab2b}{tmf882x\+\_\+mode\+\_\+set\+\_\+powerup\+\_\+bootmatrix}} (struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self, uint32\+\_\+t powerup\+\_\+bitfield)
+\begin{DoxyCompactList}\small\item\em Set the powerup boot matrix of the device. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__mode_8h_a37ed1e6d7d3adf0e4122d12b7d4e53a2}{tmf882x\+\_\+mode\+\_\+cpu\+\_\+reset}} (struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self, uint32\+\_\+t powerup\+\_\+bitfield)
+\begin{DoxyCompactList}\small\item\em Perform a cpu reset. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tmf882x__mode_8h_a467d50bae14307910bd546f580217d22}{tmf882x\+\_\+mode\+\_\+set\+\_\+debug}} (struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self, int32\+\_\+t flag)
+\begin{DoxyCompactList}\small\item\em Set debug logging for this mode. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__mode_8h_a36086482fac6c997fac41b9bdd9d5941}{tmf882x\+\_\+mode\+\_\+version}} (struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self, char $\ast$ver, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Fill buffer with mode version string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+TMF882X generic mode interface. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tmf882x__mode_8h_a678037913c9274014e5656eca3082114}\label{tmf882x__mode_8h_a678037913c9274014e5656eca3082114}} 
+\index{tmf882x\_mode.h@{tmf882x\_mode.h}!\_IOCTL@{\_IOCTL}}
+\index{\_IOCTL@{\_IOCTL}!tmf882x\_mode.h@{tmf882x\_mode.h}}
+\doxysubsubsection{\texorpdfstring{\_IOCTL}{\_IOCTL}}
+{\footnotesize\ttfamily \#define \+\_\+\+IOCTL(\begin{DoxyParamCaption}\item[{}]{mode,  }\item[{}]{nr,  }\item[{}]{dir,  }\item[{}]{isize,  }\item[{}]{osize }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    (((dir) << \_IOCTL\_DIRSHIFT) |           \(\backslash\)}
+\DoxyCodeLine{     ((mode) << \_IOCTL\_MODESHIFT) |         \(\backslash\)}
+\DoxyCodeLine{     ((nr) << \_IOCTL\_NRSHIFT) |             \(\backslash\)}
+\DoxyCodeLine{     ((isize) << \_IOCTL\_ISIZESHIFT) |       \(\backslash\)}
+\DoxyCodeLine{     ((osize) << \_IOCTL\_OSIZESHIFT))}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tmf882x__mode_8h_a5062b6d95d78343b33a92efd0d1bf8ad}\label{tmf882x__mode_8h_a5062b6d95d78343b33a92efd0d1bf8ad}} 
+\index{tmf882x\_mode.h@{tmf882x\_mode.h}!tmf882x\_mode@{tmf882x\_mode}}
+\index{tmf882x\_mode@{tmf882x\_mode}!tmf882x\_mode.h@{tmf882x\_mode.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode()}{tmf882x\_mode()}}
+{\footnotesize\ttfamily uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$}]{self }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return this mode\textquotesingle{}s information record mode ID. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em self} & pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mode ID value 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+% FIG 2
+\mbox{\Hypertarget{tmf882x__mode_8h_a37ed1e6d7d3adf0e4122d12b7d4e53a2}\label{tmf882x__mode_8h_a37ed1e6d7d3adf0e4122d12b7d4e53a2}} 
+\index{tmf882x\_mode.h@{tmf882x\_mode.h}!tmf882x\_mode\_cpu\_reset@{tmf882x\_mode\_cpu\_reset}}
+\index{tmf882x\_mode\_cpu\_reset@{tmf882x\_mode\_cpu\_reset}!tmf882x\_mode.h@{tmf882x\_mode.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_cpu\_reset()}{tmf882x\_mode\_cpu\_reset()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+mode\+\_\+cpu\+\_\+reset (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$}]{self,  }\item[{uint32\+\_\+t}]{powerup\+\_\+bitfield }\end{DoxyParamCaption})}
+
+
+
+Perform a cpu reset. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em self} & pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context \\
+\hline
+\mbox{\texttt{ in}}  & {\em powerup\+\_\+bitfield} & Bitfield to use for powerup matrix
+\begin{DoxyItemize}
+\item 0x0\+: use default bootup
+\item 0x1\+: Force boot monitor (bootloader)
+\item 0x2\+: Force boot application currently in RAM 
+\end{DoxyItemize}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 for success, otherwise failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode_8h_ad5a624e2820d4c05a5912f35083d09d6}\label{tmf882x__mode_8h_ad5a624e2820d4c05a5912f35083d09d6}} 
+\index{tmf882x\_mode.h@{tmf882x\_mode.h}!tmf882x\_mode\_init@{tmf882x\_mode\_init}}
+\index{tmf882x\_mode\_init@{tmf882x\_mode\_init}!tmf882x\_mode.h@{tmf882x\_mode.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_init()}{tmf882x\_mode\_init()}}
+{\footnotesize\ttfamily void tmf882x\+\_\+mode\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$}]{self,  }\item[{struct \mbox{\hyperlink{structmode__vtable}{mode\+\_\+vtable}} const $\ast$}]{ops,  }\item[{void $\ast$}]{priv }\end{DoxyParamCaption})}
+
+
+
+initialize a \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context structure 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em self} & pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context \\
+\hline
+\mbox{\texttt{ in}}  & {\em ops} & pointer to \mbox{\hyperlink{structmode__vtable}{mode\+\_\+vtable}} structure to set mode behavior \\
+\hline
+\mbox{\texttt{ in}}  & {\em priv} & User-\/private context to pass back through callback functions \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+% FIG 3
+\mbox{\Hypertarget{tmf882x__mode_8h_a0ba0ddf18df591969b40d5df4fbb0ba9}\label{tmf882x__mode_8h_a0ba0ddf18df591969b40d5df4fbb0ba9}} 
+\index{tmf882x\_mode.h@{tmf882x\_mode.h}!tmf882x\_mode\_maj\_ver@{tmf882x\_mode\_maj\_ver}}
+\index{tmf882x\_mode\_maj\_ver@{tmf882x\_mode\_maj\_ver}!tmf882x\_mode.h@{tmf882x\_mode.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_maj\_ver()}{tmf882x\_mode\_maj\_ver()}}
+{\footnotesize\ttfamily uint8\+\_\+t tmf882x\+\_\+mode\+\_\+maj\+\_\+ver (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$}]{self }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return this mode\textquotesingle{}s major version number. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em self} & pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+major version number 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode_8h_af3d3d5ac6d33836efdbc9dc1506471de}\label{tmf882x__mode_8h_af3d3d5ac6d33836efdbc9dc1506471de}} 
+\index{tmf882x\_mode.h@{tmf882x\_mode.h}!tmf882x\_mode\_priv@{tmf882x\_mode\_priv}}
+\index{tmf882x\_mode\_priv@{tmf882x\_mode\_priv}!tmf882x\_mode.h@{tmf882x\_mode.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_priv()}{tmf882x\_mode\_priv()}}
+{\footnotesize\ttfamily void$\ast$ tmf882x\+\_\+mode\+\_\+priv (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$}]{self }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return this mode\textquotesingle{}s private context pointer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em self} & pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pointer to user-\/private context 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__mode_8h_a467d50bae14307910bd546f580217d22}\label{tmf882x__mode_8h_a467d50bae14307910bd546f580217d22}} 
+\index{tmf882x\_mode.h@{tmf882x\_mode.h}!tmf882x\_mode\_set\_debug@{tmf882x\_mode\_set\_debug}}
+\index{tmf882x\_mode\_set\_debug@{tmf882x\_mode\_set\_debug}!tmf882x\_mode.h@{tmf882x\_mode.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_set\_debug()}{tmf882x\_mode\_set\_debug()}}
+{\footnotesize\ttfamily void tmf882x\+\_\+mode\+\_\+set\+\_\+debug (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$}]{self,  }\item[{int32\+\_\+t}]{flag }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set debug logging for this mode. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em self} & pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context \\
+\hline
+\mbox{\texttt{ in}}  & {\em flag} & non zero flag value enables debug logging, 0 disables debug logging \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+% FIG 4
+\mbox{\Hypertarget{tmf882x__mode_8h_a02cfeb1b5a2f66c5667cf600821eab2b}\label{tmf882x__mode_8h_a02cfeb1b5a2f66c5667cf600821eab2b}} 
+\index{tmf882x\_mode.h@{tmf882x\_mode.h}!tmf882x\_mode\_set\_powerup\_bootmatrix@{tmf882x\_mode\_set\_powerup\_bootmatrix}}
+\index{tmf882x\_mode\_set\_powerup\_bootmatrix@{tmf882x\_mode\_set\_powerup\_bootmatrix}!tmf882x\_mode.h@{tmf882x\_mode.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_set\_powerup\_bootmatrix()}{tmf882x\_mode\_set\_powerup\_bootmatrix()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+mode\+\_\+set\+\_\+powerup\+\_\+bootmatrix (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$}]{self,  }\item[{uint32\+\_\+t}]{powerup\+\_\+bitfield }\end{DoxyParamCaption})}
+
+
+
+Set the powerup boot matrix of the device. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em self} & pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context \\
+\hline
+\mbox{\texttt{ in}}  & {\em powerup\+\_\+bitfield} & Bitfield to use for powerup matrix
+\begin{DoxyItemize}
+\item 0x0\+: use default bootup
+\item 0x1\+: Force boot monitor (bootloader)
+\item 0x2\+: Force boot application currently in RAM 
+\end{DoxyItemize}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 for success, otherwise failure 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+% FIG 5
+\mbox{\Hypertarget{tmf882x__mode_8h_adcdfef7021e57287aab527bf86456319}\label{tmf882x__mode_8h_adcdfef7021e57287aab527bf86456319}} 
+\index{tmf882x\_mode.h@{tmf882x\_mode.h}!tmf882x\_mode\_standby\_operation@{tmf882x\_mode\_standby\_operation}}
+\index{tmf882x\_mode\_standby\_operation@{tmf882x\_mode\_standby\_operation}!tmf882x\_mode.h@{tmf882x\_mode.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_standby\_operation()}{tmf882x\_mode\_standby\_operation()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+mode\+\_\+standby\+\_\+operation (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$}]{self,  }\item[{\mbox{\hyperlink{tmf882x__mode_8h_acc1045b91c04231e28de821a6d8bfdcd}{tmf882x\+\_\+pwr\+\_\+mode\+\_\+t}}}]{mode }\end{DoxyParamCaption})}
+
+
+
+Configure a chip poweron/standby operation. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em self} & pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context \\
+\hline
+\mbox{\texttt{ in}}  & {\em mode} & takes a \mbox{\hyperlink{tmf882x__mode_8h_acc1045b91c04231e28de821a6d8bfdcd}{tmf882x\+\_\+pwr\+\_\+mode\+\_\+t}} to configure the power mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 for success, otherwise failure 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+% FIG 6
+\mbox{\Hypertarget{tmf882x__mode_8h_a36086482fac6c997fac41b9bdd9d5941}\label{tmf882x__mode_8h_a36086482fac6c997fac41b9bdd9d5941}} 
+\index{tmf882x\_mode.h@{tmf882x\_mode.h}!tmf882x\_mode\_version@{tmf882x\_mode\_version}}
+\index{tmf882x\_mode\_version@{tmf882x\_mode\_version}!tmf882x\_mode.h@{tmf882x\_mode.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_version()}{tmf882x\_mode\_version()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+mode\+\_\+version (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$}]{self,  }\item[{char $\ast$}]{ver,  }\item[{size\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+Fill buffer with mode version string. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em self} & pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} context \\
+\hline
+\mbox{\texttt{ in}}  & {\em ver} & Buffer to be filled with version string \\
+\hline
+\mbox{\texttt{ in}}  & {\em len} & length of buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of characters copied to buffer 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+% FIG 7

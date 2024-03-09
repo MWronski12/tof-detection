@@ -1,0 +1,29 @@
+digraph "tmf882x_mode_app_ioctl.h"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="tmf882x_mode_app_ioctl.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="TMF882X APP mode ioctl definitions."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="tmf882x_mode.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf882x__mode_8h.html",tooltip="TMF882X generic mode interface."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="linux/stddef.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="tmf882x_mode_app_protocol.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf882x__mode__app__protocol_8h.html",tooltip=" "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="tmf8x2x_application\l_registers.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf8x2x__application__registers_8h_source.html",tooltip=" "];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="tmf8x2x_config_page\l_common.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf8x2x__config__page__common_8h_source.html",tooltip=" "];
+  Node4 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="tmf8x2x_config_page\l_SPAD.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf8x2x__config__page__SPAD_8h_source.html",tooltip=" "];
+  Node4 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="tmf8x2x_config_page\l_factory.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf8x2x__config__page__factory_8h_source.html",tooltip=" "];
+  Node4 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="tmf8x2x_electrical\l_calibration.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf8x2x__electrical__calibration_8h_source.html",tooltip=" "];
+  Node4 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="tmf8x2x_histogram_registers.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf8x2x__histogram__registers_8h_source.html",tooltip=" "];
+  Node4 -> Node11 [color="midnightblue",fontsize="10",style="solid"];
+  Node11 [label="tmf8x2x_result_registers.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf8x2x__result__registers_8h_source.html",tooltip=" "];
+  Node4 -> Node12 [color="midnightblue",fontsize="10",style="solid"];
+  Node12 [label="tmf8x2x_statistic_registers.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf8x2x__statistic__registers_8h_source.html",tooltip=" "];
+}

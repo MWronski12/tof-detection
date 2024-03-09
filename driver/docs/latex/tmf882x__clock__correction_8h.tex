@@ -1,0 +1,100 @@
+\hypertarget{tmf882x__clock__correction_8h}{}\doxysection{tmf882x\+\_\+clock\+\_\+correction.\+h File Reference}
+\label{tmf882x__clock__correction_8h}\index{tmf882x\_clock\_correction.h@{tmf882x\_clock\_correction.h}}
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+host\+\_\+interface.\+h\char`\"{}}\newline
+Include dependency graph for tmf882x\+\_\+clock\+\_\+correction.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtmf882x__clk__corr}{tmf882x\+\_\+clk\+\_\+corr}}
+\begin{DoxyCompactList}\small\item\em This is the Context structure for the clock correction machine. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tmf882x__clock__correction_8h_a6bf8251bb617defb75cfa3a4423a7e40}{tmf882x\+\_\+clk\+\_\+corr\+\_\+init}} (struct \mbox{\hyperlink{structtmf882x__clk__corr}{tmf882x\+\_\+clk\+\_\+corr}} $\ast$cr, uint32\+\_\+t ratio)
+\begin{DoxyCompactList}\small\item\em Initialize a clock correction context. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tmf882x__clock__correction_8h_a930ce8299ca5113d1da23bd7ffa6ce17}{tmf882x\+\_\+clk\+\_\+corr\+\_\+recalc}} (struct \mbox{\hyperlink{structtmf882x__clk__corr}{tmf882x\+\_\+clk\+\_\+corr}} $\ast$cr)
+\begin{DoxyCompactList}\small\item\em Reset running clock correction state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tmf882x__clock__correction_8h_ac54b6f7497aaaddbbd6c91a9cb0b6584}{tmf882x\+\_\+clk\+\_\+corr\+\_\+addpair}} (struct \mbox{\hyperlink{structtmf882x__clk__corr}{tmf882x\+\_\+clk\+\_\+corr}} $\ast$cr, uint32\+\_\+t ref, uint32\+\_\+t src)
+\begin{DoxyCompactList}\small\item\em Add a pair of clock counts to the clock correction state. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{tmf882x__clock__correction_8h_ac75e1b4c0d8256b634b53124e59ccd31}{tmf882x\+\_\+clk\+\_\+corr\+\_\+map}} (struct \mbox{\hyperlink{structtmf882x__clk__corr}{tmf882x\+\_\+clk\+\_\+corr}} $\ast$cr, uint32\+\_\+t old\+\_\+val)
+\begin{DoxyCompactList}\small\item\em Apply a clock correction mapping. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tmf882x__clock__correction_8h_ac54b6f7497aaaddbbd6c91a9cb0b6584}\label{tmf882x__clock__correction_8h_ac54b6f7497aaaddbbd6c91a9cb0b6584}} 
+\index{tmf882x\_clock\_correction.h@{tmf882x\_clock\_correction.h}!tmf882x\_clk\_corr\_addpair@{tmf882x\_clk\_corr\_addpair}}
+\index{tmf882x\_clk\_corr\_addpair@{tmf882x\_clk\_corr\_addpair}!tmf882x\_clock\_correction.h@{tmf882x\_clock\_correction.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_clk\_corr\_addpair()}{tmf882x\_clk\_corr\_addpair()}}
+{\footnotesize\ttfamily void tmf882x\+\_\+clk\+\_\+corr\+\_\+addpair (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__clk__corr}{tmf882x\+\_\+clk\+\_\+corr}} $\ast$}]{cr,  }\item[{uint32\+\_\+t}]{ref,  }\item[{uint32\+\_\+t}]{src }\end{DoxyParamCaption})}
+
+
+
+Add a pair of clock counts to the clock correction state. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cr} & pointer to clock correction context structure \\
+\hline
+\mbox{\texttt{ in}}  & {\em ref} & monotonic clock count for reference clock \\
+\hline
+\mbox{\texttt{ in}}  & {\em src} & monotonic clock count for source clock \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Which clock is used for reference and source does not matter as long as their use is consistent and is aligned with the expected ratio in \mbox{\hyperlink{tmf882x__clock__correction_8h_a6bf8251bb617defb75cfa3a4423a7e40}{tmf882x\+\_\+clk\+\_\+corr\+\_\+init}} 
+\end{DoxyNote}
+\mbox{\Hypertarget{tmf882x__clock__correction_8h_a6bf8251bb617defb75cfa3a4423a7e40}\label{tmf882x__clock__correction_8h_a6bf8251bb617defb75cfa3a4423a7e40}} 
+\index{tmf882x\_clock\_correction.h@{tmf882x\_clock\_correction.h}!tmf882x\_clk\_corr\_init@{tmf882x\_clk\_corr\_init}}
+\index{tmf882x\_clk\_corr\_init@{tmf882x\_clk\_corr\_init}!tmf882x\_clock\_correction.h@{tmf882x\_clock\_correction.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_clk\_corr\_init()}{tmf882x\_clk\_corr\_init()}}
+{\footnotesize\ttfamily void tmf882x\+\_\+clk\+\_\+corr\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__clk__corr}{tmf882x\+\_\+clk\+\_\+corr}} $\ast$}]{cr,  }\item[{uint32\+\_\+t}]{ratio }\end{DoxyParamCaption})}
+
+
+
+Initialize a clock correction context. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cr} & pointer to clock correction context structure \\
+\hline
+\mbox{\texttt{ in}}  & {\em ratio} & expected integer ratio of the two clocks \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tmf882x__clock__correction_8h_ac75e1b4c0d8256b634b53124e59ccd31}\label{tmf882x__clock__correction_8h_ac75e1b4c0d8256b634b53124e59ccd31}} 
+\index{tmf882x\_clock\_correction.h@{tmf882x\_clock\_correction.h}!tmf882x\_clk\_corr\_map@{tmf882x\_clk\_corr\_map}}
+\index{tmf882x\_clk\_corr\_map@{tmf882x\_clk\_corr\_map}!tmf882x\_clock\_correction.h@{tmf882x\_clock\_correction.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_clk\_corr\_map()}{tmf882x\_clk\_corr\_map()}}
+{\footnotesize\ttfamily uint32\+\_\+t tmf882x\+\_\+clk\+\_\+corr\+\_\+map (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__clk__corr}{tmf882x\+\_\+clk\+\_\+corr}} $\ast$}]{cr,  }\item[{uint32\+\_\+t}]{old\+\_\+val }\end{DoxyParamCaption})}
+
+
+
+Apply a clock correction mapping. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cr} & pointer to clock correction context structure \\
+\hline
+\mbox{\texttt{ in}}  & {\em old\+\_\+val} & Value to be corrected by the clock correction mapping \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Corrected value using the clock correction state. Default with no pairs added returns old\+\_\+val. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__clock__correction_8h_a930ce8299ca5113d1da23bd7ffa6ce17}\label{tmf882x__clock__correction_8h_a930ce8299ca5113d1da23bd7ffa6ce17}} 
+\index{tmf882x\_clock\_correction.h@{tmf882x\_clock\_correction.h}!tmf882x\_clk\_corr\_recalc@{tmf882x\_clk\_corr\_recalc}}
+\index{tmf882x\_clk\_corr\_recalc@{tmf882x\_clk\_corr\_recalc}!tmf882x\_clock\_correction.h@{tmf882x\_clock\_correction.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_clk\_corr\_recalc()}{tmf882x\_clk\_corr\_recalc()}}
+{\footnotesize\ttfamily void tmf882x\+\_\+clk\+\_\+corr\+\_\+recalc (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__clk__corr}{tmf882x\+\_\+clk\+\_\+corr}} $\ast$}]{cr }\end{DoxyParamCaption})}
+
+
+
+Reset running clock correction state. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cr} & pointer to clock correction context structure \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,64 @@
+\hypertarget{structmode__vtable}{}\doxysection{mode\+\_\+vtable Struct Reference}
+\label{structmode__vtable}\index{mode\_vtable@{mode\_vtable}}
+
+
+This is the Base mode behavioral function pointer structure.  
+
+
+
+
+{\ttfamily \#include $<$tmf882x\+\_\+mode.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structmode__vtable_a98f94a2b027e786ea29e9a2ee14657bd}\label{structmode__vtable_a98f94a2b027e786ea29e9a2ee14657bd}} 
+uint32\+\_\+t \mbox{\hyperlink{structmode__vtable_a98f94a2b027e786ea29e9a2ee14657bd}{tag}}
+\begin{DoxyCompactList}\small\item\em This member is the mode type identifier. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structmode__vtable_a3b7a1c44b3cfe9c0b9b5ac6375d32483}\label{structmode__vtable_a3b7a1c44b3cfe9c0b9b5ac6375d32483}} 
+int32\+\_\+t($\ast$ \mbox{\hyperlink{structmode__vtable_a3b7a1c44b3cfe9c0b9b5ac6375d32483}{open}} )(struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self)
+\begin{DoxyCompactList}\small\item\em This member is the open method call for the current mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structmode__vtable_ae0152c68ed943377ee39780aa7cd4211}\label{structmode__vtable_ae0152c68ed943377ee39780aa7cd4211}} 
+int32\+\_\+t($\ast$ \mbox{\hyperlink{structmode__vtable_ae0152c68ed943377ee39780aa7cd4211}{fwdl}} )(struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self, int32\+\_\+t fwdl\+\_\+type, const uint8\+\_\+t $\ast$buf, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em This member is the fwdl method call for the current mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structmode__vtable_a5be8e5d29d04356fe0d64fec543f89aa}\label{structmode__vtable_a5be8e5d29d04356fe0d64fec543f89aa}} 
+int32\+\_\+t($\ast$ \mbox{\hyperlink{structmode__vtable_a5be8e5d29d04356fe0d64fec543f89aa}{mode\+\_\+switch}} )(struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self, uint32\+\_\+t mode)
+\begin{DoxyCompactList}\small\item\em This member is the mode\+\_\+switch method call for the current mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structmode__vtable_ab4c5851131eba7f0d664470d05849e09}\label{structmode__vtable_ab4c5851131eba7f0d664470d05849e09}} 
+int32\+\_\+t($\ast$ \mbox{\hyperlink{structmode__vtable_ab4c5851131eba7f0d664470d05849e09}{start}} )(struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self)
+\begin{DoxyCompactList}\small\item\em This member is the start method call for the current mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structmode__vtable_af43daaeede3cbf6faa03e87ab7d7b923}\label{structmode__vtable_af43daaeede3cbf6faa03e87ab7d7b923}} 
+int32\+\_\+t($\ast$ \mbox{\hyperlink{structmode__vtable_af43daaeede3cbf6faa03e87ab7d7b923}{stop}} )(struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self)
+\begin{DoxyCompactList}\small\item\em This member is the stop method call for the current mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structmode__vtable_a81cfa2641a697eeef9a9b23c45513fc5}\label{structmode__vtable_a81cfa2641a697eeef9a9b23c45513fc5}} 
+int32\+\_\+t($\ast$ \mbox{\hyperlink{structmode__vtable_a81cfa2641a697eeef9a9b23c45513fc5}{process\+\_\+irq}} )(struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self)
+\begin{DoxyCompactList}\small\item\em This member is the process\+\_\+irq method call for the current mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structmode__vtable_a0ea81a4b115d95e9461ea63a1a125c7e}\label{structmode__vtable_a0ea81a4b115d95e9461ea63a1a125c7e}} 
+int32\+\_\+t($\ast$ {\bfseries ioctl} )(struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self, uint32\+\_\+t cmd, const void $\ast$input, void $\ast$output)
+\item 
+void($\ast$ \mbox{\hyperlink{structmode__vtable_a87da491ff04a81dbd282cd2a5b82083c}{close}} )(struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$self)
+\begin{DoxyCompactList}\small\item\em This member is the close method call for the current mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is the Base mode behavioral function pointer structure. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structmode__vtable_a87da491ff04a81dbd282cd2a5b82083c}\label{structmode__vtable_a87da491ff04a81dbd282cd2a5b82083c}} 
+\index{mode\_vtable@{mode\_vtable}!close@{close}}
+\index{close@{close}!mode\_vtable@{mode\_vtable}}
+\doxysubsubsection{\texorpdfstring{close}{close}}
+{\footnotesize\ttfamily mode\+\_\+vtable\+::close}
+
+
+
+This member is the close method call for the current mode. 
+
+\begin{DoxyWarning}{Warning}
+These function pointers should never be called directly, always use the \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} interface functions. 
+\end{DoxyWarning}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tmf882x__mode_8h}{tmf882x\+\_\+mode.\+h}}\end{DoxyCompactItemize}

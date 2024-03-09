@@ -1,0 +1,110 @@
+\hypertarget{tmf882x__mode__app_8h}{}\doxysection{tmf882x\+\_\+mode\+\_\+app.\+h File Reference}
+\label{tmf882x__mode__app_8h}\index{tmf882x\_mode\_app.h@{tmf882x\_mode\_app.h}}
+
+
+TMF882X Application mode interface.  
+
+
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+clock\+\_\+correction.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+host\+\_\+interface.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+mode.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+mode\+\_\+app\+\_\+ioctl.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+mode\+\_\+app\+\_\+protocol.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$linux/i2c/ams/tmf882x.\+h$>$}\newline
+{\ttfamily \#include $<$linux/i2c/ams/tmf882x\+\_\+config.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+Include dependency graph for tmf882x\+\_\+mode\+\_\+app.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__app__i2c__msg}{tmf882x\+\_\+mode\+\_\+app\+\_\+i2c\+\_\+msg}}
+\begin{DoxyCompactList}\small\item\em App mode i2c message. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__mode__app}{tmf882x\+\_\+mode\+\_\+app}}
+\begin{DoxyCompactList}\small\item\em This is the Application mode context structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtmf882x__mode__app_1_1volat__data}{tmf882x\+\_\+mode\+\_\+app\+::volat\+\_\+data}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x__mode__app_8h_adc18cec7330b815499c2ac47bfb34dd7}\label{tmf882x__mode__app_8h_adc18cec7330b815499c2ac47bfb34dd7}} 
+\#define \mbox{\hyperlink{tmf882x__mode__app_8h_adc18cec7330b815499c2ac47bfb34dd7}{mode\+\_\+to\+\_\+app}}(x)~  ((struct \mbox{\hyperlink{structtmf882x__mode__app}{tmf882x\+\_\+mode\+\_\+app}} $\ast$)(\mbox{\hyperlink{tmf882x__mode_8h_a92ec71ae426ba7e918c3a154f01ff24c}{member\+\_\+of}}(x, struct \mbox{\hyperlink{structtmf882x__mode__app}{tmf882x\+\_\+mode\+\_\+app}}, mode)))
+\begin{DoxyCompactList}\small\item\em Return pointer to \mbox{\hyperlink{structtmf882x__mode__app}{tmf882x\+\_\+mode\+\_\+app}} from pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode__app_8h_a08d2d41a4bc00bae1801f0623b45bec0}\label{tmf882x__mode__app_8h_a08d2d41a4bc00bae1801f0623b45bec0}} 
+\#define \mbox{\hyperlink{tmf882x__mode__app_8h_a08d2d41a4bc00bae1801f0623b45bec0}{APP\+\_\+\+MAX\+\_\+\+MSG\+\_\+\+SIZE}}~TMF8\+X2\+X\+\_\+\+COM\+\_\+\+HEADER\+\_\+\+PLUS\+\_\+\+PAYLOAD
+\begin{DoxyCompactList}\small\item\em Max i2c payload message size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{tmf882x__mode__app_8h_a923943299a1999a14f8079580b089ab5}{tmf882x\+\_\+mode\+\_\+app\+\_\+pckt\+\_\+indices}} \{ \newline
+{\bfseries APP\+\_\+\+COM\+\_\+\+RID\+\_\+\+IDX} = 0
+, {\bfseries APP\+\_\+\+COM\+\_\+\+TID\+\_\+\+IDX} = 1
+, {\bfseries APP\+\_\+\+COM\+\_\+\+SIZE\+\_\+\+LSB\+\_\+\+IDX} = 2
+, \mbox{\hyperlink{tmf882x__mode__app_8h_a923943299a1999a14f8079580b089ab5adeebecdee6e3978478028510fadc80a5}{APP\+\_\+\+COM\+\_\+\+SIZE\+\_\+\+MSB\+\_\+\+IDX}} = 3
+, \newline
+{\bfseries APP\+\_\+\+COM\+\_\+\+MULTI\+\_\+\+NUM\+\_\+\+IDX} = 4
+, {\bfseries APP\+\_\+\+COM\+\_\+\+MULTI\+\_\+\+SIZE\+\_\+\+IDX} = 5
+, \mbox{\hyperlink{tmf882x__mode__app_8h_a923943299a1999a14f8079580b089ab5ae250fe2e6a2bcdb9819184180ec1eb3e}{APP\+\_\+\+COM\+\_\+\+MULTI\+\_\+\+CFG\+\_\+\+ID\+\_\+\+IDX}} = 6
+, {\bfseries APP\+\_\+\+COM\+\_\+\+DATA\+\_\+\+IDX} = 4
+, \newline
+{\bfseries APP\+\_\+\+COM\+\_\+\+MULTI\+\_\+\+DATA\+\_\+\+IDX} = 7
+ \}
+\begin{DoxyCompactList}\small\item\em Indices for parsing i2c messages from the application. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tmf882x__mode__app_8h_ab993daf2c83ce29b43382216d77d7f7b}{tmf882x\+\_\+mode\+\_\+app\+\_\+init}} (struct \mbox{\hyperlink{structtmf882x__mode__app}{tmf882x\+\_\+mode\+\_\+app}} $\ast$app, void $\ast$priv)
+\begin{DoxyCompactList}\small\item\em initialize a \mbox{\hyperlink{structtmf882x__mode__app}{tmf882x\+\_\+mode\+\_\+app}} context structure \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+TMF882X Application mode interface. 
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{tmf882x__mode__app_8h_a923943299a1999a14f8079580b089ab5}\label{tmf882x__mode__app_8h_a923943299a1999a14f8079580b089ab5}} 
+\index{tmf882x\_mode\_app.h@{tmf882x\_mode\_app.h}!tmf882x\_mode\_app\_pckt\_indices@{tmf882x\_mode\_app\_pckt\_indices}}
+\index{tmf882x\_mode\_app\_pckt\_indices@{tmf882x\_mode\_app\_pckt\_indices}!tmf882x\_mode\_app.h@{tmf882x\_mode\_app.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_app\_pckt\_indices}{tmf882x\_mode\_app\_pckt\_indices}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{tmf882x__mode__app_8h_a923943299a1999a14f8079580b089ab5}{tmf882x\+\_\+mode\+\_\+app\+\_\+pckt\+\_\+indices}}}
+
+
+
+Indices for parsing i2c messages from the application. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{APP\_COM\_SIZE\_MSB\_IDX@{APP\_COM\_SIZE\_MSB\_IDX}!tmf882x\_mode\_app.h@{tmf882x\_mode\_app.h}}\index{tmf882x\_mode\_app.h@{tmf882x\_mode\_app.h}!APP\_COM\_SIZE\_MSB\_IDX@{APP\_COM\_SIZE\_MSB\_IDX}}}\mbox{\Hypertarget{tmf882x__mode__app_8h_a923943299a1999a14f8079580b089ab5adeebecdee6e3978478028510fadc80a5}\label{tmf882x__mode__app_8h_a923943299a1999a14f8079580b089ab5adeebecdee6e3978478028510fadc80a5}} 
+APP\+\_\+\+COM\+\_\+\+SIZE\+\_\+\+MSB\+\_\+\+IDX&In multipacket msg \textquotesingle{}DATA\textquotesingle{} is shifted down to make room for subpacket header. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{APP\_COM\_MULTI\_CFG\_ID\_IDX@{APP\_COM\_MULTI\_CFG\_ID\_IDX}!tmf882x\_mode\_app.h@{tmf882x\_mode\_app.h}}\index{tmf882x\_mode\_app.h@{tmf882x\_mode\_app.h}!APP\_COM\_MULTI\_CFG\_ID\_IDX@{APP\_COM\_MULTI\_CFG\_ID\_IDX}}}\mbox{\Hypertarget{tmf882x__mode__app_8h_a923943299a1999a14f8079580b089ab5ae250fe2e6a2bcdb9819184180ec1eb3e}\label{tmf882x__mode__app_8h_a923943299a1999a14f8079580b089ab5ae250fe2e6a2bcdb9819184180ec1eb3e}} 
+APP\+\_\+\+COM\+\_\+\+MULTI\+\_\+\+CFG\+\_\+\+ID\+\_\+\+IDX&In multipacket msg \textquotesingle{}DATA\textquotesingle{} is shifted down to make room for subpacket header. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tmf882x__mode__app_8h_ab993daf2c83ce29b43382216d77d7f7b}\label{tmf882x__mode__app_8h_ab993daf2c83ce29b43382216d77d7f7b}} 
+\index{tmf882x\_mode\_app.h@{tmf882x\_mode\_app.h}!tmf882x\_mode\_app\_init@{tmf882x\_mode\_app\_init}}
+\index{tmf882x\_mode\_app\_init@{tmf882x\_mode\_app\_init}!tmf882x\_mode\_app.h@{tmf882x\_mode\_app.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_app\_init()}{tmf882x\_mode\_app\_init()}}
+{\footnotesize\ttfamily void tmf882x\+\_\+mode\+\_\+app\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode__app}{tmf882x\+\_\+mode\+\_\+app}} $\ast$}]{app,  }\item[{void $\ast$}]{priv }\end{DoxyParamCaption})}
+
+
+
+initialize a \mbox{\hyperlink{structtmf882x__mode__app}{tmf882x\+\_\+mode\+\_\+app}} context structure 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em app} & pointer to app mode context \\
+\hline
+\mbox{\texttt{ in}}  & {\em priv} & User-\/private context to pass back through callback functions \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Direct calls to this function should not be made, use the \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} interface instead 
+\end{DoxyNote}

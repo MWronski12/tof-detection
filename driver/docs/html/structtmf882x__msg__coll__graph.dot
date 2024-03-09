@@ -1,0 +1,24 @@
+digraph "tmf882x_msg"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="tmf882x_msg",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="TMF882X message type."];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hist_msg" ,fontname="Helvetica"];
+  Node2 [label="tmf882x_msg_histogram",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg__histogram.html",tooltip="TMF882X histogram message type."];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hdr" ,fontname="Helvetica"];
+  Node3 [label="tmf882x_msg_header",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg__header.html",tooltip="TMF882X message header type."];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" meas_result_msg" ,fontname="Helvetica"];
+  Node4 [label="tmf882x_msg_meas_results",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg__meas__results.html",tooltip="TMF882X measure results message type."];
+  Node5 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" results" ,fontname="Helvetica"];
+  Node5 [label="tmf882x_meas_result",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__meas__result.html",tooltip="TMF882X measure result This represents an individual target measurement result."];
+  Node3 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hdr" ,fontname="Helvetica"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hdr" ,fontname="Helvetica"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" err_msg" ,fontname="Helvetica"];
+  Node6 [label="tmf882x_msg_error",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg__error.html",tooltip="TMF882X error message type."];
+  Node3 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hdr" ,fontname="Helvetica"];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" meas_stat_msg" ,fontname="Helvetica"];
+  Node7 [label="tmf882x_msg_meas_stats",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structtmf882x__msg__meas__stats.html",tooltip="TMF882X measure statistics message type."];
+  Node3 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" hdr" ,fontname="Helvetica"];
+}

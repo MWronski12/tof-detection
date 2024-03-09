@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['iocapp_5fdev_5fuid_480',['IOCAPP_DEV_UID',['../tmf882x__mode__app__ioctl_8h.html#a79eaa470657ce1bcca8a812bfa247727',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fdo_5ffaccal_481',['IOCAPP_DO_FACCAL',['../tmf882x__mode__app__ioctl_8h.html#a509f531bbeef89903dc2b90688afb6d7',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fget_5fcalib_482',['IOCAPP_GET_CALIB',['../tmf882x__mode__app__ioctl_8h.html#a745bd5cef20dc6db59e14a051b7d7ffd',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fget_5fcfg_483',['IOCAPP_GET_CFG',['../tmf882x__mode__app__ioctl_8h.html#ac540baa3309386f0a25521cd0bb70256',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fget_5fosc_5ffreq_484',['IOCAPP_GET_OSC_FREQ',['../tmf882x__mode__app__ioctl_8h.html#ab4937f4abeb8fffd6bb0f6ca2dd39a3a',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fget_5fspadcfg_485',['IOCAPP_GET_SPADCFG',['../tmf882x__mode__app__ioctl_8h.html#ad731ae7b8d76e1394c8788aa69a07763',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fis_5f8x8mode_486',['IOCAPP_IS_8X8MODE',['../tmf882x__mode__app__ioctl_8h.html#a463a4c12b718ec9b4c1747e7bb94bc6f',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fis_5fclkadj_487',['IOCAPP_IS_CLKADJ',['../tmf882x__mode__app__ioctl_8h.html#a9d9cbd6eccbc989c401c8e881ff96a49',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fis_5fmeas_488',['IOCAPP_IS_MEAS',['../tmf882x__mode__app__ioctl_8h.html#ac6a5197d32e1cb7a17f3c9386adf1c0e',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fis_5fshortrange_489',['IOCAPP_IS_SHORTRANGE',['../tmf882x__mode__app__ioctl_8h.html#a9589662adb6b201356c5ff004c623a60',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fset_5f8x8mode_490',['IOCAPP_SET_8X8MODE',['../tmf882x__mode__app__ioctl_8h.html#a59042180db5b4a62a2cac47f17bab4ba',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fset_5fcalib_491',['IOCAPP_SET_CALIB',['../tmf882x__mode__app__ioctl_8h.html#ad5e712202b5e60312ca22051dbec90d4',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fset_5fcfg_492',['IOCAPP_SET_CFG',['../tmf882x__mode__app__ioctl_8h.html#a20a97a93ce9f57adea584f460c9d840d',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fset_5fclkadj_493',['IOCAPP_SET_CLKADJ',['../tmf882x__mode__app__ioctl_8h.html#af2821be1622f2a3b011cfd545dda7889',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fset_5fosc_5ffreq_494',['IOCAPP_SET_OSC_FREQ',['../tmf882x__mode__app__ioctl_8h.html#a4be633799b0c8db58551159813503cc9',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fset_5fshortrange_495',['IOCAPP_SET_SHORTRANGE',['../tmf882x__mode__app__ioctl_8h.html#a6c84e71d4da19ea1255510a1504664a5',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fset_5fspadcfg_496',['IOCAPP_SET_SPADCFG',['../tmf882x__mode__app__ioctl_8h.html#a2e301487aef0070f80dbc3816fbae1ef',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fstandby_497',['IOCAPP_STANDBY',['../tmf882x__mode__app__ioctl_8h.html#a89d3d0f65ffb50999e129d3cf229f109',1,'tmf882x_mode_app_ioctl.h']]],
+  ['iocapp_5fwakeup_498',['IOCAPP_WAKEUP',['../tmf882x__mode__app__ioctl_8h.html#ae281f4cbbade652a982584b3f8bd3f62',1,'tmf882x_mode_app_ioctl.h']]]
+];

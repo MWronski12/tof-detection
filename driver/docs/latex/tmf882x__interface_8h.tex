@@ -1,0 +1,481 @@
+\hypertarget{tmf882x__interface_8h}{}\doxysection{tmf882x\+\_\+interface.\+h File Reference}
+\label{tmf882x__interface_8h}\index{tmf882x\_interface.h@{tmf882x\_interface.h}}
+
+
+TMF882X Core Driver interface.  
+
+
+{\ttfamily \#include $<$linux/i2c/ams/tmf882x.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+mode.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+mode\+\_\+bl.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+mode\+\_\+app.\+h\char`\"{}}\newline
+Include dependency graph for tmf882x\+\_\+interface.\+h\+:
+% FIG 0
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}}
+\begin{DoxyCompactList}\small\item\em TMF882X DCB context handle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x__interface_8h_ab28eee63501b1ca7c17dfd559c55700b}\label{tmf882x__interface_8h_ab28eee63501b1ca7c17dfd559c55700b}} 
+\#define {\bfseries TMF882\+X\+\_\+\+MAJ\+\_\+\+MODULE\+\_\+\+VER}~3
+\item 
+\mbox{\Hypertarget{tmf882x__interface_8h_ac23d18e8120f0ff9ad2ac936a12a5bd8}\label{tmf882x__interface_8h_ac23d18e8120f0ff9ad2ac936a12a5bd8}} 
+\#define {\bfseries TMF882\+X\+\_\+\+MIN\+\_\+\+MODULE\+\_\+\+VER}~20
+\item 
+\mbox{\Hypertarget{tmf882x__interface_8h_a2117b58e19182dff91ad3558e650541d}\label{tmf882x__interface_8h_a2117b58e19182dff91ad3558e650541d}} 
+\#define {\bfseries QUOTE}(x)~\#x
+\item 
+\mbox{\Hypertarget{tmf882x__interface_8h_a6df1d22fb5f09eccc23b9f399670cfd7}\label{tmf882x__interface_8h_a6df1d22fb5f09eccc23b9f399670cfd7}} 
+\#define {\bfseries STRINGIFY}(x)~QUOTE(x)
+\item 
+\#define \mbox{\hyperlink{tmf882x__interface_8h_acf01add0233134b9b895680f0e382e52}{TMF882\+X\+\_\+\+MODULE\+\_\+\+VER}}
+\begin{DoxyCompactList}\small\item\em TMF882X DCB driver module version string. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__interface_8h_a0e1faa41b0f5f4222e6c73b2d579fa82}\label{tmf882x__interface_8h_a0e1faa41b0f5f4222e6c73b2d579fa82}} 
+\#define \mbox{\hyperlink{tmf882x__interface_8h_a0e1faa41b0f5f4222e6c73b2d579fa82}{TOF\+\_\+\+FWDL\+\_\+\+TIMEOUT\+\_\+\+MSEC}}~30000
+\begin{DoxyCompactList}\small\item\em Timeout for FWDL (firmware download) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x__interface_8h_a5b8110fd1651b81600801e961c779d57}\label{tmf882x__interface_8h_a5b8110fd1651b81600801e961c779d57}} 
+typedef enum \mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}{tmf882x\+\_\+mode\+\_\+t}} {\bfseries tmf882x\+\_\+mode\+\_\+t}
+\item 
+\mbox{\Hypertarget{tmf882x__interface_8h_a2c95d0e76034a91f84183260cfc2488e}\label{tmf882x__interface_8h_a2c95d0e76034a91f84183260cfc2488e}} 
+typedef enum \mbox{\hyperlink{tmf882x__interface_8h_ac6e03412a3821f9041920a9f8d310ca4}{tmf882x\+\_\+fwdl\+\_\+type\+\_\+t}} {\bfseries tmf882x\+\_\+fwdl\+\_\+type\+\_\+t}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}{tmf882x\+\_\+mode\+\_\+t}} \{ \mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81aaaa0f033a0f3b74ccd3b8f0e46834124}{TMF882\+X\+\_\+\+MODE\+\_\+\+BOOTLOADER}} = 0x80
+, \mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81adbdb60bc80866e07abf86d5894072197}{TMF882\+X\+\_\+\+MODE\+\_\+\+APP}} = 0x03
+ \}
+\begin{DoxyCompactList}\small\item\em Supported application modes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__interface_8h_ac6e03412a3821f9041920a9f8d310ca4}\label{tmf882x__interface_8h_ac6e03412a3821f9041920a9f8d310ca4}} 
+enum \mbox{\hyperlink{tmf882x__interface_8h_ac6e03412a3821f9041920a9f8d310ca4}{tmf882x\+\_\+fwdl\+\_\+type\+\_\+t}} \{ {\bfseries FWDL\+\_\+\+TYPE\+\_\+\+BIN}
+, {\bfseries FWDL\+\_\+\+TYPE\+\_\+\+HEX}
+ \}
+\begin{DoxyCompactList}\small\item\em FWDL type when performing FWDL. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26}{tmf882x\+\_\+regs}} \{ \newline
+\mbox{\hyperlink{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26adc2a7cc39681f0156b5af8722ec63a3f}{TMF882\+X\+\_\+\+APP\+\_\+\+ID}} = 0x00
+, \mbox{\hyperlink{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a3e89eb620838d10e5c5b2da4d45f54d6}{TMF882\+X\+\_\+\+STAT}} = 0x\+E0
+, \mbox{\hyperlink{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a48e95096bc46655428e4d2580a43591f}{TMF882\+X\+\_\+\+INT\+\_\+\+STAT}} = 0x\+E1
+, \mbox{\hyperlink{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a736b1ddc4b3e10628707eeaf33be3f51}{TMF882\+X\+\_\+\+INT\+\_\+\+EN}} = 0x\+E2
+, \newline
+\mbox{\hyperlink{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26ab777d1a3e3cefa5ca9098d9139227518}{TMF882\+X\+\_\+\+ID}} = 0x\+E3
+, \mbox{\hyperlink{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a2dc3237b4e81bbbea6f9ddafc96f11a3}{TMF882\+X\+\_\+\+REV\+\_\+\+ID}} = 0x\+E4
+ \}
+\begin{DoxyCompactList}\small\item\em core register mapping common to all modes \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tmf882x__interface_8h_acb0ec2681d898eb01f6961fd18a3bc35}{tmf882x\+\_\+init}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof, void $\ast$priv)
+\begin{DoxyCompactList}\small\item\em Initialize tof structure, {\itshape must be called} before using any other interface function. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__interface_8h_a7cb9356cd7d2286475bfb1fdfdfe8917}{tmf882x\+\_\+open}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof)
+\begin{DoxyCompactList}\small\item\em Open the firmware core driver interface. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__interface_8h_adcfeff783712f5e9d92358e7a368afec}{tmf882x\+\_\+fwdl}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof, \mbox{\hyperlink{tmf882x__interface_8h_ac6e03412a3821f9041920a9f8d310ca4}{tmf882x\+\_\+fwdl\+\_\+type\+\_\+t}} fwdl\+\_\+type, const uint8\+\_\+t $\ast$buf, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Download new firmware. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__interface_8h_a6ab6c817006f3f97d5f80082bce12efb}{tmf882x\+\_\+mode\+\_\+switch}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof, \mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}{tmf882x\+\_\+mode\+\_\+t}} mode)
+\begin{DoxyCompactList}\small\item\em Perform an application mode switch operation on the current running application mode. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__interface_8h_a12a4db2fe3135cd124dc994a7f63c350}{tmf882x\+\_\+start}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof)
+\begin{DoxyCompactList}\small\item\em Start measurements with current configuration. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__interface_8h_ab651cb2ea60e3f0724aa63a087a4f362}{tmf882x\+\_\+process\+\_\+irq}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof)
+\begin{DoxyCompactList}\small\item\em Check for interrupt conditions and handle accordingly. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__interface_8h_a422b5b29ac48ed656f0bfe31b77db9a7}{tmf882x\+\_\+stop}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof)
+\begin{DoxyCompactList}\small\item\em Stop measurements. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__interface_8h_ac28a3ae344eba64ec56b0a9a2c3b66d7}{tmf882x\+\_\+ioctl}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof, uint32\+\_\+t cmd, const void $\ast$input, void $\ast$output)
+\begin{DoxyCompactList}\small\item\em Perform an IO Control command. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tmf882x__interface_8h_a1b6b8fc8df4b6d88e0529c4fe65159b8}{tmf882x\+\_\+close}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof)
+\begin{DoxyCompactList}\small\item\em Close the core driver firmware interface, the inverse operation of \mbox{\hyperlink{tmf882x__interface_8h_a7cb9356cd7d2286475bfb1fdfdfe8917}{tmf882x\+\_\+open()}}. \end{DoxyCompactList}\item 
+static struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} $\ast$ \mbox{\hyperlink{tmf882x__interface_8h_af22df3b63dac2e780529cf569abd0974}{tmf882x\+\_\+mode\+\_\+hndl}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof)
+\begin{DoxyCompactList}\small\item\em Get the base mode handle. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}{tmf882x\+\_\+mode\+\_\+t}} \mbox{\hyperlink{tmf882x__interface_8h_a45cc49f55c2304c98c8287223e40b317}{tmf882x\+\_\+get\+\_\+mode}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof)
+\begin{DoxyCompactList}\small\item\em Return the current mode. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tmf882x__interface_8h_af91febf102e415eeb900af9f59a3e8db}{tmf882x\+\_\+set\+\_\+debug}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof, bool flag)
+\begin{DoxyCompactList}\small\item\em Enable debug logging of the DCB. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__interface_8h_acdf7a6416756863743f88d558aecf5bf}{tmf882x\+\_\+get\+\_\+firmware\+\_\+ver}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof, uint8\+\_\+t $\ast$ver, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Fill buffer with version data of the current open firmware mode. \end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{tmf882x__interface_8h_a0901e8f9420f4e9fcccee6ceb9fa2845}{tmf882x\+\_\+get\+\_\+device\+\_\+revision}} (struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$tof, uint8\+\_\+t $\ast$rev\+\_\+buf, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Fill buffer with device revision data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+TMF882X Core Driver interface. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tmf882x__interface_8h_acf01add0233134b9b895680f0e382e52}\label{tmf882x__interface_8h_acf01add0233134b9b895680f0e382e52}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!TMF882X\_MODULE\_VER@{TMF882X\_MODULE\_VER}}
+\index{TMF882X\_MODULE\_VER@{TMF882X\_MODULE\_VER}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{TMF882X\_MODULE\_VER}{TMF882X\_MODULE\_VER}}
+{\footnotesize\ttfamily \#define TMF882\+X\+\_\+\+MODULE\+\_\+\+VER}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                    STRINGIFY(TMF882X\_MAJ\_MODULE\_VER) \textcolor{stringliteral}{"{}."{}} \(\backslash\)}
+\DoxyCodeLine{                                    STRINGIFY(TMF882X\_MIN\_MODULE\_VER)}
+
+\end{DoxyCode}
+
+
+TMF882X DCB driver module version string. 
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}\label{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_mode\_t@{tmf882x\_mode\_t}}
+\index{tmf882x\_mode\_t@{tmf882x\_mode\_t}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_t}{tmf882x\_mode\_t}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}{tmf882x\+\_\+mode\+\_\+t}}}
+
+
+
+Supported application modes. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TMF882X\_MODE\_BOOTLOADER@{TMF882X\_MODE\_BOOTLOADER}!tmf882x\_interface.h@{tmf882x\_interface.h}}\index{tmf882x\_interface.h@{tmf882x\_interface.h}!TMF882X\_MODE\_BOOTLOADER@{TMF882X\_MODE\_BOOTLOADER}}}\mbox{\Hypertarget{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81aaaa0f033a0f3b74ccd3b8f0e46834124}\label{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81aaaa0f033a0f3b74ccd3b8f0e46834124}} 
+TMF882\+X\+\_\+\+MODE\+\_\+\+BOOTLOADER&Bootloader mode. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TMF882X\_MODE\_APP@{TMF882X\_MODE\_APP}!tmf882x\_interface.h@{tmf882x\_interface.h}}\index{tmf882x\_interface.h@{tmf882x\_interface.h}!TMF882X\_MODE\_APP@{TMF882X\_MODE\_APP}}}\mbox{\Hypertarget{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81adbdb60bc80866e07abf86d5894072197}\label{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81adbdb60bc80866e07abf86d5894072197}} 
+TMF882\+X\+\_\+\+MODE\+\_\+\+APP&Application mode. \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26}\label{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_regs@{tmf882x\_regs}}
+\index{tmf882x\_regs@{tmf882x\_regs}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_regs}{tmf882x\_regs}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26}{tmf882x\+\_\+regs}}}
+
+
+
+core register mapping common to all modes 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TMF882X\_APP\_ID@{TMF882X\_APP\_ID}!tmf882x\_interface.h@{tmf882x\_interface.h}}\index{tmf882x\_interface.h@{tmf882x\_interface.h}!TMF882X\_APP\_ID@{TMF882X\_APP\_ID}}}\mbox{\Hypertarget{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26adc2a7cc39681f0156b5af8722ec63a3f}\label{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26adc2a7cc39681f0156b5af8722ec63a3f}} 
+TMF882\+X\+\_\+\+APP\+\_\+\+ID&Application ID register. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TMF882X\_STAT@{TMF882X\_STAT}!tmf882x\_interface.h@{tmf882x\_interface.h}}\index{tmf882x\_interface.h@{tmf882x\_interface.h}!TMF882X\_STAT@{TMF882X\_STAT}}}\mbox{\Hypertarget{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a3e89eb620838d10e5c5b2da4d45f54d6}\label{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a3e89eb620838d10e5c5b2da4d45f54d6}} 
+TMF882\+X\+\_\+\+STAT&CPU Status register. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TMF882X\_INT\_STAT@{TMF882X\_INT\_STAT}!tmf882x\_interface.h@{tmf882x\_interface.h}}\index{tmf882x\_interface.h@{tmf882x\_interface.h}!TMF882X\_INT\_STAT@{TMF882X\_INT\_STAT}}}\mbox{\Hypertarget{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a48e95096bc46655428e4d2580a43591f}\label{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a48e95096bc46655428e4d2580a43591f}} 
+TMF882\+X\+\_\+\+INT\+\_\+\+STAT&IRQ Status register. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TMF882X\_INT\_EN@{TMF882X\_INT\_EN}!tmf882x\_interface.h@{tmf882x\_interface.h}}\index{tmf882x\_interface.h@{tmf882x\_interface.h}!TMF882X\_INT\_EN@{TMF882X\_INT\_EN}}}\mbox{\Hypertarget{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a736b1ddc4b3e10628707eeaf33be3f51}\label{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a736b1ddc4b3e10628707eeaf33be3f51}} 
+TMF882\+X\+\_\+\+INT\+\_\+\+EN&IRQ Enable register. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TMF882X\_ID@{TMF882X\_ID}!tmf882x\_interface.h@{tmf882x\_interface.h}}\index{tmf882x\_interface.h@{tmf882x\_interface.h}!TMF882X\_ID@{TMF882X\_ID}}}\mbox{\Hypertarget{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26ab777d1a3e3cefa5ca9098d9139227518}\label{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26ab777d1a3e3cefa5ca9098d9139227518}} 
+TMF882\+X\+\_\+\+ID&Chip ID register. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TMF882X\_REV\_ID@{TMF882X\_REV\_ID}!tmf882x\_interface.h@{tmf882x\_interface.h}}\index{tmf882x\_interface.h@{tmf882x\_interface.h}!TMF882X\_REV\_ID@{TMF882X\_REV\_ID}}}\mbox{\Hypertarget{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a2dc3237b4e81bbbea6f9ddafc96f11a3}\label{tmf882x__interface_8h_aab73c247504b62f65cf00a04b7e7dd26a2dc3237b4e81bbbea6f9ddafc96f11a3}} 
+TMF882\+X\+\_\+\+REV\+\_\+\+ID&Chip Revision register. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tmf882x__interface_8h_a1b6b8fc8df4b6d88e0529c4fe65159b8}\label{tmf882x__interface_8h_a1b6b8fc8df4b6d88e0529c4fe65159b8}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_close@{tmf882x\_close}}
+\index{tmf882x\_close@{tmf882x\_close}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_close()}{tmf882x\_close()}}
+{\footnotesize\ttfamily void tmf882x\+\_\+close (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof }\end{DoxyParamCaption})}
+
+
+
+Close the core driver firmware interface, the inverse operation of \mbox{\hyperlink{tmf882x__interface_8h_a7cb9356cd7d2286475bfb1fdfdfe8917}{tmf882x\+\_\+open()}}. 
+
+Device will be put into STANDBY power state. \mbox{\hyperlink{tmf882x__interface_8h_a7cb9356cd7d2286475bfb1fdfdfe8917}{tmf882x\+\_\+open()}} must be called again to perform any operations on the device. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & tof dcb interface context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 for sucess, otherwise failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__interface_8h_adcfeff783712f5e9d92358e7a368afec}\label{tmf882x__interface_8h_adcfeff783712f5e9d92358e7a368afec}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_fwdl@{tmf882x\_fwdl}}
+\index{tmf882x\_fwdl@{tmf882x\_fwdl}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_fwdl()}{tmf882x\_fwdl()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+fwdl (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof,  }\item[{\mbox{\hyperlink{tmf882x__interface_8h_ac6e03412a3821f9041920a9f8d310ca4}{tmf882x\+\_\+fwdl\+\_\+type\+\_\+t}}}]{fwdl\+\_\+type,  }\item[{const uint8\+\_\+t $\ast$}]{buf,  }\item[{size\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+Download new firmware. 
+
+The new mode is automatically opened on success. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & tof dcb interface context \\
+\hline
+\mbox{\texttt{ in}}  & {\em buf} & Firmware data buffer \\
+\hline
+\mbox{\texttt{ in}}  & {\em len} & size of firmware data buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+This function will try to re-\/open() the device after FWDL 
+
+This function supports partial Firmware Downloads when using intel hex record format. The return value will be negative and the device will not be re-\/opened until the EOF hex record is passed in. 
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+0 for sucess, otherwise failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__interface_8h_a0901e8f9420f4e9fcccee6ceb9fa2845}\label{tmf882x__interface_8h_a0901e8f9420f4e9fcccee6ceb9fa2845}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_get\_device\_revision@{tmf882x\_get\_device\_revision}}
+\index{tmf882x\_get\_device\_revision@{tmf882x\_get\_device\_revision}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_get\_device\_revision()}{tmf882x\_get\_device\_revision()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+get\+\_\+device\+\_\+revision (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof,  }\item[{uint8\+\_\+t $\ast$}]{rev\+\_\+buf,  }\item[{size\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+Fill buffer with device revision data. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & pointer to tof dcb interface context \\
+\hline
+\mbox{\texttt{ in}}  & {\em rev\+\_\+buf} & Buffer to be filled with version data \\
+\hline
+\mbox{\texttt{ in}}  & {\em len} & length of buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of Bytes copied to buffer, negative if an error occurred 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__interface_8h_acdf7a6416756863743f88d558aecf5bf}\label{tmf882x__interface_8h_acdf7a6416756863743f88d558aecf5bf}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_get\_firmware\_ver@{tmf882x\_get\_firmware\_ver}}
+\index{tmf882x\_get\_firmware\_ver@{tmf882x\_get\_firmware\_ver}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_get\_firmware\_ver()}{tmf882x\_get\_firmware\_ver()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+get\+\_\+firmware\+\_\+ver (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof,  }\item[{uint8\+\_\+t $\ast$}]{ver,  }\item[{size\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+Fill buffer with version data of the current open firmware mode. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & pointer to tof dcb interface context \\
+\hline
+\mbox{\texttt{ in}}  & {\em ver} & Buffer to be filled with version dat \\
+\hline
+\mbox{\texttt{ in}}  & {\em len} & length of buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of Bytes copied to buffer, negative if an error occurred 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__interface_8h_a45cc49f55c2304c98c8287223e40b317}\label{tmf882x__interface_8h_a45cc49f55c2304c98c8287223e40b317}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_get\_mode@{tmf882x\_get\_mode}}
+\index{tmf882x\_get\_mode@{tmf882x\_get\_mode}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_get\_mode()}{tmf882x\_get\_mode()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}{tmf882x\+\_\+mode\+\_\+t}} tmf882x\+\_\+get\+\_\+mode (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return the current mode. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & pointer to tof dcb interface context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current mode as \mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}{tmf882x\+\_\+mode\+\_\+t}} 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+% FIG 1
+\mbox{\Hypertarget{tmf882x__interface_8h_acb0ec2681d898eb01f6961fd18a3bc35}\label{tmf882x__interface_8h_acb0ec2681d898eb01f6961fd18a3bc35}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_init@{tmf882x\_init}}
+\index{tmf882x\_init@{tmf882x\_init}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_init()}{tmf882x\_init()}}
+{\footnotesize\ttfamily void tmf882x\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof,  }\item[{void $\ast$}]{priv }\end{DoxyParamCaption})}
+
+
+
+Initialize tof structure, {\itshape must be called} before using any other interface function. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & pointer to tof dcb interface context to initialize \\
+\hline
+\mbox{\texttt{ in}}  & {\em priv} & Private context to pass back to client for callback platform functions \\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+This function must be called before using any other interface function 
+\end{DoxyWarning}
+\begin{DoxyNote}{Note}
+This function performs no I/O with the device 
+\end{DoxyNote}
+Here is the caller graph for this function\+:
+% FIG 2
+\mbox{\Hypertarget{tmf882x__interface_8h_ac28a3ae344eba64ec56b0a9a2c3b66d7}\label{tmf882x__interface_8h_ac28a3ae344eba64ec56b0a9a2c3b66d7}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_ioctl@{tmf882x\_ioctl}}
+\index{tmf882x\_ioctl@{tmf882x\_ioctl}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_ioctl()}{tmf882x\_ioctl()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+ioctl (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof,  }\item[{uint32\+\_\+t}]{cmd,  }\item[{const void $\ast$}]{input,  }\item[{void $\ast$}]{output }\end{DoxyParamCaption})}
+
+
+
+Perform an IO Control command. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & Tof dcb interface context \\
+\hline
+\mbox{\texttt{ in}}  & {\em cmd} & Mode-\/dependent command code \\
+\hline
+\mbox{\texttt{ in}}  & {\em input} & An input argument passed to the ioctl command. See \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h}{tmf882x\+\_\+mode\+\_\+app\+\_\+ioctl.\+h}} for list of available ioctl commands and their respective argument(s). The type of input is dependent on the IOCTL command code. This argument may be NULL for commands that take no input. \\
+\hline
+\mbox{\texttt{ out}}  & {\em output} & An output argument returned from the ioctl command. See \mbox{\hyperlink{tmf882x__mode__app__ioctl_8h}{tmf882x\+\_\+mode\+\_\+app\+\_\+ioctl.\+h}} for list of available ioctl commands and their respective argument(s). The type of output is dependent on the IOCTL command code. This argument may be NULL for commands that return no data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 for sucess, otherwise failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__interface_8h_af22df3b63dac2e780529cf569abd0974}\label{tmf882x__interface_8h_af22df3b63dac2e780529cf569abd0974}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_mode\_hndl@{tmf882x\_mode\_hndl}}
+\index{tmf882x\_mode\_hndl@{tmf882x\_mode\_hndl}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_hndl()}{tmf882x\_mode\_hndl()}}
+{\footnotesize\ttfamily static struct \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}}$\ast$ tmf882x\+\_\+mode\+\_\+hndl (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Get the base mode handle. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & tof dcb interface context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pointer to current \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__interface_8h_a6ab6c817006f3f97d5f80082bce12efb}\label{tmf882x__interface_8h_a6ab6c817006f3f97d5f80082bce12efb}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_mode\_switch@{tmf882x\_mode\_switch}}
+\index{tmf882x\_mode\_switch@{tmf882x\_mode\_switch}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_switch()}{tmf882x\_mode\_switch()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+mode\+\_\+switch (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof,  }\item[{\mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}{tmf882x\+\_\+mode\+\_\+t}}}]{mode }\end{DoxyParamCaption})}
+
+
+
+Perform an application mode switch operation on the current running application mode. 
+
+The new mode is automatically opened on success. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & tof dcb interface context \\
+\hline
+\mbox{\texttt{ in}}  & {\em mode} & Requested \mbox{\hyperlink{tmf882x__interface_8h_af38f94ab46144ceb92068b02f1510a81}{tmf882x\+\_\+mode\+\_\+t}} mode to switch to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Not all modes may support switching to any other mode 
+
+This function will try to re-\/open() the device after mode switch 
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+0 for sucess, otherwise failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__interface_8h_a7cb9356cd7d2286475bfb1fdfdfe8917}\label{tmf882x__interface_8h_a7cb9356cd7d2286475bfb1fdfdfe8917}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_open@{tmf882x\_open}}
+\index{tmf882x\_open@{tmf882x\_open}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_open()}{tmf882x\_open()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+open (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof }\end{DoxyParamCaption})}
+
+
+
+Open the firmware core driver interface. 
+
+No effect if already open, error if a different application interface is already open. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & tof dcb interface context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+All other interface functions should not be called without calling \mbox{\hyperlink{tmf882x__interface_8h_a7cb9356cd7d2286475bfb1fdfdfe8917}{tmf882x\+\_\+open()}} first (except \mbox{\hyperlink{tmf882x__interface_8h_acb0ec2681d898eb01f6961fd18a3bc35}{tmf882x\+\_\+init}}). 
+\end{DoxyWarning}
+\begin{DoxyReturn}{Returns}
+0 for sucess, otherwise failure (driver remains closed on failure) 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+% FIG 3
+\mbox{\Hypertarget{tmf882x__interface_8h_ab651cb2ea60e3f0724aa63a087a4f362}\label{tmf882x__interface_8h_ab651cb2ea60e3f0724aa63a087a4f362}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_process\_irq@{tmf882x\_process\_irq}}
+\index{tmf882x\_process\_irq@{tmf882x\_process\_irq}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_process\_irq()}{tmf882x\_process\_irq()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+process\+\_\+irq (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Check for interrupt conditions and handle accordingly. 
+
+Any output data is passed through shim platform layer in the form of one or more \mbox{\hyperlink{structtmf882x__msg}{tmf882x\+\_\+msg}} 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & tof dcb interface context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 for sucess, otherwise failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__interface_8h_af91febf102e415eeb900af9f59a3e8db}\label{tmf882x__interface_8h_af91febf102e415eeb900af9f59a3e8db}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_set\_debug@{tmf882x\_set\_debug}}
+\index{tmf882x\_set\_debug@{tmf882x\_set\_debug}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_set\_debug()}{tmf882x\_set\_debug()}}
+{\footnotesize\ttfamily void tmf882x\+\_\+set\+\_\+debug (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof,  }\item[{bool}]{flag }\end{DoxyParamCaption})}
+
+
+
+Enable debug logging of the DCB. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & pointer to tof dcb interface context \\
+\hline
+\mbox{\texttt{ in}}  & {\em flag} & Non-\/zero value enables debug logging, 0 disables debug logging \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{tmf882x__interface_8h_a12a4db2fe3135cd124dc994a7f63c350}\label{tmf882x__interface_8h_a12a4db2fe3135cd124dc994a7f63c350}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_start@{tmf882x\_start}}
+\index{tmf882x\_start@{tmf882x\_start}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_start()}{tmf882x\_start()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+start (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Start measurements with current configuration. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & tof dcb interface context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 for sucess, otherwise failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tmf882x__interface_8h_a422b5b29ac48ed656f0bfe31b77db9a7}\label{tmf882x__interface_8h_a422b5b29ac48ed656f0bfe31b77db9a7}} 
+\index{tmf882x\_interface.h@{tmf882x\_interface.h}!tmf882x\_stop@{tmf882x\_stop}}
+\index{tmf882x\_stop@{tmf882x\_stop}!tmf882x\_interface.h@{tmf882x\_interface.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_stop()}{tmf882x\_stop()}}
+{\footnotesize\ttfamily int32\+\_\+t tmf882x\+\_\+stop (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} $\ast$}]{tof }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Stop measurements. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em tof} & tof dcb interface context \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 for sucess, otherwise failure 
+\end{DoxyReturn}

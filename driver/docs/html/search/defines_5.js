@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['tmf882x_5fbytes_5fper_5fbin_503',['TMF882X_BYTES_PER_BIN',['../tmf882x_8h.html#abcb5e82db7244121325c408f2b2410bc',1,'tmf882x.h']]],
+  ['tmf882x_5fhist_5fnum_5fbins_504',['TMF882X_HIST_NUM_BINS',['../tmf882x_8h.html#a65f02da3cad752da3a838accfe5f3010',1,'tmf882x.h']]],
+  ['tmf882x_5fhist_5fnum_5ftdc_505',['TMF882X_HIST_NUM_TDC',['../tmf882x_8h.html#a11cf465fcefa34d80b2060375d5f5d66',1,'tmf882x.h']]],
+  ['tmf882x_5fioctl_5fapp_5fmode_506',['TMF882X_IOCTL_APP_MODE',['../tmf882x__mode__app__ioctl_8h.html#a0f435cef4a073d8cf2c5909447ce999f',1,'tmf882x_mode_app_ioctl.h']]],
+  ['tmf882x_5fmax_5fmeas_5fresults_507',['TMF882X_MAX_MEAS_RESULTS',['../tmf882x_8h.html#a3090c0c3078863a0fa50a2264ff25755',1,'tmf882x.h']]],
+  ['tmf882x_5fmax_5fmsg_5fsize_508',['TMF882X_MAX_MSG_SIZE',['../tmf882x_8h.html#af06b17c74626f0add76f3c75fdeb645d',1,'tmf882x.h']]],
+  ['tmf882x_5fmodule_5fver_509',['TMF882X_MODULE_VER',['../tmf882x__interface_8h.html#acf01add0233134b9b895680f0e382e52',1,'tmf882x_interface.h']]],
+  ['tmf882x_5fnum_5fch_510',['TMF882X_NUM_CH',['../tmf882x_8h.html#a423a8bfa77b2470281f9fd06d99195d3',1,'tmf882x.h']]],
+  ['tmf882x_5fnum_5fch_5fper_5ftdc_511',['TMF882X_NUM_CH_PER_TDC',['../tmf882x_8h.html#a04c7f33f5d2474965dcc282e6cd8dcde',1,'tmf882x.h']]],
+  ['tmf8x2x_5fcom_5fheader_5fsize_512',['TMF8X2X_COM_HEADER_SIZE',['../tmf882x__mode__app__protocol_8h.html#ad5091da0bc429b86da5e98daf39af51b',1,'tmf882x_mode_app_protocol.h']]],
+  ['tmf8x2x_5fcom_5foptional_5fsubpacket_5fheader_5fsize_513',['TMF8X2X_COM_OPTIONAL_SUBPACKET_HEADER_SIZE',['../tmf882x__mode__app__protocol_8h.html#a5885ae54e2d4ca4e6c6ec09ad5c95274',1,'tmf882x_mode_app_protocol.h']]],
+  ['tmf8x2x_5fcom_5frid_5ffor_5fhistogram_514',['TMF8X2X_COM_RID_FOR_HISTOGRAM',['../tmf882x__mode__app__protocol_8h.html#ac17df36fdc6aa085bf4204049360925b',1,'tmf882x_mode_app_protocol.h']]],
+  ['tmf8x2x_5fcom_5frid_5fraw_5fhistogram_5f24_5fbits_515',['TMF8X2X_COM_RID_RAW_HISTOGRAM_24_BITS',['../tmf882x__mode__app__protocol_8h.html#ae80abad75830c209141a9f64efeb8ffc',1,'tmf882x_mode_app_protocol.h']]],
+  ['tmf8x2x_5fmain_5fspad_5fbits_5fper_5fchannel_516',['TMF8X2X_MAIN_SPAD_BITS_PER_CHANNEL',['../tmf882x__mode__app__protocol_8h.html#ad8647d064f91ebf0f18ac66b18e39e1d',1,'tmf882x_mode_app_protocol.h']]],
+  ['tmf8x2x_5fmain_5fspad_5fdecode_5fchannel_517',['TMF8X2X_MAIN_SPAD_DECODE_CHANNEL',['../tmf882x__mode__app__protocol_8h.html#aa3b14f638e29bf38b3422fbb4f51af5e',1,'tmf882x_mode_app_protocol.h']]],
+  ['tmf8x2x_5fmain_5fspad_5fencode_5fchannel_518',['TMF8X2X_MAIN_SPAD_ENCODE_CHANNEL',['../tmf882x__mode__app__protocol_8h.html#a9313907dba2b0e3b2e5a9bc9661fae9e',1,'tmf882x_mode_app_protocol.h']]],
+  ['tof_5ffwdl_5ftimeout_5fmsec_519',['TOF_FWDL_TIMEOUT_MSEC',['../tmf882x__interface_8h.html#a0e1faa41b0f5f4222e6c73b2d579fa82',1,'tmf882x_interface.h']]]
+];

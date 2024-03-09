@@ -1,0 +1,14 @@
+digraph "tmf882x_init"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="tmf882x_init",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Initialize tof structure, must be called before using any other interface function."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="tmf882x_open",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf882x__interface_8h.html#a7cb9356cd7d2286475bfb1fdfdfe8917",tooltip="Open the firmware core driver interface."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="tmf882x_fwdl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf882x__interface_8h.html#adcfeff783712f5e9d92358e7a368afec",tooltip="Download new firmware."];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="tmf882x_mode_switch",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$tmf882x__interface_8h.html#a6ab6c817006f3f97d5f80082bce12efb",tooltip="Perform an application mode switch operation on the current running application mode."];
+}

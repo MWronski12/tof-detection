@@ -1,0 +1,1126 @@
+Version 1.\+3
+
+\doxysection*{Contents }
+
+
+\begin{DoxyEnumerate}
+\item \href{\#introduction}{\texttt{ Introduction}}
+\item \href{\#tof-char-device}{\texttt{ ToF Char Device}}
+\item \href{\#tof-input-device}{\texttt{ ToF Input Device}}
+\item \href{\#sysfs-attributes}{\texttt{ Sys\+FS Attributes}}
+\item \href{\#factory-calibration}{\texttt{ Factory Calibration}}
+\item \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}}
+\end{DoxyEnumerate}
+
+\doxysection*{Introduction }
+
+This document describes User Application Programming Interface (API) to the TMF882X Linux Kernel Driver.
+
+\doxysection*{ToF Char Device }
+
+The TMF882X driver registers a character device with the Linux system called $\ast$$\ast$\+\_\+/dev/tof\+\_\+$\ast$$\ast$. The ToF char device is used for streaming messages from the driver. After module probe, the TMF882X device is in a low power state with the $\ast$$\ast$\+\_\+\+APPLICATION\+\_\+$\ast$$\ast$ mode loaded. Opening the ToF char device will bring the device out of standby to idle state.
+
+Common types of messages include\+:
+
+
+\begin{DoxyItemize}
+\item Histogram data
+\item Measurement Result data
+\item Driver error codes
+\end{DoxyItemize}
+
+All messages have a common header format with an identifier and message length. The driver buffers messages in an internal FIFO that user space applications may read. When reading from the ToF char device the user buffer should be large enough for at least one message, the driver will fill the buffer with as many messages that will fit completely. The driver will never put partial messages in the user buffer.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: If the user buffer is smaller than the next message in the FIFO the driver will return an error. \end{quote}
+\begin{quote}
+{\bfseries{Note}} 2\+: If the driver FIFO is empty by default the driver will block until a message is available \end{quote}
+\begin{quote}
+{\bfseries{Note}} 3\+: Since the ToF char device is a message stream, {\itshape seek()} operations and file {\itshape offset} are not supported \end{quote}
+\begin{quote}
+{\bfseries{Note}} 4\+: Since the ToF char device is a message stream, the ToF char device will never return EOF \end{quote}
+Example \textquotesingle{}C\textquotesingle{} code reading from ToF Char device\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{char buf[TMF882X\_MAX\_MSG\_SIZE];     /* buffer to hold at least 1 message */}
+\DoxyCodeLine{int off = 0;}
+\DoxyCodeLine{int ret = 0;}
+\DoxyCodeLine{while (1) \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{    /* read as many messages as our buffer size allows */}
+\DoxyCodeLine{    ret = read(fd, buf, sizeof(buf)));}
+\DoxyCodeLine{    off = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{    /* loop through the messages */}
+\DoxyCodeLine{    while (ret > 0 \&\& off < ret) \{}
+\DoxyCodeLine{        struct tmf882x\_msg *msg = buf + off;}
+\DoxyCodeLine{}
+\DoxyCodeLine{        switch (msg-\/>hdr.msg\_id) \{}
+\DoxyCodeLine{            case ID\_ERROR:      /* Error code message received */}
+\DoxyCodeLine{               struct tmf882x\_msg\_error *err = \&msg-\/>err\_msg;}
+\DoxyCodeLine{               *** Handle msg 'err' ***}
+\DoxyCodeLine{               break;}
+\DoxyCodeLine{            case .}
+\DoxyCodeLine{                 .}
+\DoxyCodeLine{                 .}
+\DoxyCodeLine{        \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{        off += msg-\/>hdr.msg\_len;     /* Move to next message in buffer */}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Refer to $\ast$$\ast$\+\_\+./include/linux/i2c/ams/tmf882x.h\+\_\+$\ast$$\ast$ for a detailed description of message definitions.
+
+\doxysection*{ToF Input Device }
+
+The TMF882X registers an input character device with the Linux Input system. After module probe, the TMF882X device is in a low power state with the $\ast$$\ast$\+\_\+\+APPLICATION\+\_\+$\ast$$\ast$ mode loaded. Opening the ToF input device will bring the device out of standby and start measurements with the default configuration.
+
+Below is the Linux Kernel definition of an input event\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{struct input\_event \{}
+\DoxyCodeLine{    struct timeval time;}
+\DoxyCodeLine{    \_\_u16 type;}
+\DoxyCodeLine{    \_\_u16 code;}
+\DoxyCodeLine{    \_\_s32 value;}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+
+
+Only measurement results are published on the input device. The TMF882X driver registers an input device with the following encoding\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{type = EV\_ABS;}
+\DoxyCodeLine{code = channel;}
+\DoxyCodeLine{val(31:24) = sub capture index}
+\DoxyCodeLine{val(23:16) = confidence;}
+\DoxyCodeLine{val(15:0) = distance in millimeters;}
+
+\end{DoxyCode}
+
+
+\doxysection*{Sys\+FS Attributes }
+
+General configuration of the TMF882X kernel driver is done through Sysfs attributes.
+
+\doxysubsection*{List of Sys\+FS Attributes }
+
+Sysfs attributes marked as mode == \textquotesingle{}N/A\textquotesingle{} are valid to use in any mode.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{4}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Mode   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Sys\+FS Attribute   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Read / Write   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Format    }\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Mode   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Sys\+FS Attribute   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Read / Write   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Format    }\\\cline{1-4}
+\endhead
+\PBS\centering N/A   &\href{\#mode}{\texttt{ mode}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering N/A   &\href{\#chip_enable}{\texttt{ chip\+\_\+enable}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering N/A   &\href{\#driver_debug}{\texttt{ driver\+\_\+debug}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering N/A   &\href{\#firmware_version}{\texttt{ firmware\+\_\+version}}   &\PBS\centering R   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering N/A   &\href{\#registers}{\texttt{ registers}}   &\PBS\centering R   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering N/A   &\href{\#register_write}{\texttt{ register\+\_\+write}}   &\PBS\centering W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering N/A   &\href{\#request_ram_patch}{\texttt{ request\+\_\+ram\+\_\+patch}}   &\PBS\centering W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering N/A   &\href{\#device_uid}{\texttt{ device\+\_\+uid}}   &\PBS\centering R   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering N/A   &\href{\#device_revision}{\texttt{ device\+\_\+revision}}   &\PBS\centering R   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appcapture}{\texttt{ app/capture}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appshort_range_mode}{\texttt{ app/short\+\_\+range\+\_\+mode}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appreport_period_ms}{\texttt{ app/report\+\_\+period\+\_\+ms}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appiterations}{\texttt{ app/iterations}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appalg_setting}{\texttt{ app/alg\+\_\+setting}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#apppower_cfg}{\texttt{ app/power\+\_\+cfg}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appgpio_0}{\texttt{ app/gpio\+\_\+0}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appgpio_1}{\texttt{ app/gpio\+\_\+1}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#apphistogram_dump}{\texttt{ app/histogram\+\_\+dump}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appconf_threshold}{\texttt{ app/conf\+\_\+threshold}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#applow_threshold}{\texttt{ app/low\+\_\+threshold}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#apphigh_threshold}{\texttt{ app/high\+\_\+threshold}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#apppersistence}{\texttt{ app/persistence}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appzone_mask}{\texttt{ app/zone\+\_\+mask}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appmode_8x8}{\texttt{ app/mode\+\_\+8x8}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appspad_map_id}{\texttt{ app/spad\+\_\+map\+\_\+id}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appxoff_q1_0}{\texttt{ app/xoff\+\_\+q1\+\_\+0}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appxoff_q1_1}{\texttt{ app/xoff\+\_\+q1\+\_\+1}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appyoff_q1_0}{\texttt{ app/yoff\+\_\+q1\+\_\+0}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appyoff_q1_1}{\texttt{ app/yoff\+\_\+q1\+\_\+1}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appxsize_0}{\texttt{ app/xsize\+\_\+0}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appxsize_1}{\texttt{ app/xsize\+\_\+1}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appysize_0}{\texttt{ app/ysize\+\_\+0}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appysize_1}{\texttt{ app/ysize\+\_\+1}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appspad_mask_0}{\texttt{ app/spad\+\_\+mask\+\_\+0}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appspad_mask_1}{\texttt{ app/spad\+\_\+mask\+\_\+1}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appspad_map_0}{\texttt{ app/spad\+\_\+map\+\_\+0}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appspad_map_1}{\texttt{ app/spad\+\_\+map\+\_\+1}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appcommit_spad_cfg}{\texttt{ app/commit\+\_\+spad\+\_\+cfg}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appreset_spad_cfg}{\texttt{ app/reset\+\_\+spad\+\_\+cfg}}   &\PBS\centering W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appclock_compensation}{\texttt{ app/clock\+\_\+compensation}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#apposc_trim}{\texttt{ app/osc\+\_\+trim}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#apposc_trim_freq}{\texttt{ app/osc\+\_\+trim\+\_\+freq}}   &\PBS\centering R/W   &\PBS\centering string    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appfactory_calibration}{\texttt{ app/factory\+\_\+calibration}}   &\PBS\centering R   &\PBS\centering bin    \\\cline{1-4}
+\PBS\centering 0x2   &\href{\#appcalibration_data}{\texttt{ app/calibration\+\_\+data}}   &\PBS\centering R/W   &\PBS\centering bin   \\\cline{1-4}
+\end{longtabu}
+
+
+\doxysubsection*{Sys\+FS Attribute Details }
+
+\doxysubsubsection*{mode}
+
+Read or Write the current mode of the TMF882X device.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0x80   &Bootloader    \\\cline{1-2}
+0x03   &Application   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{chip\+\_\+enable}
+
+Read or Write the CE GPIO line to control power to the TMF882X device.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0   &Unpowered    \\\cline{1-2}
+1   &Powered   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{driver\+\_\+debug}
+
+Read or Write the driver verbosity log level
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0   &No debug logging    \\\cline{1-2}
+1   &Debug logging   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{firmware\+\_\+version}
+
+Dump the current mode\textquotesingle{}s firmware version string.
+
+\doxysubsubsection*{registers}
+
+Dump the I2C register map of the TMF882X device.
+
+\doxysubsubsection*{register\+\_\+write}
+
+Write a value to a register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}\+:{\itshape bb}   &Write value {\itshape bb} to register {\itshape aa}    \\\cline{1-2}
+{\itshape aa}\+:{\itshape bb}\+:{\itshape cc}   &Write value {\itshape bb} to register {\itshape aa} with mask {\itshape cc}   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{request\+\_\+ram\+\_\+patch}
+
+Write any value to request a RAM patch firmware download. The TMF882X Linux kernel driver uses the Linux Firmare Framework to request the firmware $\ast$$\ast$/lib/firmware/tmf882x\+\_\+firmware.bin$\ast$$\ast$. The driver assumes the {\itshape APPLICATION} mode to be running after a successful FWDL.
+
+\doxysubsubsection*{device\+\_\+uid}
+
+Dump the current TMF882X device Unique ID or serial number string.
+
+\doxysubsubsection*{device\+\_\+revision}
+
+Dump the current TMF882X device revision string.
+
+\doxysubsubsection*{app/capture}
+
+Read or Write the Time-\/of-\/\+Flight distance measurement state.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0   &Stop measurements    \\\cline{1-2}
+1   &Start measurements   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/short\+\_\+range\+\_\+mode}
+
+Read or Write the Time-\/of-\/\+Flight short-\/range mode state.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0   &Short Range mode Disabled    \\\cline{1-2}
+1   &Short Range mode Enabled   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/report\+\_\+period\+\_\+ms}
+
+Read or Write measurement reporting period in milliseconds. Configuring a report period shorter than the time necessary to complete the measurements based on the current configuration results in a reporting period at the fastest possible rate.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &The reporting period in {\itshape aa} milliseconds   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/iterations}
+
+Read or Write the measurement iterations of the TMF882X device.
+
+\begin{quote}
+{\bfseries{Note}}\+: Iterations may not match exactly what was set by the user due to the TMF882X device only supporting measurement iterations in units of {\itshape iterations} $\ast$ 1024 \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &The measurement iterations in {\itshape aa}   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/alg\+\_\+setting}
+
+Read or Write the current ToF algorithm measurement settings. Please refer to the TMF882X datasheet for details on the {\bfseries{alg\+\_\+setting}} register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{alg\+\_\+setting}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/power\+\_\+cfg}
+
+Read or Write the current ToF power configuration settings. Please refer to the TMF882X datasheet for details on the {\bfseries{power\+\_\+cfg}} register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{power\+\_\+cfg}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/gpio\+\_\+0}
+
+Read or Write the current GPIO\+\_\+0 setting. Please refer to the TMF882X datasheet for details on the {\bfseries{gpio\+\_\+0}} register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{gpio\+\_\+0}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/gpio\+\_\+1}
+
+Read or Write the current GPIO\+\_\+1 setting. Please refer to the TMF882X datasheet for details on the {\bfseries{gpio\+\_\+1}} register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{gpio\+\_\+1}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/histogram\+\_\+dump}
+
+Read or Write the current histogram dump setting. Please refer to the TMF882X datasheet for details on the {\bfseries{histogram\+\_\+dump}} register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{histogram\+\_\+dump}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/conf\+\_\+threshold}
+
+Read or Write the current confidence threshold setting. Please refer to the TMF882X datasheet for details on the {\bfseries{confidence\+\_\+threshold}} register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{confidence\+\_\+threshold}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/low\+\_\+threshold}
+
+Read or Write the current low distance threshold setting. Please refer to the TMF882X datasheet for details on the {\bfseries{low\+\_\+threshold}} register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{low\+\_\+threshold}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/high\+\_\+threshold}
+
+Read or Write the current high distance threshold setting. Please refer to the TMF882X datasheet for details on the {\bfseries{high\+\_\+threshold}} register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{high\+\_\+threshold}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/persistence}
+
+Read or Write the current persistence setting. Please refer to the TMF882X datasheet for details on the {\bfseries{persistence}} register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{persistence}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/zone\+\_\+mask}
+
+Read or Write the current zone mask setting. Please refer to the TMF882X datasheet for details on the {\bfseries{zone\+\_\+mask}} register.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{zone\+\_\+mask}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/mode\+\_\+8x8}
+
+Read or Write to enable/disable the 8x8 Mode. Please refer to the TMF8828 datasheet for details on the 8x8 Mode.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Only TMF8828 devices support 8x8 mode \end{quote}
+\begin{quote}
+{\bfseries{Note}} 2\+: The driver output result message types do not change. The user \end{quote}
+application can group the 8x8 result messages by collecting {\itshape four} result messages from the driver and ensuring the lower 2 bits of the result numbers in the messages are b\textquotesingle{}{\ttfamily 00}, b\textquotesingle{}{\ttfamily 01}, b\textquotesingle{}{\ttfamily 02}, b\textquotesingle{}{\ttfamily 03}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0   &Normal mode    \\\cline{1-2}
+1   &8x8 Mode (if supported)   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/spad\+\_\+map\+\_\+id}
+
+Read or Write the current SPAD map ID setting. Please refer to the TMF882X datasheet for details on the {\bfseries{spad\+\_\+map\+\_\+id}} register.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Calibration data must be updated when changing the SPAD configuration {\bfseries{Note}} 2\+: The driver spad configuration should be reset by writing to {\bfseries{\href{\#appreset_spad_cfg}{\texttt{ app/reset\+\_\+spad\+\_\+cfg}}}} before reading from any of the following attributes\+: \end{quote}
+
+\begin{DoxyItemize}
+\item \href{\#appxoff_q1_0}{\texttt{ app/xoff\+\_\+q1\+\_\+0}}
+\item \href{\#appxoff_q1_1}{\texttt{ app/xoff\+\_\+q1\+\_\+1}}
+\item \href{\#appyoff_q1_0}{\texttt{ app/yoff\+\_\+q1\+\_\+0}}
+\item \href{\#appyoff_q1_1}{\texttt{ app/yoff\+\_\+q1\+\_\+1}}
+\item \href{\#appxsize_0}{\texttt{ app/xsize\+\_\+0}}
+\item \href{\#appxsize_1}{\texttt{ app/xsize\+\_\+1}}
+\item \href{\#appysize_0}{\texttt{ app/ysize\+\_\+0}}
+\item \href{\#appysize_1}{\texttt{ app/ysize\+\_\+1}}
+\item \href{\#appspad_mask_0}{\texttt{ app/spad\+\_\+mask\+\_\+0}}
+\item \href{\#appspad_mask_1}{\texttt{ app/spad\+\_\+mask\+\_\+1}}
+\item \href{\#appspad_map_0}{\texttt{ app/spad\+\_\+map\+\_\+0}}
+\item \href{\#appspad_map_1}{\texttt{ app/spad\+\_\+map\+\_\+1}}
+\end{DoxyItemize}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the {\bfseries{spad\+\_\+map\+\_\+id}} register setting   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/xoff\+\_\+q1\+\_\+0}
+
+Read or Write the X-\/direction offset of the SPAD map in fixed point Q1 format for sub capture 0 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the X-\/direction offset in Q1 fixed point   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/xoff\+\_\+q1\+\_\+1}
+
+Read or Write the X-\/direction offset of the SPAD map in fixed point Q1 format for sub capture 1 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the X-\/direction offset in Q1 fixed point   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/yoff\+\_\+q1\+\_\+0}
+
+Read or Write the Y-\/direction offset of the SPAD map in fixed point Q1 format for sub capture 0 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the Y-\/direction offset in Q1 fixed point   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/yoff\+\_\+q1\+\_\+1}
+
+Read or Write the Y-\/direction offset of the SPAD map in fixed point Q1 format for sub capture 1 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the Y-\/direction offset in Q1 fixed point   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/xsize\+\_\+0}
+
+Read or Write the number of columns for the SPAD configuration for sub capture 0 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the X-\/direction size in number of SPADs   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/xsize\+\_\+1}
+
+Read or Write the number of columns for the SPAD configuration for sub capture 1 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the X-\/direction size in number of SPADs   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/ysize\+\_\+0}
+
+Read or Write the number of rows for the SPAD configuration for sub capture 0 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the Y-\/direction size in number of SPADs   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/ysize\+\_\+1}
+
+Read or Write the number of rows for the SPAD configuration for sub capture 1 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &{\itshape aa} is the Y-\/direction size in number of SPADs   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/spad\+\_\+mask\+\_\+0}
+
+Read or Write the SPAD enable/disable mask for sub capture 0 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\begin{quote}
+{\bfseries{Note}} 2\+: Values are white-\/space separated list of zero and non-\/zero values. Total number of values when reading/writing should equal {\bfseries{\href{\#app/xsize_0}{\texttt{ app/xsize\+\_\+0}} $\ast$ \href{\#app/ysize_0}{\texttt{ app/ysize\+\_\+0}}}} \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0   &Disable SPAD    \\\cline{1-2}
+Non-\/\+Zero   &Enable SPAD   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/spad\+\_\+mask\+\_\+1}
+
+Read or Write the SPAD enable/disable mask for sub capture 1 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\begin{quote}
+{\bfseries{Note}} 2\+: Values are white-\/space separated list of zero and non-\/zero values. Total number of values when reading/writing should equal {\bfseries{\href{\#appxsize_1}{\texttt{ app/xsize\+\_\+1}} $\ast$ \href{\#appysize_1}{\texttt{ app/ysize\+\_\+1}}}} \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0   &Disable SPAD    \\\cline{1-2}
+Non-\/\+Zero   &Enable SPAD   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/spad\+\_\+map\+\_\+0}
+
+Read or Write the SPAD channel mapping for sub capture 0 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\begin{quote}
+{\bfseries{Note}} 2\+: Values are white-\/space separated list of values. Total number of values when reading/writing should equal {\bfseries{\href{\#appxsize_0}{\texttt{ app/xsize\+\_\+0}} $\ast$ \href{\#appysize_0}{\texttt{ app/ysize\+\_\+0}}}} \end{quote}
+\begin{quote}
+{\bfseries{Note}} 3\+: Channel 0 should not be used \end{quote}
+\begin{quote}
+{\bfseries{Note}} 4\+: Channels 1 and 8/9 cannot be mapped on the same row. \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &Map SPAD to channel {\itshape aa}   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/spad\+\_\+map\+\_\+1}
+
+Read or Write the SPAD channel mapping for sub capture 1 of time-\/multiplexed measurements.
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+\begin{quote}
+{\bfseries{Note}} 2\+: Values are white-\/space separated list of values. Total number of values when reading/writing should equal {\bfseries{\href{\#appxsize_1}{\texttt{ app/xsize\+\_\+1}} $\ast$ \href{\#appysize_1}{\texttt{ app/ysize\+\_\+1}}}} \end{quote}
+\begin{quote}
+{\bfseries{Note}} 3\+: Channel 0 should not be used \end{quote}
+\begin{quote}
+{\bfseries{Note}} 4\+: Channels 1 and 8/9 cannot be mapped on the same row. \end{quote}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &Map SPAD to channel {\itshape aa}   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/commit\+\_\+spad\+\_\+cfg}
+
+Read or Write whether the SPAD configuration Sys\+FS attributes are committed to the device configuration as a single bulk configuration\+:
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+
+\begin{DoxyItemize}
+\item \href{\#appxoff_q1_0}{\texttt{ app/xoff\+\_\+q1\+\_\+0}}
+\item \href{\#appxoff_q1_1}{\texttt{ app/xoff\+\_\+q1\+\_\+1}}
+\item \href{\#appyoff_q1_0}{\texttt{ app/yoff\+\_\+q1\+\_\+0}}
+\item \href{\#appyoff_q1_1}{\texttt{ app/yoff\+\_\+q1\+\_\+1}}
+\item \href{\#appxsize_0}{\texttt{ app/xsize\+\_\+0}}
+\item \href{\#appxsize_1}{\texttt{ app/xsize\+\_\+1}}
+\item \href{\#appysize_0}{\texttt{ app/ysize\+\_\+0}}
+\item \href{\#appysize_1}{\texttt{ app/ysize\+\_\+1}}
+\item \href{\#appspad_mask_0}{\texttt{ app/spad\+\_\+mask\+\_\+0}}
+\item \href{\#appspad_mask_1}{\texttt{ app/spad\+\_\+mask\+\_\+1}}
+\item \href{\#appspad_map_0}{\texttt{ app/spad\+\_\+map\+\_\+0}}
+\item \href{\#appspad_map_1}{\texttt{ app/spad\+\_\+map\+\_\+1}}
+\end{DoxyItemize}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0   &SPAD configuration contains uncommitted changes    \\\cline{1-2}
+1   &SPAD configuration is committed to the device   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/reset\+\_\+spad\+\_\+cfg}
+
+Write-\/only reset the driver-\/cached SPAD configuration by synchronizing to the spad configuration on the device\+:
+
+\begin{quote}
+{\bfseries{Note}} 1\+: Refer to \href{\#custom-spad-configuration}{\texttt{ Custom SPAD Configuration}} \end{quote}
+
+\begin{DoxyItemize}
+\item \href{\#appxoff_q1_0}{\texttt{ app/xoff\+\_\+q1\+\_\+0}}
+\item \href{\#appxoff_q1_1}{\texttt{ app/xoff\+\_\+q1\+\_\+1}}
+\item \href{\#appyoff_q1_0}{\texttt{ app/yoff\+\_\+q1\+\_\+0}}
+\item \href{\#appyoff_q1_1}{\texttt{ app/yoff\+\_\+q1\+\_\+1}}
+\item \href{\#appxsize_0}{\texttt{ app/xsize\+\_\+0}}
+\item \href{\#appxsize_1}{\texttt{ app/xsize\+\_\+1}}
+\item \href{\#appysize_0}{\texttt{ app/ysize\+\_\+0}}
+\item \href{\#appysize_1}{\texttt{ app/ysize\+\_\+1}}
+\item \href{\#appspad_mask_0}{\texttt{ app/spad\+\_\+mask\+\_\+0}}
+\item \href{\#appspad_mask_1}{\texttt{ app/spad\+\_\+mask\+\_\+1}}
+\item \href{\#appspad_map_0}{\texttt{ app/spad\+\_\+map\+\_\+0}}
+\item \href{\#appspad_map_1}{\texttt{ app/spad\+\_\+map\+\_\+1}}
+\end{DoxyItemize}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+1   &Driver SPAD configuration is synchronized with the device   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/clock\+\_\+compensation}
+
+Read or Write whether the driver performs clock skew compensation.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0   &Clock skew compensation is disabled    \\\cline{1-2}
+non-\/zero   &Clock skew compensation is enabled   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/osc\+\_\+trim}
+
+Read or Write whether the driver performs OSC trimming
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+0   &Oscillator trimming is disabled    \\\cline{1-2}
+non-\/zero   &Oscillator trimming is enabled   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/osc\+\_\+trim\+\_\+freq}
+
+Write the target device OSC frequency or Read the current device OSC frequency
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Value   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-2}
+\endhead
+{\itshape aa}   &Frequency in Hz   \\\cline{1-2}
+\end{longtabu}
+
+
+\doxysubsubsection*{app/factory\+\_\+calibration}
+
+Perform a factory calibration and dump the factory calibration binary data. Please refer to the TMF882X datasheet for details on {\bfseries{factory calibration}} configuration.
+
+\doxysubsubsection*{app/calibration\+\_\+data}
+
+Read or Write the calibration binary data. Please refer to the TMF882X datasheet for details on {\bfseries{factory calibration}} configuration.
+
+\begin{quote}
+{\bfseries{Note}}\+: The TMF882X device continuously updates calibration data during runtime. For best performance, client applications should periodically save the calibration data and write it back to the TMF882X device after power loss or a SPAD configuration change. \end{quote}
+
+
+\doxysection*{Factory Calibration }
+
+The TMF882X device supports a calibration data read/write mechanism (see {\bfseries{factory calibration}} details in the TMF882X datasheet). Factory calibration provides a default calibration data. The TMF882X internal calibration data is updated at runtime based off captured measurements. For best performance, the host should periodically save the calibration data that should be written back to the device after any power loss or SPAD configuration change.
+
+\doxysubsection*{Performing Factory Calibration }
+
+The TMF882X driver factory calibration process will stop all measurements, disable any histogram dump settings, then perform the the factory calibration command as documented in the TMF882X datasheet. The factory calibration process can be performed by reading the Sys\+FS \href{\#appfactory_calibration}{\texttt{ app/factory\+\_\+calibration}}.
+
+$>$Example performing factory calibration\+: \begin{quote}
+$>$\`{}\`{}\`{} cat factory\+\_\+calibration $>$ calib.\+bin $>$\`{}\`{}\`{} \end{quote}
+\doxysubsection*{Reading Measurement-\/\+Updated Calibration Data }
+
+The current measurement-\/updated calibration data can be read from the TMF882X device by reading the Sys\+FS \href{\#appcalibration_data}{\texttt{ app/calibration\+\_\+data}}. Any active measurements will be stopped, and then resumed after updating the calibration data if there were no errors.
+
+$>$Example reading current calibration data\+: \begin{quote}
+$>$\`{}\`{}\`{} cat calibration\+\_\+data $>$ calib.\+bin $>$\`{}\`{}\`{} \end{quote}
+\doxysubsection*{Writing Calibration Data }
+
+Updating the TMF882X calibration data can be used to write the factory calibration, or a measurement-\/updated calibration. Any active measurements will be stopped, and then resumed after updating the calibration data if there were no errors. The calibration data can be written to the device through Sys\+FS by writing to \href{\#appcalibration_data}{\texttt{ app/calibration\+\_\+data}}.
+
+$>$Example writing calibration data to TMF882X device\+: \begin{quote}
+$>$\`{}\`{}\`{} cat calib.\+bin $>$ app/calibration\+\_\+data $>$\`{}\`{}\`{} \end{quote}
+
+
+\doxysection*{Custom SPAD Configuration }
+
+The TMF882X device has several predefined SPAD configurations as detailed in TMF882X datasheet, but also supports user custom SPAD configurations.
+
+Order of Operations for Custom SPAD configuration\+:
+
+
+\begin{DoxyEnumerate}
+\item Set \href{\#appspad_map_id}{\texttt{ app/spad\+\_\+map\+\_\+id}} to a custom SPAD configuration value as detailed in the TMF882X datasheet.
+\item Set the X and Y SPAD mask offsets in
+\begin{DoxyItemize}
+\item \href{\#appxoff_q1_0}{\texttt{ app/xoff\+\_\+q1\+\_\+0}}
+\item \href{\#appyoff_q1_0}{\texttt{ app/yoff\+\_\+q1\+\_\+0}}
+\end{DoxyItemize}
+\item Set the X and Y SPAD mask size in
+\begin{DoxyItemize}
+\item \href{\#appxsize_0}{\texttt{ app/xsize\+\_\+0}}
+\item \href{\#appysize_0}{\texttt{ app/ysize\+\_\+0}}
+\end{DoxyItemize}
+\item Set the SPAD enable mask in
+\begin{DoxyItemize}
+\item \href{\#appspad_mask_0}{\texttt{ app/spad\+\_\+mask\+\_\+0}}
+\end{DoxyItemize}
+\item Set the SPAD channel mapping in
+\begin{DoxyItemize}
+\item \href{\#appspad_map_0}{\texttt{ app/spad\+\_\+map\+\_\+0}}
+\end{DoxyItemize}
+\item Commit the custom SPAD configuration by writing to
+\begin{DoxyItemize}
+\item \href{\#appcommit_spad_cfg}{\texttt{ app/commit\+\_\+spad\+\_\+config}}
+\end{DoxyItemize}
+\end{DoxyEnumerate}
+
+\begin{quote}
+{\bfseries{Note}} 1\+: The SPAD mask and SPAD channel mapping should be equal in size to the {\bfseries{\href{\#appxsize_0}{\texttt{ app/xsize\+\_\+0}} $\ast$ \href{\#appysize_0}{\texttt{ app/ysize\+\_\+0}}}} \end{quote}
+\begin{quote}
+{\bfseries{Note}} 2\+: If using a time-\/multiplexed custom SPAD configuration, the {\itshape $\ast$$\ast$\+N$\ast$$\ast$th} sub-\/capture SPAD configuration can be configured by using the corresponding Sys\+FS SPAD config attributes with postfix \+\_\+\+\_\+$\ast$$\ast$\+N$\ast$$\ast$\+\_\+ \end{quote}
+\begin{quote}
+{\bfseries{Note}} 3\+: The driver-\/cached spad configuration can be reset to the current \end{quote}
+device spad configuration by writing to {\bfseries{\href{\#appreset_spad_cfg}{\texttt{ app/reset\+\_\+spad\+\_\+cfg}}}}
+
+Example custom SPAD configuration with two time-\/multiplexed sub captures\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\# Set SPAD map ID to custom configuration with two multiplexed subcaptures}
+\DoxyCodeLine{\#  that combine to a 4x4 zone}
+\DoxyCodeLine{echo 15 > app/spad\_map\_id}
+\DoxyCodeLine{}
+\DoxyCodeLine{\# Move FOV South one SPAD for both subcaptures}
+\DoxyCodeLine{echo 0 > app/xoff\_q1\_0}
+\DoxyCodeLine{echo -\/2 > app/yoff\_q1\_0}
+\DoxyCodeLine{echo 0 > app/xoff\_q1\_1}
+\DoxyCodeLine{echo -\/2 > app/yoff\_q1\_1}
+\DoxyCodeLine{}
+\DoxyCodeLine{\# Set SPAD mask size to 8 x 8}
+\DoxyCodeLine{echo 8 > app/xsize\_0}
+\DoxyCodeLine{echo 8 > app/ysize\_0}
+\DoxyCodeLine{echo 8 > app/xsize\_1}
+\DoxyCodeLine{echo 8 > app/ysize\_1}
+\DoxyCodeLine{}
+\DoxyCodeLine{\# Set subcapture 0 to be left half}
+\DoxyCodeLine{echo -\/n "{}}
+\DoxyCodeLine{1 1 1 1 0 0 0 0}
+\DoxyCodeLine{1 1 1 1 0 0 0 0}
+\DoxyCodeLine{1 1 1 1 0 0 0 0}
+\DoxyCodeLine{1 1 1 1 0 0 0 0}
+\DoxyCodeLine{1 1 1 1 0 0 0 0}
+\DoxyCodeLine{1 1 1 1 0 0 0 0}
+\DoxyCodeLine{1 1 1 1 0 0 0 0}
+\DoxyCodeLine{1 1 1 1 0 0 0 0}
+\DoxyCodeLine{"{} > app/spad\_mask\_0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\# Set subcapture 1 to be right half}
+\DoxyCodeLine{echo -\/n "{}}
+\DoxyCodeLine{0 0 0 0 1 1 1 1}
+\DoxyCodeLine{0 0 0 0 1 1 1 1}
+\DoxyCodeLine{0 0 0 0 1 1 1 1}
+\DoxyCodeLine{0 0 0 0 1 1 1 1}
+\DoxyCodeLine{0 0 0 0 1 1 1 1}
+\DoxyCodeLine{0 0 0 0 1 1 1 1}
+\DoxyCodeLine{0 0 0 0 1 1 1 1}
+\DoxyCodeLine{0 0 0 0 1 1 1 1}
+\DoxyCodeLine{"{} > app/spad\_mask\_1}
+\DoxyCodeLine{}
+\DoxyCodeLine{\# Set subcapture 0 SPAD channel mapping}
+\DoxyCodeLine{echo -\/n "{}}
+\DoxyCodeLine{1 1 2 2 2 2 1 1}
+\DoxyCodeLine{1 1 2 2 2 2 1 1}
+\DoxyCodeLine{3 3 4 4 4 4 3 3}
+\DoxyCodeLine{3 3 4 4 4 4 3 3}
+\DoxyCodeLine{5 5 6 6 6 6 5 5}
+\DoxyCodeLine{5 5 6 6 6 6 5 5}
+\DoxyCodeLine{7 7 8 8 8 8 7 7}
+\DoxyCodeLine{7 7 8 8 8 8 7 7}
+\DoxyCodeLine{"{} > app/spad\_map\_0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\# Set subcapture 1 SPAD channel mapping}
+\DoxyCodeLine{echo -\/n "{}}
+\DoxyCodeLine{1 1 2 2 2 2 1 1}
+\DoxyCodeLine{1 1 2 2 2 2 1 1}
+\DoxyCodeLine{3 3 4 4 4 4 3 3}
+\DoxyCodeLine{3 3 4 4 4 4 3 3}
+\DoxyCodeLine{5 5 6 6 6 6 5 5}
+\DoxyCodeLine{5 5 6 6 6 6 5 5}
+\DoxyCodeLine{7 7 8 8 8 8 7 7}
+\DoxyCodeLine{7 7 8 8 8 8 7 7}
+\DoxyCodeLine{"{} > app/spad\_map\_1}
+\DoxyCodeLine{}
+\DoxyCodeLine{\# Commit custom SPAD configuration}
+\DoxyCodeLine{echo 1 > app/commit\_spad\_cfg}
+
+\end{DoxyCode}
+ 

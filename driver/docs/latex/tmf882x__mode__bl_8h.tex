@@ -1,0 +1,245 @@
+\hypertarget{tmf882x__mode__bl_8h}{}\doxysection{tmf882x\+\_\+mode\+\_\+bl.\+h File Reference}
+\label{tmf882x__mode__bl_8h}\index{tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}}
+
+
+TMF882X Bootloader mode interface.  
+
+
+{\ttfamily \#include \char`\"{}tmf882x\+\_\+mode.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}intel\+\_\+hex\+\_\+interpreter.\+h\char`\"{}}\newline
+Include dependency graph for tmf882x\+\_\+mode\+\_\+bl.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__bl__short__resp}{tmf882x\+\_\+mode\+\_\+bl\+\_\+short\+\_\+resp}}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__bl__read__ram__resp}{tmf882x\+\_\+mode\+\_\+bl\+\_\+read\+\_\+ram\+\_\+resp}}
+\item 
+struct \mbox{\hyperlink{structtmf882x__anon__resp}{tmf882x\+\_\+anon\+\_\+resp}}
+\item 
+union \mbox{\hyperlink{uniontmf882x__mode__bl__response}{tmf882x\+\_\+mode\+\_\+bl\+\_\+response}}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__bl__short__cmd}{tmf882x\+\_\+mode\+\_\+bl\+\_\+short\+\_\+cmd}}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__bl__upload__init__cmd}{tmf882x\+\_\+mode\+\_\+bl\+\_\+upload\+\_\+init\+\_\+cmd}}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__bl__read__ram__cmd}{tmf882x\+\_\+mode\+\_\+bl\+\_\+read\+\_\+ram\+\_\+cmd}}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__bl__write__ram__cmd}{tmf882x\+\_\+mode\+\_\+bl\+\_\+write\+\_\+ram\+\_\+cmd}}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__bl__addr__ram__cmd}{tmf882x\+\_\+mode\+\_\+bl\+\_\+addr\+\_\+ram\+\_\+cmd}}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__bl__anon__cmd}{tmf882x\+\_\+mode\+\_\+bl\+\_\+anon\+\_\+cmd}}
+\item 
+union \mbox{\hyperlink{uniontmf882x__mode__bl__command}{tmf882x\+\_\+mode\+\_\+bl\+\_\+command}}
+\item 
+struct \mbox{\hyperlink{structtmf882x__mode__bl}{tmf882x\+\_\+mode\+\_\+bl}}
+\begin{DoxyCompactList}\small\item\em This is the Bootloader mode context structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{tmf882x__mode__bl_8h_a0dc3a1c21367df85c343246f12a94b04}{mode\+\_\+to\+\_\+bl}}(x)
+\begin{DoxyCompactList}\small\item\em Return pointer to \mbox{\hyperlink{structtmf882x__mode__bl}{tmf882x\+\_\+mode\+\_\+bl}} from pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_a45dae7c1180ed04c7829622d0fb0abaa}\label{tmf882x__mode__bl_8h_a45dae7c1180ed04c7829622d0fb0abaa}} 
+\#define {\bfseries BL\+\_\+\+CMD\+\_\+\+SIZE}~1
+\item 
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_abfdf433ce6a5a66a06f07bc1e8c84e68}\label{tmf882x__mode__bl_8h_abfdf433ce6a5a66a06f07bc1e8c84e68}} 
+\#define {\bfseries BL\+\_\+\+DATA\+\_\+\+LEN\+\_\+\+SIZE}~1
+\item 
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_ac256ad31dac6e5c1a1824634b158af9a}\label{tmf882x__mode__bl_8h_ac256ad31dac6e5c1a1824634b158af9a}} 
+\#define {\bfseries BL\+\_\+\+CHKSUM\+\_\+\+SIZE}~1
+\item 
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_a4bb22ada1562c7a271eb821ee2043f9d}\label{tmf882x__mode__bl_8h_a4bb22ada1562c7a271eb821ee2043f9d}} 
+\#define {\bfseries BL\+\_\+\+NUM\+\_\+\+DATA}~128
+\item 
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_a759960b25aba9d500062d7a044ee503b}\label{tmf882x__mode__bl_8h_a759960b25aba9d500062d7a044ee503b}} 
+\#define {\bfseries BL\+\_\+\+MAX\+\_\+\+DATA\+\_\+\+SZ}~(BL\+\_\+\+NUM\+\_\+\+DATA$\ast$sizeof(uint8\+\_\+t))
+\item 
+\#define {\bfseries BL\+\_\+\+MSG\+\_\+\+HEADER\+\_\+\+SIZE}
+\item 
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_ab3dd1a9a9a1b9db4d44f335c3a7c8eec}\label{tmf882x__mode__bl_8h_ab3dd1a9a9a1b9db4d44f335c3a7c8eec}} 
+\#define {\bfseries BL\+\_\+\+MSG\+\_\+\+FOOTER\+\_\+\+SIZE}~BL\+\_\+\+CHKSUM\+\_\+\+SIZE
+\item 
+\#define {\bfseries BL\+\_\+\+MSG\+\_\+\+CMD\+\_\+\+MAX\+\_\+\+SIZE}
+\item 
+\#define {\bfseries BL\+\_\+\+CALC\+\_\+\+CHKSUM\+\_\+\+SIZE}(sz)
+\item 
+\#define {\bfseries BL\+\_\+\+CALC\+\_\+\+CMD\+\_\+\+SIZE}(sz)
+\item 
+\#define {\bfseries BL\+\_\+\+CALC\+\_\+\+RSP\+\_\+\+SIZE}(sz)
+\item 
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_a455f3fef19d6e287bf984f87b4311f2b}\label{tmf882x__mode__bl_8h_a455f3fef19d6e287bf984f87b4311f2b}} 
+\#define \mbox{\hyperlink{tmf882x__mode__bl_8h_a455f3fef19d6e287bf984f87b4311f2b}{BL\+\_\+\+IS\+\_\+\+CMD\+\_\+\+BUSY}}(x)~((x) $>$= BL\+\_\+\+STAT\+\_\+\+CMD\+\_\+\+BUSY)
+\begin{DoxyCompactList}\small\item\em Returns non-\/zero if the CMD\+\_\+\+STAT value indicates the bootloader is busy performing a command. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_a624a917c27c0e4124bf4c72dd38303dc}\label{tmf882x__mode__bl_8h_a624a917c27c0e4124bf4c72dd38303dc}} 
+enum \mbox{\hyperlink{tmf882x__mode__bl_8h_a624a917c27c0e4124bf4c72dd38303dc}{tmf882x\+\_\+mode\+\_\+bl\+\_\+regs}} \{ \newline
+{\bfseries BL\+\_\+\+REG\+\_\+\+CMD\+\_\+\+STATUS} = 0x08
+, {\bfseries BL\+\_\+\+REG\+\_\+\+DATA\+\_\+\+SIZE} = 0x09
+, {\bfseries BL\+\_\+\+REG\+\_\+\+DATA\+\_\+0} = 0x0A
+, {\bfseries BL\+\_\+\+REG\+\_\+\+DATA\+\_\+127} = 0x89
+, \newline
+{\bfseries BL\+\_\+\+REG\+\_\+\+CHKSUM} = 0x8A
+ \}
+\begin{DoxyCompactList}\small\item\em register map specific to bootloader mode \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_ad6ca86564a1a8eb5e7a9e48118fb4472}\label{tmf882x__mode__bl_8h_ad6ca86564a1a8eb5e7a9e48118fb4472}} 
+enum \mbox{\hyperlink{tmf882x__mode__bl_8h_ad6ca86564a1a8eb5e7a9e48118fb4472}{tmf882x\+\_\+mode\+\_\+bl\+\_\+cmd}} \{ \newline
+{\bfseries BL\+\_\+\+CMD\+\_\+\+RST} = 0x10
+, {\bfseries BL\+\_\+\+CMD\+\_\+\+RAMREMAP\+\_\+\+RST} = 0x11
+, {\bfseries BL\+\_\+\+CMD\+\_\+\+ROMREMAP\+\_\+\+RST} = 0x12
+, {\bfseries BL\+\_\+\+CMD\+\_\+\+EXT\+\_\+\+FLASHRST} = 0x13
+, \newline
+{\bfseries BL\+\_\+\+CMD\+\_\+\+UPLOAD\+\_\+\+INIT} = 0x14
+, {\bfseries BL\+\_\+\+CMD\+\_\+\+ADDR\+\_\+\+EXT\+\_\+\+FLASH} = 0x15
+, {\bfseries BL\+\_\+\+CMD\+\_\+\+BIST} = 0x2C
+, {\bfseries BL\+\_\+\+CMD\+\_\+\+RD\+\_\+\+RAM} = 0x40
+, \newline
+{\bfseries BL\+\_\+\+CMD\+\_\+\+WR\+\_\+\+RAM} = 0x41
+, {\bfseries BL\+\_\+\+CMD\+\_\+\+RAM\+\_\+\+ADDR} = 0x43
+ \}
+\begin{DoxyCompactList}\small\item\em all bootloader mode commands \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_a91034a0ce649d35d58b3a7fd8c786ed4}\label{tmf882x__mode__bl_8h_a91034a0ce649d35d58b3a7fd8c786ed4}} 
+enum \mbox{\hyperlink{tmf882x__mode__bl_8h_a91034a0ce649d35d58b3a7fd8c786ed4}{tmf882x\+\_\+mode\+\_\+bl\+\_\+cmd\+\_\+stat}} \{ \newline
+{\bfseries BL\+\_\+\+STAT\+\_\+\+READY} = 0x0
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERR\+\_\+\+SIZE} = 0x1
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERR\+\_\+\+CSUM} = 0x2
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERR\+\_\+\+RES} = 0x3
+, \newline
+{\bfseries BL\+\_\+\+STAT\+\_\+\+ERR\+\_\+\+APP} = 0x4
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERR\+\_\+\+TIMEOUT} = 0x5
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERR\+\_\+\+LOCK} = 0x6
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERR\+\_\+\+RANGE} = 0x7
+, \newline
+{\bfseries BL\+\_\+\+STAT\+\_\+\+ERR\+\_\+\+MORE} = 0x8
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERROR1} = 0x9
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERROR2} = 0xA
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERROR3} = 0xB
+, \newline
+{\bfseries BL\+\_\+\+STAT\+\_\+\+ERROR4} = 0xC
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERROR5} = 0xD
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERROR6} = 0xE
+, {\bfseries BL\+\_\+\+STAT\+\_\+\+ERROR7} = 0xF
+, \newline
+{\bfseries BL\+\_\+\+STAT\+\_\+\+CMD\+\_\+\+BUSY} = 0x10
+, {\bfseries MAX\+\_\+\+BL\+\_\+\+STAT}
+ \}
+\begin{DoxyCompactList}\small\item\em all bootloader mode command status return codes \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tmf882x__mode__bl_8h_a04d6ae5992f23d7e17c14fed8c1c1386}{tmf882x\+\_\+mode\+\_\+bl\+\_\+init}} (struct \mbox{\hyperlink{structtmf882x__mode__bl}{tmf882x\+\_\+mode\+\_\+bl}} $\ast$bl, void $\ast$priv)
+\begin{DoxyCompactList}\small\item\em Initialize a \mbox{\hyperlink{structtmf882x__mode__bl}{tmf882x\+\_\+mode\+\_\+bl}} context structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+TMF882X Bootloader mode interface. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_acd874caf34c2fb7adc075e74e6247c10}\label{tmf882x__mode__bl_8h_acd874caf34c2fb7adc075e74e6247c10}} 
+\index{tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}!BL\_CALC\_CHKSUM\_SIZE@{BL\_CALC\_CHKSUM\_SIZE}}
+\index{BL\_CALC\_CHKSUM\_SIZE@{BL\_CALC\_CHKSUM\_SIZE}!tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}}
+\doxysubsubsection{\texorpdfstring{BL\_CALC\_CHKSUM\_SIZE}{BL\_CALC\_CHKSUM\_SIZE}}
+{\footnotesize\ttfamily \#define BL\+\_\+\+CALC\+\_\+\+CHKSUM\+\_\+\+SIZE(\begin{DoxyParamCaption}\item[{}]{sz }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                     ((sz) + \(\backslash\)}
+\DoxyCodeLine{                                     BL\_MSG\_HEADER\_SIZE)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_a0e59f676d1347e341a1e55fbf1b44a58}\label{tmf882x__mode__bl_8h_a0e59f676d1347e341a1e55fbf1b44a58}} 
+\index{tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}!BL\_CALC\_CMD\_SIZE@{BL\_CALC\_CMD\_SIZE}}
+\index{BL\_CALC\_CMD\_SIZE@{BL\_CALC\_CMD\_SIZE}!tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}}
+\doxysubsubsection{\texorpdfstring{BL\_CALC\_CMD\_SIZE}{BL\_CALC\_CMD\_SIZE}}
+{\footnotesize\ttfamily \#define BL\+\_\+\+CALC\+\_\+\+CMD\+\_\+\+SIZE(\begin{DoxyParamCaption}\item[{}]{sz }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                     (BL\_CALC\_CHKSUM\_SIZE(sz) + \(\backslash\)}
+\DoxyCodeLine{                                     BL\_MSG\_FOOTER\_SIZE)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_a6ca21ef690aed2f1f219dd62119080cb}\label{tmf882x__mode__bl_8h_a6ca21ef690aed2f1f219dd62119080cb}} 
+\index{tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}!BL\_CALC\_RSP\_SIZE@{BL\_CALC\_RSP\_SIZE}}
+\index{BL\_CALC\_RSP\_SIZE@{BL\_CALC\_RSP\_SIZE}!tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}}
+\doxysubsubsection{\texorpdfstring{BL\_CALC\_RSP\_SIZE}{BL\_CALC\_RSP\_SIZE}}
+{\footnotesize\ttfamily \#define BL\+\_\+\+CALC\+\_\+\+RSP\+\_\+\+SIZE(\begin{DoxyParamCaption}\item[{}]{sz }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                     ((sz) + \(\backslash\)}
+\DoxyCodeLine{                                     BL\_MSG\_HEADER\_SIZE + \(\backslash\)}
+\DoxyCodeLine{                                     BL\_MSG\_FOOTER\_SIZE)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_aede68ded15c65ca10b81b1e95c2be62c}\label{tmf882x__mode__bl_8h_aede68ded15c65ca10b81b1e95c2be62c}} 
+\index{tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}!BL\_MSG\_CMD\_MAX\_SIZE@{BL\_MSG\_CMD\_MAX\_SIZE}}
+\index{BL\_MSG\_CMD\_MAX\_SIZE@{BL\_MSG\_CMD\_MAX\_SIZE}!tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}}
+\doxysubsubsection{\texorpdfstring{BL\_MSG\_CMD\_MAX\_SIZE}{BL\_MSG\_CMD\_MAX\_SIZE}}
+{\footnotesize\ttfamily \#define BL\+\_\+\+MSG\+\_\+\+CMD\+\_\+\+MAX\+\_\+\+SIZE}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                     (BL\_MSG\_HEADER\_SIZE   + \(\backslash\)}
+\DoxyCodeLine{                                     BL\_MAX\_DATA\_SZ + \(\backslash\)}
+\DoxyCodeLine{                                     BL\_MSG\_FOOTER\_SIZE)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_ae82a6948dbd2b3423182fbcfff409652}\label{tmf882x__mode__bl_8h_ae82a6948dbd2b3423182fbcfff409652}} 
+\index{tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}!BL\_MSG\_HEADER\_SIZE@{BL\_MSG\_HEADER\_SIZE}}
+\index{BL\_MSG\_HEADER\_SIZE@{BL\_MSG\_HEADER\_SIZE}!tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}}
+\doxysubsubsection{\texorpdfstring{BL\_MSG\_HEADER\_SIZE}{BL\_MSG\_HEADER\_SIZE}}
+{\footnotesize\ttfamily \#define BL\+\_\+\+MSG\+\_\+\+HEADER\+\_\+\+SIZE}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                     (BL\_CMD\_SIZE + \(\backslash\)}
+\DoxyCodeLine{                                     BL\_DATA\_LEN\_SIZE)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_a0dc3a1c21367df85c343246f12a94b04}\label{tmf882x__mode__bl_8h_a0dc3a1c21367df85c343246f12a94b04}} 
+\index{tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}!mode\_to\_bl@{mode\_to\_bl}}
+\index{mode\_to\_bl@{mode\_to\_bl}!tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}}
+\doxysubsubsection{\texorpdfstring{mode\_to\_bl}{mode\_to\_bl}}
+{\footnotesize\ttfamily \#define mode\+\_\+to\+\_\+bl(\begin{DoxyParamCaption}\item[{}]{x }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    ((\textcolor{keyword}{struct }\mbox{\hyperlink{structtmf882x__mode__bl}{tmf882x\_mode\_bl}} *) \(\backslash\)}
+\DoxyCodeLine{     (\mbox{\hyperlink{tmf882x__mode_8h_a92ec71ae426ba7e918c3a154f01ff24c}{member\_of}}(x, \textcolor{keyword}{struct} \mbox{\hyperlink{structtmf882x__mode__bl}{tmf882x\_mode\_bl}}, \mbox{\hyperlink{structtmf882x__mode__bl_acde4eecabcf9383245896a28aefc7efc}{mode}})))}
+
+\end{DoxyCode}
+
+
+Return pointer to \mbox{\hyperlink{structtmf882x__mode__bl}{tmf882x\+\_\+mode\+\_\+bl}} from pointer to \mbox{\hyperlink{structtmf882x__mode}{tmf882x\+\_\+mode}}. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tmf882x__mode__bl_8h_a04d6ae5992f23d7e17c14fed8c1c1386}\label{tmf882x__mode__bl_8h_a04d6ae5992f23d7e17c14fed8c1c1386}} 
+\index{tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}!tmf882x\_mode\_bl\_init@{tmf882x\_mode\_bl\_init}}
+\index{tmf882x\_mode\_bl\_init@{tmf882x\_mode\_bl\_init}!tmf882x\_mode\_bl.h@{tmf882x\_mode\_bl.h}}
+\doxysubsubsection{\texorpdfstring{tmf882x\_mode\_bl\_init()}{tmf882x\_mode\_bl\_init()}}
+{\footnotesize\ttfamily void tmf882x\+\_\+mode\+\_\+bl\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structtmf882x__mode__bl}{tmf882x\+\_\+mode\+\_\+bl}} $\ast$}]{bl,  }\item[{void $\ast$}]{priv }\end{DoxyParamCaption})}
+
+
+
+Initialize a \mbox{\hyperlink{structtmf882x__mode__bl}{tmf882x\+\_\+mode\+\_\+bl}} context structure. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em bl} & pointer to bl mode context \\
+\hline
+\mbox{\texttt{ in}}  & {\em priv} & User-\/private context to pass back through callback functions \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Direct calls to this function should not be made, use the \mbox{\hyperlink{structtmf882x__tof}{tmf882x\+\_\+tof}} interface instead 
+\end{DoxyNote}

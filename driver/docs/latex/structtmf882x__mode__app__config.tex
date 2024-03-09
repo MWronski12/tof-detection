@@ -1,0 +1,70 @@
+\hypertarget{structtmf882x__mode__app__config}{}\doxysection{tmf882x\+\_\+mode\+\_\+app\+\_\+config Struct Reference}
+\label{structtmf882x__mode__app__config}\index{tmf882x\_mode\_app\_config@{tmf882x\_mode\_app\_config}}
+
+
+This is the Application mode config structure that holds all configuration parameters for the application.  
+
+
+
+
+{\ttfamily \#include $<$tmf882x\+\_\+mode\+\_\+app\+\_\+ioctl.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_a2768b56ced6723daedbb472895093c88}\label{structtmf882x__mode__app__config_a2768b56ced6723daedbb472895093c88}} 
+uint16\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_a2768b56ced6723daedbb472895093c88}{report\+\_\+period\+\_\+ms}}
+\begin{DoxyCompactList}\small\item\em Result reporting period in milliseconds. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_a7266e75ca332a68089c7cbdd75634b75}\label{structtmf882x__mode__app__config_a7266e75ca332a68089c7cbdd75634b75}} 
+uint16\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_a7266e75ca332a68089c7cbdd75634b75}{kilo\+\_\+iterations}}
+\begin{DoxyCompactList}\small\item\em Iterations $\ast$ 1024 for measurements. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_adc3f219b9efc920cfba7b7edb854cf7e}\label{structtmf882x__mode__app__config_adc3f219b9efc920cfba7b7edb854cf7e}} 
+uint16\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_adc3f219b9efc920cfba7b7edb854cf7e}{low\+\_\+threshold}}
+\begin{DoxyCompactList}\small\item\em Low distance threshold setting triggering interrupts. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_ad0aed6d071fc0d72c34009a3e5df2d01}\label{structtmf882x__mode__app__config_ad0aed6d071fc0d72c34009a3e5df2d01}} 
+uint16\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_ad0aed6d071fc0d72c34009a3e5df2d01}{high\+\_\+threshold}}
+\begin{DoxyCompactList}\small\item\em High distance threshold setting triggering interrupts. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_a246175cea0da6e70568ea32aabe92547}\label{structtmf882x__mode__app__config_a246175cea0da6e70568ea32aabe92547}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_a246175cea0da6e70568ea32aabe92547}{zone\+\_\+mask}}
+\begin{DoxyCompactList}\small\item\em Zone mask for disabling interrupts for certain channels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_ac651e755de1f57ea5981e62ecf33b7f6}\label{structtmf882x__mode__app__config_ac651e755de1f57ea5981e62ecf33b7f6}} 
+uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_ac651e755de1f57ea5981e62ecf33b7f6}{persistence}}
+\begin{DoxyCompactList}\small\item\em Persistence setting for generating interrupts. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_a98ff54d8813b0848686bfbe86e3c9014}\label{structtmf882x__mode__app__config_a98ff54d8813b0848686bfbe86e3c9014}} 
+uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_a98ff54d8813b0848686bfbe86e3c9014}{confidence\+\_\+threshold}}
+\begin{DoxyCompactList}\small\item\em Confidence threshold for generating interrupts. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_a3eeb63a0e361eafbd26bb97bb3a22dc3}\label{structtmf882x__mode__app__config_a3eeb63a0e361eafbd26bb97bb3a22dc3}} 
+uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_a3eeb63a0e361eafbd26bb97bb3a22dc3}{gpio\+\_\+0}}
+\begin{DoxyCompactList}\small\item\em GPIO\+\_\+0 config settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_a06c81cc6b85fe1e0c3e0c04ed9a22292}\label{structtmf882x__mode__app__config_a06c81cc6b85fe1e0c3e0c04ed9a22292}} 
+uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_a06c81cc6b85fe1e0c3e0c04ed9a22292}{gpio\+\_\+1}}
+\begin{DoxyCompactList}\small\item\em GPIO\+\_\+1 config settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_ace873b38c2c15320b9e2b1e82fc9a08b}\label{structtmf882x__mode__app__config_ace873b38c2c15320b9e2b1e82fc9a08b}} 
+uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_ace873b38c2c15320b9e2b1e82fc9a08b}{power\+\_\+cfg}}
+\begin{DoxyCompactList}\small\item\em Power configuration settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_a1528a8b4115fc66ae2ead0250fa29418}\label{structtmf882x__mode__app__config_a1528a8b4115fc66ae2ead0250fa29418}} 
+uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_a1528a8b4115fc66ae2ead0250fa29418}{spad\+\_\+map\+\_\+id}}
+\begin{DoxyCompactList}\small\item\em Spad map identifier. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_a5c06e3ce3bf17f13455eb19860afb037}\label{structtmf882x__mode__app__config_a5c06e3ce3bf17f13455eb19860afb037}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_a5c06e3ce3bf17f13455eb19860afb037}{alg\+\_\+setting}}
+\begin{DoxyCompactList}\small\item\em Algorithm setting configuration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_ad94a26726e66ee7c190dda6117e221f2}\label{structtmf882x__mode__app__config_ad94a26726e66ee7c190dda6117e221f2}} 
+uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_ad94a26726e66ee7c190dda6117e221f2}{histogram\+\_\+dump}}
+\begin{DoxyCompactList}\small\item\em Histogram dump configuration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_a7d1c2679508f7a990ee9142e840e6737}\label{structtmf882x__mode__app__config_a7d1c2679508f7a990ee9142e840e6737}} 
+uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_a7d1c2679508f7a990ee9142e840e6737}{spread\+\_\+spectrum}}
+\begin{DoxyCompactList}\small\item\em Spread Spectrum configuration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_a6d5ba8706f63877f945aaa2ba799e824}\label{structtmf882x__mode__app__config_a6d5ba8706f63877f945aaa2ba799e824}} 
+uint8\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_a6d5ba8706f63877f945aaa2ba799e824}{i2c\+\_\+slave\+\_\+addr}}
+\begin{DoxyCompactList}\small\item\em I2C slave address configuration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__mode__app__config_aba9221dc21985a5dc6aa18f3b327cff1}\label{structtmf882x__mode__app__config_aba9221dc21985a5dc6aa18f3b327cff1}} 
+int16\+\_\+t \mbox{\hyperlink{structtmf882x__mode__app__config_aba9221dc21985a5dc6aa18f3b327cff1}{oscillator\+\_\+trim}}
+\begin{DoxyCompactList}\small\item\em Sensor Oscillator trim value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is the Application mode config structure that holds all configuration parameters for the application. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tmf882x__mode__app__ioctl_8h}{tmf882x\+\_\+mode\+\_\+app\+\_\+ioctl.\+h}}\end{DoxyCompactItemize}

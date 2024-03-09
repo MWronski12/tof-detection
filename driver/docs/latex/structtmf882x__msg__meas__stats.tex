@@ -1,0 +1,76 @@
+\hypertarget{structtmf882x__msg__meas__stats}{}\doxysection{tmf882x\+\_\+msg\+\_\+meas\+\_\+stats Struct Reference}
+\label{structtmf882x__msg__meas__stats}\index{tmf882x\_msg\_meas\_stats@{tmf882x\_msg\_meas\_stats}}
+
+
+TMF882X measure statistics message type.  
+
+
+
+
+{\ttfamily \#include $<$tmf882x.\+h$>$}
+
+
+
+Collaboration diagram for tmf882x\+\_\+msg\+\_\+meas\+\_\+stats\+:
+% FIG 0
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__stats_a07097c14e40d1fcb7f3d1ba4c0ebacf9}\label{structtmf882x__msg__meas__stats_a07097c14e40d1fcb7f3d1ba4c0ebacf9}} 
+struct \mbox{\hyperlink{structtmf882x__msg__header}{tmf882x\+\_\+msg\+\_\+header}} \mbox{\hyperlink{structtmf882x__msg__meas__stats_a07097c14e40d1fcb7f3d1ba4c0ebacf9}{hdr}}
+\begin{DoxyCompactList}\small\item\em This is the message header struct \mbox{\hyperlink{structtmf882x__msg__header}{tmf882x\+\_\+msg\+\_\+header}}. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__stats_a1ab9490782014f785239d93cd1474412}{capture\+\_\+num}}
+\begin{DoxyCompactList}\small\item\em This is the capture number that this set of statistics is associated with. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__stats_a85fc9c2c7312c28480ee5b3046965db9}{sub\+\_\+capture}}
+\begin{DoxyCompactList}\small\item\em This is the time-\/multiplexed sub\+\_\+capture index of the channel that detected the target. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__stats_a48a89035a8af85a526386cdb3e23c583}\label{structtmf882x__msg__meas__stats_a48a89035a8af85a526386cdb3e23c583}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__stats_a48a89035a8af85a526386cdb3e23c583}{tdcif\+\_\+status}}
+\begin{DoxyCompactList}\small\item\em This is the tdcif status reported by the device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__stats_a5ab1b327ccf6ab0c086f44433f6bfa2e}\label{structtmf882x__msg__meas__stats_a5ab1b327ccf6ab0c086f44433f6bfa2e}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__stats_a5ab1b327ccf6ab0c086f44433f6bfa2e}{iterations\+\_\+configured}}
+\begin{DoxyCompactList}\small\item\em This is the iterations configured reported by the device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__stats_aa642a1f006f4d466872a31f4f89d6012}\label{structtmf882x__msg__meas__stats_aa642a1f006f4d466872a31f4f89d6012}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__stats_aa642a1f006f4d466872a31f4f89d6012}{remaining\+\_\+iterations}}
+\begin{DoxyCompactList}\small\item\em This is the remaining iterations reported by the device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__stats_a6890a6d62c652fbec24ffa80531cde30}\label{structtmf882x__msg__meas__stats_a6890a6d62c652fbec24ffa80531cde30}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__stats_a6890a6d62c652fbec24ffa80531cde30}{accumulated\+\_\+hits}}
+\begin{DoxyCompactList}\small\item\em This is the accumulated hits reported by the device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__stats_ac6619f7379c677c82b82405ccdc70e5b}\label{structtmf882x__msg__meas__stats_ac6619f7379c677c82b82405ccdc70e5b}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__stats_ac6619f7379c677c82b82405ccdc70e5b}{raw\+\_\+hits}} \mbox{[}\mbox{\hyperlink{tmf882x_8h_a11cf465fcefa34d80b2060375d5f5d66}{TMF882\+X\+\_\+\+HIST\+\_\+\+NUM\+\_\+\+TDC}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em This is the raw hits reported by the device for each TDC. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structtmf882x__msg__meas__stats_a5eac6d35ecc6e5b6221541a76af81855}\label{structtmf882x__msg__meas__stats_a5eac6d35ecc6e5b6221541a76af81855}} 
+uint32\+\_\+t \mbox{\hyperlink{structtmf882x__msg__meas__stats_a5eac6d35ecc6e5b6221541a76af81855}{saturation\+\_\+cnt}} \mbox{[}\mbox{\hyperlink{tmf882x_8h_a11cf465fcefa34d80b2060375d5f5d66}{TMF882\+X\+\_\+\+HIST\+\_\+\+NUM\+\_\+\+TDC}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em This is the saturation count reported by the device for each TDC. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+TMF882X measure statistics message type. 
+
+This message is returned by the core driver for each set of measurement statistics that are received by the core driver from the device. 
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structtmf882x__msg__meas__stats_a1ab9490782014f785239d93cd1474412}\label{structtmf882x__msg__meas__stats_a1ab9490782014f785239d93cd1474412}} 
+\index{tmf882x\_msg\_meas\_stats@{tmf882x\_msg\_meas\_stats}!capture\_num@{capture\_num}}
+\index{capture\_num@{capture\_num}!tmf882x\_msg\_meas\_stats@{tmf882x\_msg\_meas\_stats}}
+\doxysubsubsection{\texorpdfstring{capture\_num}{capture\_num}}
+{\footnotesize\ttfamily tmf882x\+\_\+msg\+\_\+meas\+\_\+stats\+::capture\+\_\+num}
+
+
+
+This is the capture number that this set of statistics is associated with. 
+
+The capture\+\_\+num will match the struct \mbox{\hyperlink{structtmf882x__msg__meas__results_aa755f5a9da3d5bf47a2d5e6845f73516}{tmf882x\+\_\+msg\+\_\+meas\+\_\+results\+::result\+\_\+num}} \mbox{\Hypertarget{structtmf882x__msg__meas__stats_a85fc9c2c7312c28480ee5b3046965db9}\label{structtmf882x__msg__meas__stats_a85fc9c2c7312c28480ee5b3046965db9}} 
+\index{tmf882x\_msg\_meas\_stats@{tmf882x\_msg\_meas\_stats}!sub\_capture@{sub\_capture}}
+\index{sub\_capture@{sub\_capture}!tmf882x\_msg\_meas\_stats@{tmf882x\_msg\_meas\_stats}}
+\doxysubsubsection{\texorpdfstring{sub\_capture}{sub\_capture}}
+{\footnotesize\ttfamily tmf882x\+\_\+msg\+\_\+meas\+\_\+stats\+::sub\+\_\+capture}
+
+
+
+This is the time-\/multiplexed sub\+\_\+capture index of the channel that detected the target. 
+
+For non-\/time-\/multiplexed measurements this value is zero. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/linux/i2c/ams/\mbox{\hyperlink{tmf882x_8h}{tmf882x.\+h}}\end{DoxyCompactItemize}
