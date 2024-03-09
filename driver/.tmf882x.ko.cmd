@@ -1,0 +1,1 @@
+cmd_/home/szekler/tmf882x/tmf882x.ko := ld -r -EL -z noexecstack --build-id=sha1  -T scripts/module.lds -o /home/szekler/tmf882x/tmf882x.ko /home/szekler/tmf882x/tmf882x.o /home/szekler/tmf882x/tmf882x.mod.o;  true

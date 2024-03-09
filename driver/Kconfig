@@ -1,0 +1,19 @@
+config SENSORS_TMF882X
+	tristate "AMS-TAOS TMF882X TOF"
+    	depends on I2C
+	default n
+ 	help
+	  If you say yes here you get support for the ams-taos tmf882x,
+	  ToF distance sensors.
+​
+	  This driver can also be built as a module.  If so, the module
+	  will be called tmf882x.
+
+config TMF882X_QCOM_AP
+	bool "AMS-TAOS TMF882X TOF QUALCOMM KERNEL"
+    	depends on SENSORS_TMF882X
+	default n
+ 	help
+	  If you say yes here you get support for the ams-taos tmf882x,
+	  ToF distance sensors with Qualcomm linux kernel additions.
+

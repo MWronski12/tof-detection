@@ -1,0 +1,1 @@
+cmd_/home/szekler/tmf882x/tmf882x.mod := printf '%s\n'   tmf882x_driver.o tmf882x_clock_correction.o tmf882x_mode.o tmf882x_mode_app.o tmf882x_mode_bl.o tmf882x_interface.o intel_hex_interpreter.o | awk '!x[$$0]++ { print("/home/szekler/tmf882x/"$$0) }' > /home/szekler/tmf882x/tmf882x.mod

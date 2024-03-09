@@ -1,0 +1,6 @@
+dtoverlay=dwc2
+enable_uart=1
+dtoverlay=tmf882x-overlay
+#dtparam=i2c0_baudrate=1000000
+#dtoverlay=i2c0-bcm2708,pins_28_29
+dtparam=i2c1_baudrate=1000000

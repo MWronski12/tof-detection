@@ -59,7 +59,7 @@ void handle_tmf882x_msg_meas_results(struct tmf882x_msg_meas_results *res)
 
 int main()
 {
-    int fd = open("/home/szekler/device", O_RDONLY);
+    int fd = open("device", O_RDONLY);
     if (fd < 0)
     {
         printf("Failed to open device\n");
