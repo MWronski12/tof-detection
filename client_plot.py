@@ -1,39 +1,27 @@
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+from collections import deque
 import socket
 import struct
 import time
-import sys
-import signal
-from matplotlib import pyplot as plt
-from typing import List, Tuple
-import numpy as np
+from threading import Lock, Thread
 
-HOST = "192.168.185.1"  # The server's hostname or IP address
+HOST = "192.168.1.57"  # The server's hostname or IP address
 PORT = 8080  # The port used by the server
 
-data: List[Tuple[int, int]] = []
+MAX_LEN = 100
+X_SPAN = 5
+Y_SPAN = 5000
 
 
-def signal_handler(signal, frame):
-    plot_data()
-    sys.exit(0)
+lock = Lock()
+x_list = deque(maxlen=MAX_LEN)
+y_list = deque(maxlen=MAX_LEN)
 
 
-def plot_data():
-    # Extract x and y coordinates from the list of tuples
-    x_values = [point[0] for point in data]
-    y_values = [point[1] for point in data]
+def collect_data():
+    global lock, x_list, y_list
 
-    # Plot the points
-    plt.scatter(x_values, y_values, color="blue")
-    plt.title("Scatter Plot of Points")
-    plt.xlabel("X")
-    plt.ylabel("Y")
-    plt.grid(True)
-
-    plt.show()
-
-
-def do_collect_data() -> None:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
         print("Successfully connected to data stream!")
@@ -47,13 +35,61 @@ def do_collect_data() -> None:
 
             # Convert the received data from network byte order to host byte order
             dist_mm = struct.unpack("!i", dist_mm_bytes)[0]
-            print(dist_mm)
-            data.append((time.time() - t_start, dist_mm))
+
+            lock.acquire()
+            x_list.append(time.time() - t_start)
+            y_list.append(dist_mm)
+            lock.release()
 
 
-def main() -> None:
-    signal.signal(signal.SIGINT, signal_handler)
-    do_collect_data()
+def plot_data():
+    global x_list, y_list, lock
+
+    props = dict(boxstyle="round", facecolor="wheat", alpha=0.5)
+    plt.rcParams["animation.html"] = "jshtml"
+    fig, ax = plt.subplots()
+    ax.set_title("TMF8828 camera")
+    ax.set(xlabel="time [s]", ylabel="distance [mm]")
+    ax.set_xlim(0, X_SPAN)
+    ax.set_ylim(0, Y_SPAN)
+    ax.grid(1)
+    scatter = ax.scatter([0], [0], color="orange", s=20)
+
+    distance_box = ax.text(
+        0.9,
+        0.9,
+        str(0),
+        transform=ax.transAxes,
+        fontsize=40,
+        horizontalalignment="right",
+        verticalalignment="top",
+        bbox=props,
+    )
+
+    def annotate(last_y):
+        distance_box.set_text(f"{last_y:4d} mm")
+
+    def run(i):
+        lock.acquire()
+        if len(x_list) == 0:
+            lock.release()
+            return
+
+        ax.set_xlim(
+            left=max(0, x_list[-1] - X_SPAN / 2),
+            right=max(X_SPAN, x_list[-1] + X_SPAN / 2),
+        )
+        scatter.set_offsets([[x, y] for x, y in zip(x_list, y_list)])
+        annotate(y_list[-1])
+        lock.release()
+
+    ani = FuncAnimation(fig, run, frames=60, interval=1 / 60.0 * 1000)
+    plt.show()
+
+
+def main():
+    Thread(target=collect_data, daemon=True).start()
+    plot_data()
 
 
 if __name__ == "__main__":

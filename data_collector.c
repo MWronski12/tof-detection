@@ -27,9 +27,10 @@ static void flush_data()
     int ret = 0;
     int data_len = 0;
 
-    if (data_file == 0)
+    if (data_file <= 0)
     {
         printf("Warning! Data file not initialized!\n");
+        memset(buffer, 0, sizeof(buffer));
         return;
     }
 
@@ -40,6 +41,7 @@ static void flush_data()
         printf("Error writing data to file!\n");
         raise(SIGTERM);
     }
+
     memset(buffer, 0, sizeof(buffer));
 }
 
@@ -49,8 +51,9 @@ void data_collector_init()
 
     if (data_file != 0)
     {
-        printf("Warning! Data file already initialized!\n");
-        return;
+        printf("Closing previous data file\n");
+        flush_data();
+        close(data_file);
     }
 
     sprintf(filename, "out/data-%llu.csv", get_timestamp_ms());
@@ -67,8 +70,12 @@ void data_collector_init()
 
 void data_collector_cleanup()
 {
-    flush_data();
-    close(data_file);
+    if (data_file > 0)
+    {
+        printf("Flushing and closing csv file stream\n");
+        flush_data();
+        data_file = close(data_file);
+    }
 }
 
 void collect_data(int32_t distance)

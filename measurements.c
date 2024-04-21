@@ -22,8 +22,16 @@ static int cdev = 0;
 
 void measurements_cleanup()
 {
-    close(idev);
-    close(cdev);
+    if (idev > 0)
+    {
+        printf("Closing input device\n");
+        idev = close(idev);
+    }
+    if (cdev > 0)
+    {
+        printf("Closing tmf882x char device\n");
+        cdev = close(cdev);
+    }
 }
 
 void measurements_init()

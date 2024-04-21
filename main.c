@@ -48,9 +48,6 @@ int main()
     printf("Registering cleanup handlers\n");
     register_cleanup_handlers(2, SIGINT, SIGTERM);
 
-    measurements_init();
-    data_collector_init();
-
     int server_fd;
     int new_socket;
     struct sockaddr_in address;
@@ -106,6 +103,9 @@ int main()
 
         printf("Client connected!\n");
 
+        measurements_init();
+        data_collector_init();
+
         while (1)
         {
             int distance = measurements_get_distance();
@@ -126,6 +126,8 @@ int main()
                 break;
             }
         }
+
+        cleanup();
 
         // closing the connected socket
         close(new_socket);
