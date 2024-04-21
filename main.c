@@ -2,18 +2,54 @@
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <signal.h>
 
+#include "data_collector.h"
 #include "measurements.h"
 
 #define PORT 8080
 
+static void cleanup()
+{
+    measurements_cleanup();
+    data_collector_cleanup();
+}
+
+static void cleanup_handler(int signal)
+{
+    printf("Received signal %d, cleaning up...\n", signal);
+    cleanup();
+    exit(EXIT_FAILURE);
+}
+
+static void register_cleanup_handlers(int n_signals, ...)
+{
+    va_list args;
+    va_start(args, n_signals);
+
+    for (int i = 0; i < n_signals; i++)
+    {
+        int sig = va_arg(args, int);
+        if (signal(sig, cleanup_handler) == SIG_ERR)
+        {
+            perror("Failed to register signal handler!\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+}
+
 int main()
 {
+    printf("Registering cleanup handlers\n");
+    register_cleanup_handlers(2, SIGINT, SIGTERM);
+
     measurements_init();
+    data_collector_init();
 
     int server_fd;
     int new_socket;
@@ -25,8 +61,7 @@ int main()
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
         perror("socket failed");
-        measurements_cleanup(0);
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
 
     fflush(stdout);
@@ -37,8 +72,7 @@ int main()
                    sizeof(opt)))
     {
         perror("setsockopt");
-        measurements_cleanup(0);
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
 
     address.sin_family = AF_INET;
@@ -50,15 +84,13 @@ int main()
              sizeof(address)) < 0)
     {
         perror("bind failed");
-        measurements_cleanup(0);
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
 
     if (listen(server_fd, 3) < 0)
     {
         perror("listen");
-        measurements_cleanup(0);
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
 
     printf("Listening for connections\n");
@@ -69,8 +101,7 @@ int main()
                                  &addrlen)) < 0)
         {
             perror("accept");
-            measurements_cleanup(0);
-            exit(EXIT_FAILURE);
+            raise(SIGTERM);
         }
 
         printf("Client connected!\n");
@@ -78,11 +109,12 @@ int main()
         while (1)
         {
             int distance = measurements_get_distance();
+            collect_data(distance);
+
             if (distance == -1)
             {
                 perror("Measurement failed!");
-                measurements_cleanup(0);
-                exit(EXIT_FAILURE);
+                raise(SIGTERM);
             }
 
             int32_t network_data = htonl(distance);
@@ -103,7 +135,7 @@ int main()
     printf("Shutting down server\n");
 
     close(server_fd);
-    measurements_cleanup(0);
+    cleanup();
 
     return 0;
 }

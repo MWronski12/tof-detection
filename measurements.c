@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <signal.h>
-#include <stdarg.h>
 #include <sys/time.h>
 
 #include "measurements.h"
@@ -21,35 +20,15 @@ static int IS_INITIALIZED = 0;
 static int idev = 0;
 static int cdev = 0;
 
-void measurements_cleanup(int signal)
+void measurements_cleanup()
 {
-    printf("Received signal %d. Cleaning up\n", signal);
     close(idev);
     close(cdev);
-    exit(EXIT_FAILURE);
-}
-
-static void register_measurements_cleanup_handlers(int n_signals, ...)
-{
-    va_list args;
-    va_start(args, n_signals);
-
-    for (int i = 0; i < n_signals; i++)
-    {
-        int sig = va_arg(args, int);
-        if (signal(sig, measurements_cleanup) == SIG_ERR)
-        {
-            perror("Failed to register signal handler!\n");
-            exit(EXIT_FAILURE);
-        }
-    }
 }
 
 void measurements_init()
 {
-    printf("================ INIT_START ================\n");
-    printf("Registering measurements_cleanup handlers\n");
-    register_measurements_cleanup_handlers(2, SIGINT, SIGTERM);
+    printf("================ MEASUREMENTS_INIT_START ================\n");
 
     printf("Initializing sensor\n");
     system("./preset.sh");
@@ -59,7 +38,7 @@ void measurements_init()
     if (calib <= 0)
     {
         printf("Error opening calibration data file!\n");
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
 
     char buff[1024];
@@ -68,7 +47,7 @@ void measurements_init()
     {
         perror("Failed to read calib.bin!\n");
         close(calib);
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
 
     int calibration_data = open("sysfs/app/calibration_data", O_WRONLY);
@@ -76,7 +55,7 @@ void measurements_init()
     {
         perror("Error opening sysfs/app/calibration_data\n");
         close(calib);
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
 
     int ret = write(calibration_data, buff, calib_data_len);
@@ -85,7 +64,7 @@ void measurements_init()
         perror("Error writing calibration data!\n");
         close(calib);
         close(calibration_data);
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
 
     close(calibration_data);
@@ -95,7 +74,7 @@ void measurements_init()
     if (idev <= 0)
     {
         perror("Failed to open input device!\n");
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
     printf("Input dev opened!\n");
 
@@ -104,12 +83,12 @@ void measurements_init()
     {
         printf("Failed to open device!\n");
         close(idev);
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
     printf("Char dev opened!\n");
 
     IS_INITIALIZED = 1;
-    printf("=============== INIT_COMPLETE ==============\n");
+    printf("=============== MEASUREMENTS_INIT_COMPLETE ==============\n");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -152,7 +131,7 @@ int32_t measurements_get_distance()
     {
         perror("Failed to read from device\n");
         measurements_cleanup(SIGTERM);
-        exit(EXIT_FAILURE);
+        raise(SIGTERM);
     }
 
     while (off < ret)
@@ -194,7 +173,7 @@ void print_result(int dist_mm)
     printf("Result: %d mm\n", dist_mm);
 }
 
-int _main()
+int measurements_main()
 {
     measurements_init();
 
