@@ -16,10 +16,10 @@
 /*                                    Init                                    */
 /* -------------------------------------------------------------------------- */
 
-int IS_INITIALIZED = 0;
+static int IS_INITIALIZED = 0;
 
-int idev = 0;
-int cdev = 0;
+static int idev = 0;
+static int cdev = 0;
 
 void measurements_cleanup(int signal)
 {
@@ -56,7 +56,7 @@ void measurements_init()
 
     printf("Writing calibration data 'calib.bin'\n");
     int calib = open("calib.bin", O_RDONLY);
-    if (calib < 0)
+    if (calib <= 0)
     {
         printf("Error opening calibration data file!\n");
         exit(EXIT_FAILURE);
@@ -92,7 +92,7 @@ void measurements_init()
     close(calib);
 
     idev = open("input", O_RDONLY);
-    if (idev < 0)
+    if (idev <= 0)
     {
         perror("Failed to open input device!\n");
         exit(EXIT_FAILURE);
@@ -100,7 +100,7 @@ void measurements_init()
     printf("Input dev opened!\n");
 
     cdev = open("device", O_RDONLY);
-    if (cdev < 0)
+    if (cdev <= 0)
     {
         printf("Failed to open device!\n");
         close(idev);
