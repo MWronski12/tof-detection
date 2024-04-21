@@ -78,11 +78,17 @@ void data_collector_cleanup()
     }
 }
 
-void collect_data(int32_t distance)
+void collect_data(const measurements_wrapper *meas)
 {
     char line[MAX_LINE_SIZE] = {0};
     unsigned long long timestamp = get_timestamp_ms();
-    sprintf(line, "%llu,%d\n", timestamp, distance);
+
+    sprintf(line, "%llu", timestamp);
+    for (int i = 0; i < meas->num_zones; i++)
+    {
+        sprintf(line + strlen(line), ",%d", meas->distance_mm[i]);
+    }
+    strcat(line, "\n");
 
     if (strlen(buffer) + (strlen(line) + 1) > BUFF_SIZE)
     {
@@ -97,7 +103,9 @@ int data_collector_main()
     data_collector_init();
     for (int i = 0; i < 2800; i++)
     {
-        collect_data(i);
+        int distance_mm[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        measurements_wrapper meas = {.num_zones = 9, .distance_mm = distance_mm};
+        collect_data(&meas);
     }
     data_collector_cleanup();
     return 0;

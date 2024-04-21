@@ -105,29 +105,39 @@ void measurements_init()
 
 #define NUM_CHANNELS 9
 
-static int handle_tmf882x_msg_meas_results(struct tmf882x_msg_meas_results *res)
+static void handle_tmf882x_msg_meas_results(struct tmf882x_msg_meas_results *res, measurements_wrapper *out)
 {
-    int acc_dist = 0;
-    int result_count = 0;
+    int acc_dist[NUM_CHANNELS] = {0};
+    int result_count[NUM_CHANNELS] = {0};
 
     for (size_t i = 0; i < res->num_results; i++)
     {
         struct tmf882x_meas_result *result = &res->results[i];
-        if (result->channel != 5)
-            continue;
-        acc_dist += result->distance_mm;
-        result_count++;
+        acc_dist[result->channel - 1] += result->distance_mm;
+        result_count[result->channel - 1]++;
     }
 
-    return result_count > 0 ? acc_dist / result_count : 0;
+    out->num_zones = NUM_CHANNELS;
+    out->distance_mm = (int *)malloc(sizeof(int) * NUM_CHANNELS);
+    if (out->distance_mm == NULL)
+    {
+        printf("Error allocating distance array\n");
+        raise(SIGTERM);
+    }
+
+    for (int i = 0; i < NUM_CHANNELS; i++)
+    {
+        int zone_distance_mm = result_count[i] == 0 ? 0 : acc_dist[i] / result_count[i];
+        out->distance_mm[i] = zone_distance_mm;
+    }
 }
 
-int32_t measurements_get_distance()
+bool get_measurements(measurements_wrapper *out)
 {
     if (!IS_INITIALIZED)
     {
         printf("Cannot perform single measurement, device not initialized!\n");
-        return -1;
+        return false;
     }
 
     static char buf[TMF882X_MAX_MSG_SIZE];
@@ -154,16 +164,16 @@ int32_t measurements_get_distance()
         case ID_ERROR:
             err = (struct tmf882x_msg_error *)(&msg->err_msg);
             printf("Error code %d\n", err->err_code);
-            return -1;
+            raise(SIGTERM);
 
         case ID_MEAS_RESULTS:
             res = (struct tmf882x_msg_meas_results *)(&msg->meas_result_msg);
-            int dist_mm = handle_tmf882x_msg_meas_results(res);
-            return (int32_t)dist_mm;
+            handle_tmf882x_msg_meas_results(res, out);
+            return true;
 
         default:
             printf("Unexpected message id: %d\n", msg->hdr.msg_id);
-            return -1;
+            raise(SIGTERM);
         }
 
         off += msg->hdr.msg_len;
@@ -191,13 +201,16 @@ int measurements_main()
     gettimeofday(&start, NULL);
     for (int i = 0; i < N_MEASUREMENTS; i++)
     {
-        int32_t dist = measurements_get_distance(print_result);
-        if (dist == -1)
+        measurements_wrapper meas;
+        bool meas_ok = get_measurements(&meas);
+        if (!meas_ok)
         {
             printf("Failed to execute single read!\n");
+            measurements_cleanup();
+            raise(SIGTERM);
         }
 
-        printf("Distance: %d", dist);
+        printf("Center distance: %d", meas.distance_mm[4]);
     }
     gettimeofday(&end, NULL);
 

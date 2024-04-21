@@ -108,16 +108,24 @@ int main()
 
         while (1)
         {
-            int distance = measurements_get_distance();
-            collect_data(distance);
+            measurements_wrapper meas;
+            bool meas_ok = get_measurements(&meas);
+            if (!meas_ok)
+            {
+                printf("Error reading measurements\n");
+                raise(SIGTERM);
+            }
 
-            if (distance == -1)
+            int center_distance = meas.distance_mm[4];
+            collect_data(&meas);
+
+            if (center_distance == -1)
             {
                 perror("Measurement failed!");
                 raise(SIGTERM);
             }
 
-            int32_t network_data = htonl(distance);
+            int32_t network_data = htonl(center_distance);
             int ret = send(new_socket, &network_data, sizeof(network_data), MSG_NOSIGNAL);
 
             if (ret != sizeof(network_data))
