@@ -105,8 +105,35 @@ void measurements_init()
 
 #define NUM_CHANNELS 9
 
+static void print_tmf882x_msg_meas_results(struct tmf882x_msg_meas_results *res)
+{
+    printf("=============== Results ===================\n");
+    printf("ambient_light: %d\n", res->ambient_light);
+    printf("num_results: %d\n", res->num_results);
+    printf("valid_results: %d\n", res->valid_results);
+    printf("photon_count: %d\n", res->photon_count);
+    printf("ref_photon_count: %d\n", res->ref_photon_count);
+    printf("temperature: %d\n", res->temperature);
+    for (size_t i = 0; i < res->num_results; i++)
+    {
+        struct tmf882x_meas_result *result = &res->results[i];
+        // if (result->channel != 5)
+        //     continue;
+        printf("===================\n");
+        printf("ch_target_idx: %d\n", result->ch_target_idx);
+        printf("channel: %d\n", result->channel);
+        printf("confidence: %d\n", result->confidence);
+        printf("distance_mm: %d\n", result->distance_mm);
+        printf("sub_capture: %d\n", result->sub_capture);
+        printf("===================\n");
+    }
+}
+
 static void handle_tmf882x_msg_meas_results(struct tmf882x_msg_meas_results *res, measurements_wrapper *out)
 {
+    #define DEBUG__ false
+    if (DEBUG__) print_tmf882x_msg_meas_results(res);
+
     int acc_dist[NUM_CHANNELS] = {0};
     int result_count[NUM_CHANNELS] = {0};
 
