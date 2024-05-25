@@ -1,0 +1,7 @@
+real_dist_mm,measured_dist_mm
+1000,960
+2000,1960
+3000,2940
+4000,3940
+
+*** With a mirror like surface, angle of the beam makes a big difference, for a normal surface it almost doesnt matter

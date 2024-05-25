@@ -6,7 +6,7 @@
     2 - Save 2 numbers for each zone indicating first and second targets
     3 - Save each measurement as separate CSV line with timestamp, channel, confidence, lux, dist, target idx
 [x] Output csv data filename as argument
-[ ] Sprawdzenie maksymalnego zasięgu czujnika po zmroku z białym celem i normalnym
+[x] Sprawdzenie maksymalnego zasięgu czujnika po zmroku z białym celem i normalnym
 [ ] Wyznaczanie kąta pola widzenia czujnika
 [ ] Rozwiazanie problemu niewiadomej odleglosci od rzeczywistego ruchu rowerzysty
 [ ] Protokół testu wraz z potrzebnym sprzetem, ustawieniem czujnika, kolejnoscia dzialan, liczba i rodzajem przejazdow
