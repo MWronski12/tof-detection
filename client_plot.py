@@ -1,22 +1,24 @@
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
 from collections import deque
+from threading import Lock, Thread
 import socket
 import struct
 import time
-from threading import Lock, Thread
 
-HOST = "192.168.1.57"  # The server's hostname or IP address
+
+HOST = "192.168.119.1"  # The server's hostname or IP address
 PORT = 8080  # The port used by the server
 
-MAX_LEN = 100
 X_SPAN = 5
 Y_SPAN = 5000
+MAX_LEN = 300
 
 
 lock = Lock()
 x_list = deque(maxlen=MAX_LEN)
 y_list = deque(maxlen=MAX_LEN)
+confidence_list = deque(maxlen=MAX_LEN)
 
 
 def collect_data():
@@ -28,13 +30,21 @@ def collect_data():
 
         t_start = time.time()
         while True:
-            dist_mm_bytes = s.recv(4)
-            if not dist_mm_bytes:
+            bytes = s.recv(32)
+            if not bytes:
                 print("Connection closed!")
                 break
 
-            # Convert the received data from network byte order to host byte order
-            dist_mm = struct.unpack("!i", dist_mm_bytes)[0]
+            (
+                timestamp_ms,
+                ambient_light,
+                confidence_target_0,
+                distance_mm_target_0,
+                confidence_target_1,
+                distance_mm_target_1,
+            ) = struct.unpack("<Qiiiiixxxx", bytes)
+
+            dist_mm = max(distance_mm_target_0, distance_mm_target_1)
 
             lock.acquire()
             x_list.append(time.time() - t_start)

@@ -9,13 +9,13 @@
 #include "data_collector.h"
 
 #define BUFF_SIZE 4096
-#define MAX_LINE_SIZE 100
+#define MAX_LINE_SIZE 1024
 
 static char buffer[BUFF_SIZE] = "";
 
 static int data_file = 0;
 
-unsigned long long get_timestamp_ms(void)
+static unsigned long long get_timestamp_ms(void)
 {
     struct timeval tv;
     gettimeofday(&tv, NULL);
@@ -45,9 +45,10 @@ static void flush_data()
     memset(buffer, 0, sizeof(buffer));
 }
 
-void data_collector_init()
+void data_collector_init(const char *filename_prefix)
 {
-    char filename[50];
+    char filename[100];
+    sprintf(filename, "out/%s-%lu.csv", filename_prefix, (long)(get_timestamp_ms() / 1000));
 
     if (data_file != 0)
     {
@@ -55,8 +56,6 @@ void data_collector_init()
         flush_data();
         close(data_file);
     }
-
-    sprintf(filename, "out/data-%llu.csv", get_timestamp_ms());
 
     data_file = open(filename, O_CREAT | O_WRONLY, 0744);
     if (data_file <= 0)
@@ -81,12 +80,13 @@ void data_collector_cleanup()
 void collect_data(const measurements_wrapper *meas)
 {
     char line[MAX_LINE_SIZE] = {0};
-    unsigned long long timestamp = get_timestamp_ms();
 
-    sprintf(line, "%llu", timestamp);
-    for (int i = 0; i < meas->num_zones; i++)
-    {
-        sprintf(line + strlen(line), ",%d", meas->distance_mm[i]);
+    // timestamp_ms, ambient_light, confidence_zi_t0, distance_zi_t0, confidence_zi_t1, distance_zi_t1 
+    sprintf(line, "%llu", meas->timestamp_ms);
+    sprintf(line + strlen(line), ",%d", meas->ambient_light);
+    for (int i = 0; i < 9; i++) {
+        sprintf(line + strlen(line), ",%d,%d", meas->confidences[2 * i], meas->distances[2 * i]);
+        sprintf(line + strlen(line), ",%d,%d", meas->confidences[2 * i + 1], meas->distances[2 * i + 1]);
     }
     strcat(line, "\n");
 
@@ -96,17 +96,4 @@ void collect_data(const measurements_wrapper *meas)
     }
 
     strcat(buffer, line);
-}
-
-int data_collector_main()
-{
-    data_collector_init();
-    for (int i = 0; i < 2800; i++)
-    {
-        int distance_mm[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        measurements_wrapper meas = {.num_zones = 9, .distance_mm = distance_mm};
-        collect_data(&meas);
-    }
-    data_collector_cleanup();
-    return 0;
 }

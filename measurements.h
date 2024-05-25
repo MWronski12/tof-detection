@@ -6,8 +6,10 @@
 
 struct measurements_wrapper
 {
-    int num_zones;
-    int *distance_mm;
+    unsigned long long timestamp_ms;
+    int ambient_light;
+    int confidences[18];
+    int distances[18];
 } typedef measurements_wrapper;
 
 void measurements_init();

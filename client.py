@@ -11,14 +11,23 @@ def main() -> None:
         print("Successfully connected to data stream!")
 
         while True:
-            dist_mm_bytes = s.recv(4)
-            if not dist_mm_bytes:
+            bytes = s.recv(8 + 4 + 4 * 18 + 4 * 18 + 4)
+            if not bytes:
                 print("Connection closed!")
                 break
 
-            # Convert the received data from network byte order to host byte order
-            dist_mm = struct.unpack("!i", dist_mm_bytes)[0]
-            print(dist_mm)
+            unpacked_data = struct.unpack("<Qi18i18i4x", bytes)
+            timestamp_ms = unpacked_data[0]
+            ambient_light = unpacked_data[1]
+            confidences = unpacked_data[2:20]
+            distances = unpacked_data[20:38]
+
+            print(
+                f"timestamp_ms: {timestamp_ms}\n"
+                f"ambient_light: {ambient_light}\n"
+                f"confidences: {confidences}\n"
+                f"distances: {distances}\n"
+            )
 
 
 if __name__ == "__main__":

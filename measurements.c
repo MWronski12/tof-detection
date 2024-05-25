@@ -37,6 +37,7 @@ void measurements_cleanup()
 void measurements_init()
 {
     printf("================ MEASUREMENTS_INIT_START ================\n");
+    printf("Measurements size: %d\n", sizeof(measurements_wrapper));
 
     printf("Initializing sensor\n");
     system("./preset.sh");
@@ -129,33 +130,29 @@ static void print_tmf882x_msg_meas_results(struct tmf882x_msg_meas_results *res)
     }
 }
 
+static unsigned long long get_timestamp_ms(void)
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000ULL + tv.tv_usec / 1000ULL;
+}
+
 static void handle_tmf882x_msg_meas_results(struct tmf882x_msg_meas_results *res, measurements_wrapper *out)
 {
-    #define DEBUG__ false
+    #define DEBUG__ true
     if (DEBUG__) print_tmf882x_msg_meas_results(res);
 
-    int acc_dist[NUM_CHANNELS] = {0};
-    int result_count[NUM_CHANNELS] = {0};
+    out->timestamp_ms = get_timestamp_ms();
+    out->ambient_light = res->ambient_light;
+    for (int i = 0; i < 18; i++) {
+        out->confidences[i] = -1;
+        out->distances[i] = -1;
+    }
 
-    for (size_t i = 0; i < res->num_results; i++)
-    {
+    for (size_t i = 0; i < res->num_results; i++) {
         struct tmf882x_meas_result *result = &res->results[i];
-        acc_dist[result->channel - 1] += result->distance_mm;
-        result_count[result->channel - 1]++;
-    }
-
-    out->num_zones = NUM_CHANNELS;
-    out->distance_mm = (int *)malloc(sizeof(int) * NUM_CHANNELS);
-    if (out->distance_mm == NULL)
-    {
-        printf("Error allocating distance array\n");
-        raise(SIGTERM);
-    }
-
-    for (int i = 0; i < NUM_CHANNELS; i++)
-    {
-        int zone_distance_mm = result_count[i] == 0 ? 0 : acc_dist[i] / result_count[i];
-        out->distance_mm[i] = zone_distance_mm;
+        out->confidences[2 * (result->channel - 1) + result->ch_target_idx] = result->confidence;
+        out->distances[2 * (result->channel - 1) + result->ch_target_idx] = result->distance_mm;
     }
 }
 
@@ -207,50 +204,4 @@ bool get_measurements(measurements_wrapper *out)
     }
 
     return -1;
-}
-
-/* -------------------------------------------------------------------------- */
-/*                                    MAIN                                    */
-/* -------------------------------------------------------------------------- */
-
-void print_result(int dist_mm)
-{
-    printf("Result: %d mm\n", dist_mm);
-}
-
-int measurements_main()
-{
-    measurements_init();
-
-    int N_MEASUREMENTS = 10;
-    struct timeval start, end;
-
-    gettimeofday(&start, NULL);
-    for (int i = 0; i < N_MEASUREMENTS; i++)
-    {
-        measurements_wrapper meas;
-        bool meas_ok = get_measurements(&meas);
-        if (!meas_ok)
-        {
-            printf("Failed to execute single read!\n");
-            measurements_cleanup();
-            raise(SIGTERM);
-        }
-
-        printf("Center distance: %d", meas.distance_mm[4]);
-    }
-    gettimeofday(&end, NULL);
-
-    printf("================= RESULTS =================\n");
-
-    double seconds = (end.tv_sec - start.tv_sec);
-    long micros = ((seconds * 1000000) + end.tv_usec) - (start.tv_usec);
-    // double exec_time = micros / N_MEASUREMENTS;
-
-    printf("Num measurements: %d\n", N_MEASUREMENTS);
-    printf("Avg measurement time: %f ms\n", micros / (float)N_MEASUREMENTS / 1000.0);
-
-    printf("=================== END ===================\n");
-    measurements_cleanup(SIGTERM);
-    exit(EXIT_SUCCESS);
 }

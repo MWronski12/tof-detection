@@ -5,7 +5,7 @@
 
 #include "measurements.h"
 
-void data_collector_init();
+void data_collector_init(const char* filename_prefix);
 void data_collector_cleanup();
 void collect_data(const measurements_wrapper *meas);
 

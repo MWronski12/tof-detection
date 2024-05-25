@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-ITERATIONS=550000
+ITERATIONS=5000000
 SPAD_MAP_ID=1
 REPORT_PERIOD_MS=1
 
@@ -15,3 +15,9 @@ echo $ITERATIONS | sudo tee sysfs/app/iterations
 echo -n "report_perios_ms: "
 echo $REPORT_PERIOD_MS | sudo tee sysfs/app/report_period_ms
 sudo cat sysfs/app/factory_calibration > calib.bin
+
+echo -n "short_range_mode: "
+echo 0 | sudo tee sysfs/app/short_range_mode
+
+echo -n "sysfs/app/conf_threshold: "
+echo 5 | sudo tee sysfs/app/conf_threshold

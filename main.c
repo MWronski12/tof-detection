@@ -43,8 +43,13 @@ static void register_cleanup_handlers(int n_signals, ...)
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
+    char filename_prefix[100] = "data";
+    if (argc == 2) {
+        strcpy(filename_prefix, argv[1]);
+    }
+
     printf("Registering cleanup handlers\n");
     register_cleanup_handlers(2, SIGINT, SIGTERM);
 
@@ -104,7 +109,7 @@ int main()
         printf("Client connected!\n");
 
         measurements_init();
-        data_collector_init();
+        data_collector_init(filename_prefix);
 
         while (1)
         {
@@ -116,19 +121,10 @@ int main()
                 raise(SIGTERM);
             }
 
-            int center_distance = meas.distance_mm[4];
             collect_data(&meas);
 
-            if (center_distance == -1)
-            {
-                perror("Measurement failed!");
-                raise(SIGTERM);
-            }
-
-            int32_t network_data = htonl(center_distance);
-            int ret = send(new_socket, &network_data, sizeof(network_data), MSG_NOSIGNAL);
-
-            if (ret != sizeof(network_data))
+            int ret = send(new_socket, &meas, sizeof(meas), MSG_NOSIGNAL);
+            if (ret != sizeof(meas))
             {
                 printf("Client closed connection...\n");
                 break;
