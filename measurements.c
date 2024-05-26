@@ -139,7 +139,7 @@ static unsigned long long get_timestamp_ms(void)
 
 static void handle_tmf882x_msg_meas_results(struct tmf882x_msg_meas_results *res, measurements_wrapper *out)
 {
-    #define DEBUG__ true
+    #define DEBUG__ false
     if (DEBUG__) print_tmf882x_msg_meas_results(res);
 
     out->timestamp_ms = get_timestamp_ms();

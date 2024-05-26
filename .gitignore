@@ -2,3 +2,8 @@
 
 out
 build
+
+__pycache__
+*.pyc
+
+calib.bin
