@@ -14,3 +14,9 @@
     [ ] - GPS
     [ ] - video
 [ ] Testy dzisiaj po zmroku - minimum 3 przejazdy ze znana predkoscia
+
+[ ] Better plotting:
+    [ ] - Plot depth map
+    [ ] - Add slider for t selection
+    [ ] - Add text input for t selection
+    [ ] - Handle big csv

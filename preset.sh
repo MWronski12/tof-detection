@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 
-ITERATIONS=5000000
+ITERATIONS=550000
 SPAD_MAP_ID=1
-REPORT_PERIOD_MS=1
+REPORT_PERIOD_MS=200
 
 echo -n "Powering on the sensor: "
 echo 1 | sudo tee sysfs/chip_enable
