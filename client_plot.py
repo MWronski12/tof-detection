@@ -6,7 +6,6 @@ import pandas as pd
 
 from collections import deque
 
-import queue
 import threading
 import socket
 import struct
@@ -15,8 +14,7 @@ HOST = "192.168.1.57"
 PORT = 8080
 INTERVAL = 100
 MESSAGE_SIZE = 8 + 4 + 4 * 18 + 4 * 18 + 4
-DATA_PROVIDER_BUFFER_LEN = 1024
-PLOT_BUFFER_LEN = 128
+DATA_BUFFER_LEN = 128
 
 
 class DataProvider:
@@ -30,10 +28,10 @@ class DataProvider:
         }
         self._strategy = default_strategy
 
-    def get_center_zone_sample(self):
+    def get_center_zone_data(self):
         raise NotImplementedError()
 
-    def get_zone_distances(self):
+    def get_latest_zone_distances(self):
         raise NotImplementedError()
 
     def set_strategy(self, strategy):
@@ -54,22 +52,29 @@ class DataProvider:
 class LiveDataProvider(DataProvider):
     def __init__(self):
         super().__init__()
-        self.center_zone_q = queue.Queue()
-        self.zone_distances_q = queue.Queue()
+        self._data_lock = threading.Lock()
+        self._timestamps = deque(maxlen=DATA_BUFFER_LEN)
+        self._distances = deque(maxlen=DATA_BUFFER_LEN)
+
         self._worker = threading.Thread(target=self._do_collect_live_data, daemon=True)
         self._worker.start()
 
-    def get_center_zone_sample(self):
-        try:
-            return self.center_zone_q.get_nowait()
-        except queue.Empty:
-            return None
+    def get_center_zone_data(self):
+        with self._data_lock:
+            if len(self._timestamps) == 0:
+                return None
 
-    def get_zone_distances(self):
-        try:
-            return self.zone_distances_q.get_nowait()
-        except queue.Empty:
-            return None
+            timestamps = np.array(self._timestamps, dtype=np.float64)
+            distances = np.array(self._distances, dtype=np.float64)
+            center_zone_data = distances[:, 4].reshape(-1)
+            return np.column_stack((timestamps, center_zone_data))
+
+    def get_latest_zone_distances(self):
+        with self._data_lock:
+            if len(self._timestamps) == 0:
+                return None
+
+            return np.array(self._distances[-1]).reshape(3, 3)
 
     def _do_collect_live_data(self):
         try:
@@ -78,12 +83,17 @@ class LiveDataProvider(DataProvider):
                 print("Successfully connected to data stream!")
 
                 while True:
-                    bytes = s.recv(MESSAGE_SIZE)
-                    if not bytes:
-                        print("Connection closed!")
-                        break
+                    try:
+                        bytes = s.recv(MESSAGE_SIZE)
+                        if not bytes:
+                            print("Connection closed!")
+                            break
 
-                    self._handle_message(bytes)
+                        self._handle_message(bytes)
+
+                    except Exception as e:
+                        print(f"Error: {e}")
+                        continue
 
         except socket.error as e:
             print(f"Socket error: {e}")
@@ -98,8 +108,9 @@ class LiveDataProvider(DataProvider):
         measurements = [item for pair in zip(confidences, distances) for item in pair]
         distances = self._choose_zone_distances(measurements)
 
-        self.center_zone_q.put((timestamp_ms, distances[4]))
-        self.zone_distances_q.put(distances)
+        with self._data_lock:
+            self._timestamps.append(timestamp_ms / 1000.0)
+            self._distances.append(distances)
 
     def _choose_zone_distances(self, measurements):
         zone_distances = []
@@ -118,10 +129,10 @@ class CSVDataProvider(DataProvider):
         super().__init__()
         self._data = self._load_data()
 
-    def get_center_zone_sample(self):
+    def get_center_zone_data(self):
         raise NotImplementedError()
 
-    def get_zone_distances(self):
+    def get_latest_zone_distances(self):
         raise NotImplementedError()
 
     def _load_data(self, filename="out/test.csv"):
@@ -153,11 +164,9 @@ def do_plot_depth_map(data_provider, fig, ax):
     ax.grid(True, linestyle="--")
 
     def run(i):
-        zone_distances = data_provider.get_zone_distances()
+        zone_distances = data_provider.get_latest_zone_distances()
         if zone_distances is None:
             return
-
-        zone_distances = np.array(zone_distances).reshape(3, 3)
 
         # Update the data of the image
         im.set_data(zone_distances)
@@ -196,28 +205,18 @@ def do_plot_center_zones(data_provider, fig, ax, time_span_s=5, y_span_mm=6000):
         bbox=props,
     )
 
-    buffer = deque(maxlen=PLOT_BUFFER_LEN)
-
     def run(i):
-        sample = data_provider.get_center_zone_sample()
-        if sample is None:
+        data = data_provider.get_center_zone_data()
+        if data is None or len(data[0]) < 2:
             return
 
-        timestamp_ms = sample[0]
-        dist_mm = sample[1]
-        buffer.append((timestamp_ms, dist_mm))
-
-        samples = np.array(buffer, dtype=np.float64)
-        samples[:, 0] = samples[:, 0] - samples[0, 0]
-        samples[:, 0] /= 1000.0
-
-        t_now = samples[-1, 0]
-        left = max(0, t_now - time_span_s / 2)
-        right = max(time_span_s, t_now + time_span_s / 2)
+        t_now = data[-1][0]
+        left = t_now - time_span_s / 2
+        right = t_now + time_span_s / 2
         ax.set_xlim(left, right)
 
-        scatter.set_offsets(samples)
-        distance_box.set_text(f"{dist_mm:4d} mm")
+        scatter.set_offsets(data)
+        distance_box.set_text(f"{int(data[-1][1])} mm")
 
     return FuncAnimation(fig, run, interval=INTERVAL, save_count=1024)
 
