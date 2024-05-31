@@ -1,9 +1,8 @@
-from collector import Collector
-
+from observable import Observable
 import time
 
 
-class CSVCollector(Collector):
+class CSVCollector(Observable):
     def __init__(self, file_path):
         super().__init__()
         self._file_path = file_path
@@ -27,11 +26,11 @@ class CSVCollector(Collector):
             time.sleep((current_timestamp - self._last_timestamp) / 1000.0)
 
         self._last_timestamp = current_timestamp
-        self.notify(data)
+        self._dispatch(data)
 
 
 if __name__ == "__main__":
-    file_path = "out/data-1717101406.csv"
+    file_path = "out/data-1717158663.csv"
     collector = CSVCollector(file_path)
-    collector.subscribe(lambda data: data)
+    collector.subscribe(lambda data: print(data))
     collector.start()

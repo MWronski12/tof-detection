@@ -1,4 +1,4 @@
-class Collector:
+class Observable:
     def __init__(self):
         self._observers = []
 
@@ -8,7 +8,7 @@ class Collector:
     def unsubscribe(self, observer):
         self._observers.remove(observer)
 
-    def notify(self, data):
+    def _dispatch(self, data):
         for observer in self._observers:
             observer(data)
 
