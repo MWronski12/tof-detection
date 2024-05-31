@@ -56,7 +56,7 @@ class CSVDataProvider(DataProvider):
 
     def get_zone_distances(self):
         with self._current_index_lock:
-            measurements = self._df.iloc[self._current_index]["measurements"]
+            measurements = self._df.iloc[self._current_index + self._span]["measurements"]
 
         distances = self._choose_zone_distances(measurements)
         return np.array(distances, dtype=np.int16).reshape(3, 3)
