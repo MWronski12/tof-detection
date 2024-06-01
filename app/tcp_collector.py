@@ -1,4 +1,7 @@
 from collector import Collector
+from mediator import Mediator
+from event import Event, EventType
+
 import socket
 import struct
 
@@ -7,24 +10,31 @@ MESSAGE_SIZE = 8 + 4 + 4 * 18 + 4 * 18 + 4
 
 
 class TCPCollector(Collector):
-    def __init__(self, host, port):
-        super().__init__()
+    def __init__(self, mediator: Mediator, host, port):
+        super().__init__(mediator)
+
         self._host = host
         self._port = port
 
-    def _run(self):
+    def _start(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.connect((self._host, self._port))
             print("Successfully connected to data stream")
 
             while True:
                 self._event.wait()
-                bytes = s.recv(MESSAGE_SIZE)
-                if not bytes:
-                    print("Connection closed")
-                    break
 
-                self._handle_message(bytes)
+                try:
+                    bytes = s.recv(MESSAGE_SIZE)
+                    if not bytes:
+                        print("Connection closed")
+                        break
+
+                    self._handle_message(bytes)
+
+                except Exception as e:
+                    print(f"Error: {e}")
+                    continue
 
     def _handle_message(self, bytes):
         unpacked_data = struct.unpack("<Qi18i18i4x", bytes)
@@ -36,12 +46,4 @@ class TCPCollector(Collector):
         data = [timestamp_ms, ambient_light]
         data += [measurement for pair in zip(confidences, distances) for measurement in pair]
 
-        self._dispatch(data)
-
-
-if __name__ == "__main__":
-    host = "192.168.1.57"
-    port = 8080
-    collector = TCPCollector(host=host, port=port)
-    collector.subscribe(lambda data: print(data))
-    collector.start()
+        self.dispatch(Event(type=EventType.MEASUREMENT, data=data))

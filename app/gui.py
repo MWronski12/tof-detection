@@ -1,12 +1,15 @@
-import numpy as np
-from collections import deque
+from component import Component
+from event import Event, EventType
+from mediator import Mediator
+
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
-from notifiable import Notifiable
+from matplotlib.widgets import TextBox
+import numpy as np
+
+from collections import deque
 import threading
-
-
-BUFFER_SIZE = 150
+import copy
 
 
 class DepthMapAnimator:
@@ -62,12 +65,12 @@ class CenterZoneAnimator:
 
         self._scatter = self._ax.scatter([0], [0], color="orange", s=20)
 
-        self._distance_box = self._ax.text(
+        self._text_box = self._ax.text(
             0.5,
             0.96,
             str(0),
             transform=self._ax.transAxes,
-            fontsize=36,
+            fontsize=22,
             horizontalalignment="center",
             verticalalignment="top",
             bbox={"boxstyle": "round", "facecolor": "wheat", "alpha": 0.5},
@@ -75,51 +78,82 @@ class CenterZoneAnimator:
 
     def update(self, center_zone_data):
         if len(center_zone_data) < 2:
-            return
+            return []
 
         t_now = center_zone_data[-1][0]
-        left = t_now - self._time_span_s / 2
-        right = t_now + self._time_span_s / 2
+        left = t_now - self._time_span_s * 3 / 4
+        right = t_now + self._time_span_s * 1 / 4
         self._ax.set_xlim(left, right)
 
         self._scatter.set_offsets(center_zone_data)
-        self._distance_box.set_text(f"{int(center_zone_data[-1][1])} mm")
+        self._text_box.set_text(f"{int(t_now * 1000)} ms / {int(center_zone_data[-1][1])} mm")
 
-        return [self._scatter, self._distance_box]
+        return [self._scatter, self._text_box]
 
 
-class GUI(Notifiable):
-    def __init__(self):
+class GUI(Component):
+    def __init__(self, mediator: Mediator, buffer_size):
+        super().__init__(mediator)
+
         self._data_lock = threading.Lock()
-        self._data = deque(maxlen=BUFFER_SIZE)
+        self._data = deque(maxlen=buffer_size)
 
-        self._fig, (depth_map_ax, center_zone_ax) = plt.subplots(1, 2, figsize=(12, 6))
-
+        self._fig, (depth_map_ax, center_zone_ax) = plt.subplots(1, 2)
         self._depth_map = DepthMapAnimator(self._fig, depth_map_ax)
         self._center_zone = CenterZoneAnimator(self._fig, center_zone_ax)
+        self._ani = FuncAnimation(self._fig, self._animate, interval=100, save_count=1000)
 
-        self._ani = FuncAnimation(self._fig, self._animate, interval=1, blit=False, save_count=BUFFER_SIZE)
+        self._fig.canvas.mpl_connect("key_press_event", self._on_key_press)
+        self._text_box_ax = self._fig.add_axes([0.1, 0.01, 0.3, 0.05])
+        self._text_box = TextBox(self._text_box_ax, "Seek to timestamp: ")
+        self._text_box.on_submit(self._on_text_submit)
+
+    # ------------------------------------ GUI ----------------------------------- #
 
     def start(self):
         plt.show()
-
-    def notify(self, message):
-        with self._data_lock:
-            self._data.append((message.timestamp, message.distances))
-
-    def update_all(self, messages):
-        with self._data_lock:
-            self._data.extend([(message.timestamp, message.distances) for message in messages])
 
     def _animate(self, frame):
         with self._data_lock:
             if len(self._data) == 0:
                 return
 
-            zone_distances = self._data[-1][1]
+            zone_distances = copy.deepcopy(self._data[-1][1])
             center_zone_data = [(timestamp, distances[4]) for timestamp, distances in self._data]
 
         animators = []
         animators += self._depth_map.update(zone_distances)
         animators += self._center_zone.update(center_zone_data)
+
         return animators
+
+    # -------------------------- Zone Distances Conusmer ------------------------- #
+
+    def append_data(self, sample):
+        with self._data_lock:
+            timestamp = sample[0]
+            distances = sample[1]
+            self._data.append((timestamp, distances))
+
+    def update_data(self, data):
+        with self._data_lock:
+            self._data.clear()
+            self._data.extend(data)
+
+    # --------------------------------- Component -------------------------------- #
+
+    def _on_key_press(self, event):
+        if event.key == "left":
+            self.dispatch(Event(type=EventType.REWIND, data=None))
+        elif event.key == "right":
+            self.dispatch(Event(type=EventType.FAST_FORWARD, data=None))
+        elif event.key == "r":
+            self.dispatch(Event(type=EventType.RESET, data=None))
+
+    def _on_text_submit(self, text):
+        try:
+            timestamp = int(text)
+            self.dispatch(Event(type=EventType.SEEK, data=timestamp))
+
+        except ValueError:
+            print("Invalid timestamp format. Please enter a valid integer value as timestamp ms.")

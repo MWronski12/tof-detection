@@ -1,15 +1,19 @@
 from collector import Collector
+from mediator import Mediator
+from event import Event, EventType
+
 import time
 
 
 class CSVCollector(Collector):
-    def __init__(self, file_path):
-        super().__init__()
+    def __init__(self, mediator: Mediator, file_path):
+        super().__init__(mediator)
+
         self._file_path = file_path
         self._last_timestamp = None
         self._last_dispatch_time = None
 
-    def _run(self):
+    def _start(self):
         with open(self._file_path, "r") as file:
             print("Successfully opened CSV file")
 
@@ -32,11 +36,4 @@ class CSVCollector(Collector):
         self._last_timestamp = data[0] / 1000.0
         self._last_dispatch_time = time.time()
 
-        self._dispatch(data)
-
-
-if __name__ == "__main__":
-    file_path = "out/data-1717158663.csv"
-    collector = CSVCollector(file_path)
-    collector.subscribe(lambda data: print(data))
-    collector.start()
+        self.dispatch(event=Event(EventType.MEASUREMENT, data=data))
