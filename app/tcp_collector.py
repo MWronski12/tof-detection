@@ -1,4 +1,4 @@
-from observable import Observable
+from collector import Collector
 import socket
 import struct
 
@@ -6,18 +6,19 @@ import struct
 MESSAGE_SIZE = 8 + 4 + 4 * 18 + 4 * 18 + 4
 
 
-class TCPCollector(Observable):
+class TCPCollector(Collector):
     def __init__(self, host, port):
         super().__init__()
         self._host = host
         self._port = port
 
-    def start(self):
+    def _run(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.connect((self._host, self._port))
             print("Successfully connected to data stream")
 
             while True:
+                self._event.wait()
                 bytes = s.recv(MESSAGE_SIZE)
                 if not bytes:
                     print("Connection closed")
