@@ -15,15 +15,9 @@ class Buffer:
         with self._data_lock:
             self._data.append(data)
 
-    def seek(self, timestamp):
+    def seek(self, value):
         with self._data_lock:
-            for i, sample in enumerate(self._data):
-                ts = sample[0]
-                if ts == timestamp:
-                    self._current_index = i
-                    return
-
-        print("Timestamp not found in buffer")
+            self._current_index = int(value / 100.0 * (len(self._data) - 1))
 
     def rewind(self):
         with self._data_lock:
