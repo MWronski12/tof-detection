@@ -5,25 +5,32 @@
 - [x] Output csv data filename as argument
 - [x] Sprawdzenie maksymalnego zasięgu czujnika po zmroku z białym celem i normalnym
 - [x] Wyznaczanie kąta pola widzenia czujnika w srodkowej strefie
-- [ ] Rozwiazanie problemu niewiadomej odleglosci od rzeczywistego ruchu rowerzysty
 - [ ] Protokół testu wraz z potrzebnym sprzetem, ustawieniem czujnika, kolejnoscia dzialan, liczba i rodzajem przejazdow
 - [ ] Automatyczne matchowanie danych
     - [ ] GPS
     - [ ] video
-- [ ] Testy dzisiaj po zmroku - minimum 3 przejazdy ze znana predkoscia
+- [x] Testy dzisiaj po zmroku - minimum 3 przejazdy ze znana predkoscia
 
 - [ ] Better plotting:
     - [x] Plot depth map
-    - [ ] Add slider for t selection
-    - [ ] Add text input for t selection
-    - [ ] Handle big csv
+    - [x] Add slider for t selection
+    - [x] Add text input for t selection
     
-    TODO NOW:
-    - [ ] get_data(last x seconds)
-    - [ ] separate ETL
+TODO NOW:
+    
+- [ ] Remove event and add component methods with typehints
+- [ ] Remove the buffering from GUI, just make it poll the data and only the amount it needs
 
-        Extract - Load csv file or receive TCP input stream
-        Transform - Zone distance picking strategy, auto velocity labeling, extra features, formats, output DataFrame
-        Load - Feed data to visualization and detection algorithm
+- [ ] Add data transform proxy:
+    - [ ] Separate it into a different class and make selectable
+    - [ ] Think if we should couple distance selection strategy and other transformations like EMA smoothing
 
-    - [ ] Add seek, rewind, fast-forward, goto timestamp, pause, play to data provider interface
+- [ ] Add SpeedEstimator component
+    - [ ] Think if it should poll for batches of data like GUI or be updated 1 sample at a time (dev vs production)
+    - [ ] SpeedEstimator output to GUI plot
+
+- [ ] Make the buffer cleaner:
+    - [ ] use numpy/pandas
+    - [ ] parametrize rewind/fast-forward step
+    - [ ] add getters by x last seconds
+

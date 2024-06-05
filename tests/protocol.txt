@@ -1,0 +1,44 @@
+HIPERPARAMETRY:
+
+a - odległość czujnika od osi ścieżki
+iterations - liczba iteracji w presecie
+
+
+POTRZEBNE RZECZY:
+
+- stojak obrotowy
+- rpi + czujnik w pudełku
+- naładowany powerbank z kablem miniusb
+- rower z prędkościomierzem i uchwytem na telefon
+- 2 naładowane telefony:
+    - do udostępniania sieci - rpi musi mieć skonfigurowane połączenie z siecią telefonu
+    - do nagrywania prędkościomierza i zbierania danych z GPS - telefon musi mieć zainstalowaną aplikację GPS tracker i mieścić się w uchwycie
+- naładowany laptop
+- zalecane:
+    - biała koszulka
+    - zmrok
+    - Przestronna i równa powierzchnia z prostopadłymi liniami ułatwiającymi dokładne ustawienie czujnika (np. boisko szkolne do koszykówki)
+
+
+PROTOKÓŁ:
+
+- Postawić czujnik na stojaku obrotowym na wysokosci klatki piersiowej
+- Włączyć udostępnianie sieci wifi
+- Włączyć czujnik
+- Połączyć się laptopem z siecią wifi (czujnik łączy się automatycznie)
+- Połączyć się z czujnikiem
+- Uruchomić serwer na rpi
+
+- Wyznaczyć oś ścieżki rowerowej odległej o a metrów od czujnika
+- Ustawić liczbę iteracji
+- Ustawić czujnik pod kątem maksymalizującym rejestrowalną odległość między czujnikiem, a punktem przecięcia osi ścieżki rowerowej:
+    - Uruchomić klienta na laptopie
+    - Iteracyjnie zwiększać kąt i patrzeć czy czujnik dalej rejestruje odległość do obiektu znajdującego na przecięciu osi ścieżki i kierunku patrzenia czujnika
+    - Odnotować wyznaczoną odległość
+    - Obliczyć kąt ustawienia czujnika
+- Zweryfikować ustawienie czujnika, czyli nagrać i obejrzeć następujące:
+    - Przejazd rowerem (bliżej czujnika, równo po osi, dalej od czujnika)
+    - Przejście przed czujnikiem parę razy
+- Wyczyścić folder out ze wszystkich roboczych pików z danymi
+
+- 
