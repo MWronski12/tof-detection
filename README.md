@@ -1,29 +1,48 @@
+# Bicycle detection with multi-zone tof sensor
 
-- [X] Obliczenie kątów i odległości na kartce
-- [X] Sposob na ustawienie czujnika pod odpowiednim katem
-- [X] Strategia wyboru dystansu z dwóch celów na strefę - confidence, closest, average
-- [x] Output csv data filename as argument
-- [x] Sprawdzenie maksymalnego zasięgu czujnika po zmroku z białym celem i normalnym
-- [x] Wyznaczanie kąta pola widzenia czujnika w srodkowej strefie
-- [ ] Rozwiazanie problemu niewiadomej odleglosci od rzeczywistego ruchu rowerzysty
-- [ ] Protokół testu wraz z potrzebnym sprzetem, ustawieniem czujnika, kolejnoscia dzialan, liczba i rodzajem przejazdow
-- [ ] Automatyczne matchowanie danych
-    - [ ] GPS
-    - [ ] video
-- [ ] Testy dzisiaj po zmroku - minimum 3 przejazdy ze znana predkoscia
+This repository contains all the resources for implementation of bicycle detection through object speed estimation for diploma thesis.
 
-- [ ] Better plotting:
-    - [x] Plot depth map
-    - [ ] Add slider for t selection
-    - [ ] Add text input for t selection
-    - [ ] Handle big csv
-    
-    TODO NOW:
-    - [ ] get_data(last x seconds)
-    - [ ] separate ETL
 
-        Extract - Load csv file or receive TCP input stream
-        Transform - Zone distance picking strategy, auto velocity labeling, extra features, formats, output DataFrame
-        Load - Feed data to visualization and detection algorithm
+## ROADMAP:
 
-    - [ ] Add seek, rewind, fast-forward, goto timestamp, pause, play to data provider interface
+
+- [ ] Data aquisition
+    - [ ] Prepare test protocol (test branch has some start, should we gather some interfered samples!?)
+    - [ ] Gather data
+    - [ ] Label data (Video/GPS)
+
+
+- [ ] Detection algorithm
+    - [ ] Implement simple averaged, scaled derrivative
+    - [ ] Account for different distances from the sensor
+    - [ ] Account for interferences
+
+
+- [ ] Controller architecture improvements
+    - [ ] Improve buffer
+        - [ ] Make buffer independent (not a component)
+        - [ ] Use numpy/pandas
+        - [ ] Rewind per frame or per n_seconds
+        - [ ] Get last n_seconds of data
+
+    - [ ] Remove Event and add methods in Component base class
+    - [ ] Drop double buffer in GUI, just emit refresh events for n_seconds of data
+
+    - [ ] Extract strategy for transform
+        - [ ] Add tranform possibility of aggregated transform like 'confidence --> bias --> EMA'
+
+    - [ ] Add SpeedEstimator component
+        - [ ] Consume each sample
+        - [ ] Or update all samples
+        - [ ] Communicate result to GUI for display
+
+    - [ ] Add Signalizer component
+
+
+- [ ] Final tests
+
+
+- [ ] Thesis documentation
+    - [x] LaTex template
+    - [ ] Conspect
+    - [ ] Document
