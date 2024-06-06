@@ -25,7 +25,7 @@ class TCPCollector(Collector):
                 self._event.wait()
 
                 try:
-                    bytes = s.recv(MESSAGE_SIZE)
+                    bytes = self._recv_msg(s, MESSAGE_SIZE)
                     if not bytes:
                         print("Connection closed")
                         break
@@ -35,6 +35,15 @@ class TCPCollector(Collector):
                 except Exception as e:
                     print(f"Error: {e}")
                     continue
+
+    def _recv_msg(self, sock, size):
+        data = b''
+        while len(data) < size:
+            packet = sock.recv(size - len(data))
+            if not packet:
+                return None
+            data += packet
+        return data
 
     def _handle_message(self, bytes):
         unpacked_data = struct.unpack("<Qi18i18i4x", bytes)
