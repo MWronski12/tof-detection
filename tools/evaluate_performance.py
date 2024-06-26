@@ -1,6 +1,8 @@
 import pandas as pd
 import sys
 
+# ---------------------------------------------------------------------------- #
+
 if len(sys.argv) != 2:
     print("Usage python3 evaluate_performance.py <csv file>")
     sys.exit(1)
@@ -8,74 +10,147 @@ if len(sys.argv) != 2:
 file = sys.argv[1]
 print("Data file:", file, end="\n\n")
 
-# Read CSV data into a DataFrame
 
-column_names = [
-    "timestamp",
-    "ambient_light",
-    "confidence_target_0",
-    "distance_mm_target_0",
-    "confidence_target_1",
-    "distance_mm_target_1",
+# ---------------------------------------------------------------------------- #
+
+NUM_ZONES = 9
+NUM_TARGETS = 2
+CENTER_ZONE = 5
+
+
+make_confidence_distance_pair = lambda zone_idx, target_idx: (
+    f"zone{zone_idx}_conf{target_idx}",
+    f"zone{zone_idx}_dist{target_idx}",
+)
+
+distance_columns = [
+    col
+    for pair in [make_confidence_distance_pair(z, t) for z in range(1, NUM_ZONES + 1) for t in range(NUM_TARGETS)]
+    for col in pair
 ]
-df = pd.read_csv(file, names=column_names)
+
+dtypes = {
+    "timestamp": "int64",
+    "ambient_light": "int16",
+    **{col: "int16" for col in distance_columns},
+}
 
 
-def choose_min_distance(row):
-    return min(row["distance_mm_target_0"], row["distance_mm_target_1"])
+df = pd.read_csv(
+    file,
+    sep=",",
+    names=["timestamp", "ambient_light", *distance_columns],
+    index_col="timestamp",
+    dtype=dtypes,
+)
+
+df.drop(["ambient_light"], axis=1, inplace=True)
+
+df.replace(-1, pd.NA, inplace=True)
+
+confidence_columns = df.filter(regex="zone[0-9]*_conf[0-9]*").columns
+df[confidence_columns] = df[confidence_columns].apply(lambda confidence: confidence / 255.0)
 
 
-def choose_max_distance(row):
-    return max(row["distance_mm_target_0"], row["distance_mm_target_1"])
+# ---------------------------------------------------------------------------- #
 
 
-def choose_max_confidence_distance(row):
-    if row["confidence_target_0"] >= row["confidence_target_1"]:
-        return row["distance_mm_target_0"]
-    else:
-        return row["distance_mm_target_1"]
+zone_data = lambda zone_idx: df.filter(like=f"zone{zone_idx}")
 
 
-def choose_mean_distance(row):
-    if row["distance_mm_target_0"] == -1 or row["distance_mm_target_0"] != -1:
-        return choose_max_distance(row)
+def unpack_zone_data(row):
+    conf_target1 = row.iloc[0]
+    dist_target1 = row.iloc[1]
+    conf_target2 = row.iloc[2]
+    dist_target2 = row.iloc[3]
 
-    return (row["distance_mm_target_0"] + row["distance_mm_target_1"]) / 2
-
-
-def choose_confidence_weighted_mean_distance(row):
-    if row["distance_mm_target_0"] == -1 or row["distance_mm_target_0"] != -1:
-        return choose_max_distance(row)
-
-    confidence_sum = row["confidence_target_0"] + row["confidence_target_1"]
-
-    return (
-        row["confidence_target_0"] * row["distance_mm_target_0"]
-        + row["confidence_target_1"] * row["distance_mm_target_1"]
-    ) / confidence_sum
+    return conf_target1, dist_target1, conf_target2, dist_target2
 
 
-def choose_confidence(row):
-    if row["distance_mm"] == row["distance_mm_target_0"]:
-        return row["confidence_target_0"]
-    else:
-        return row["confidence_target_1"]
+def confidence_strategy(row):
+    conf_target1, dist_target1, conf_target2, dist_target2 = unpack_zone_data(row)
+
+    if pd.isna(conf_target1) and pd.isna(conf_target2):
+        return pd.NA
+
+    if pd.isna(conf_target1):
+        return dist_target2
+
+    if pd.isna(conf_target2):
+        return dist_target1
+
+    return dist_target1 if conf_target1 >= conf_target2 else dist_target2
 
 
-df["distance_mm"] = df.apply(choose_max_distance, axis=1)
-df["confidence"] = df.apply(choose_confidence, axis=1)
+def mean_strategy(row):
+    conf_target1, dist_target1, conf_target2, dist_target2 = unpack_zone_data(row)
 
-distance = df.loc[df["distance_mm"] != -1, "distance_mm"]
-confidence = df.loc[df["confidence"] != -1, "confidence"]
+    if pd.isna(conf_target1) and pd.isna(conf_target2):
+        return pd.NA
 
-period = df["timestamp"].diff()
-ambient_light = df["ambient_light"]
+    if pd.isna(conf_target1):
+        return dist_target2
 
-print(f"Data present: {len(distance) / len(df):.2%}")
-print(f"Mean ambient light: {ambient_light.mean():.0f} +- {ambient_light.std():.0f}")
-print(f"Mean period: {period.mean():.2f} +- {period.std():.2f} ms")
-print(f"Max period: {period.max()} mm")
-print(f"Mean confidence: {confidence.mean():.2f} +- {confidence.std():.2f}")
-print(f"Mean dist: {distance.mean():.0f} +- {distance.std():.0f} mm")
-print(f"Min dist: {distance.min()} mm")
-print(f"Max dist: {distance.max()} mm")
+    if pd.isna(conf_target2):
+        return dist_target1
+
+    return (dist_target1 + dist_target2) / 2
+
+
+def weighted_mean_strategy(row):
+    conf_target1, dist_target1, conf_target2, dist_target2 = unpack_zone_data(row)
+
+    if pd.isna(conf_target1) and pd.isna(conf_target2):
+        return pd.NA
+
+    if pd.isna(conf_target1):
+        return dist_target2
+
+    if pd.isna(conf_target2):
+        return dist_target1
+
+    return (conf_target1 * dist_target1 + conf_target2 * dist_target2) / (conf_target1 + conf_target2)
+
+
+def target0_strategy(row):
+    _, dist_target1, _, _ = unpack_zone_data(row)
+
+    return dist_target1
+
+# ---------------------------------------------------------------------------- #
+
+import numpy as np
+
+strategy = weighted_mean_strategy
+zone = CENTER_ZONE
+a = 1300
+
+df["d"] = zone_data(zone).apply(strategy, axis=1)
+df["dt"] = df.index.to_series().diff()
+df["dd"] = df["d"].diff()
+
+df["velocity"] = df.apply(
+    lambda row: (
+        (row["d"] / np.sqrt(row["d"] ** 2 - a**2)) * (row["dd"] / row["dt"]) * 3.6
+        if not pd.isna(row["d"]) and not pd.isna(row["dd"]) and not pd.isna(row["dt"]) and row["d"] ** 2 - a**2 > 0
+        else pd.NA
+    ),
+    axis=1,
+)
+
+print(f"Mean dt: {df['dt'].mean()} +- {df['dt'].std()} [{df['dt'].min()} - {df['dt'].max()}]")
+
+# ---------------------------------------------------------------------------- #
+
+# import matplotlib.pyplot as plt
+
+
+# x = df.index - df.index.min()
+# y1 = df["d"].replace(pd.NA, 0)
+# y2 = df["velocity"].replace(pd.NA, 0)
+
+# fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6, 10))
+# ax1.scatter(x, y1, c="orange")
+# ax2.scatter(x, y2, c="blue")
+
+# plt.show()

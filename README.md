@@ -19,8 +19,9 @@ This repository contains all the resources for implementation of bicycle detecti
 
 
 - [ ] Controller architecture improvements
+    - [ ] Make Collector independent (not a component)
+
     - [ ] Improve buffer
-        - [ ] Make buffer independent (not a component)
         - [ ] Use numpy/pandas
         - [ ] Rewind per frame or per n_seconds
         - [ ] Get last n_seconds of data
