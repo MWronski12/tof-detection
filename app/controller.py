@@ -3,38 +3,37 @@ from gui import GUI
 from mediator import Mediator
 from collector import Collector
 from overrides import overrides
+from strategy import ZoneDistaceStrategy, TargetZeroStrategy, ConfidenceStrategy
+from config import NUM_ZONES
 
-
-SPAN = 150  # How many data points at once will be fetched from buffer and passed to GUI
+import numpy as np
 
 
 class Controller(Mediator):
-    def __init__(self, collector: Collector, default_strategy="confidence"):
+    def __init__(self, collector: Collector, strategy: ZoneDistaceStrategy = ConfidenceStrategy()):
         self._collector = collector
+        self._strategy = strategy
+
+        self._buffer = Buffer(span=150)
+        self._gui = GUI(mediator=self)
+
         self._is_playing = True
-
-        self._buffer = Buffer(span=SPAN)
-        self._gui = GUI(mediator=self, buffer_size=SPAN)
-
-        self._strategies = {
-            "confidence": lambda zone_data: (zone_data[1] if zone_data[0] >= zone_data[2] else zone_data[3]),
-            "target_0": lambda zone_data: zone_data[1],
-            "avg": lambda zone_data: (zone_data[1] + zone_data[3]) / 2,
-        }
-        self._strategy = default_strategy
 
     def start(self):
         self._collector.subscribe(self._handle_collector_data)
         self._collector.start()
         self._gui.start()
 
-    def _handle_collector_data(self, data) -> None:
-        self._buffer.append(data)
+    def _handle_collector_data(self, sample: list[int]) -> None:
+        sample = np.array(sample, dtype=np.int64)
+        self._buffer.append(sample)
 
         if self._is_playing:
-            distances = self._choose_zone_distances(data)
-            sample = data[0] / 1000.0, distances
-            self._gui.append_data(sample)
+            data = self._strategy.transform(sample.reshape(1, -1))
+            timestamp = data[0][0]
+            distance_data = data[0][2:]
+            center_zone_distance = distance_data[NUM_ZONES // 2]
+            # self._detector.update(timestamp, center_zone_distance)
 
     # ----------------------------- Mediator handlers ---------------------------- #
 
@@ -62,27 +61,14 @@ class Controller(Mediator):
         self._update_data()
         self._is_playing = True
 
+    @overrides
+    def handle_gui_update(self, n_seconds: int) -> None:
+        self._update_data()
+
     # --------------------------------- Strategy --------------------------------- #
 
     def _update_data(self):
-        measurements = self._buffer.get_data()
-        data = []
-        for measurement in measurements:
-            timestamp = measurement[0] / 1000.0
-            zone_distances = self._choose_zone_distances(measurement)
-            data.append((timestamp, zone_distances))
-
+        data = self._buffer.get_data()
+        data = self._strategy.transform(data)
         self._gui.update_data(data)
         # self._detector.update_data(data)
-
-    def _choose_zone_distances(self, measurement):
-        measurement = measurement[2:]
-        zone_distances = []
-        for i in range(0, len(measurement), 4):
-            zone_data = measurement[i : i + 4]
-            zone_distances.append(self._choose_zone_distance(zone_data))
-
-        return zone_distances
-
-    def _choose_zone_distance(self, zone_data):
-        return self._strategies[self._strategy](zone_data)

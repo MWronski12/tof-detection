@@ -6,7 +6,7 @@ import time
 class CSVCollector(Collector):
     def __init__(self, file_path, live_mode=False, start_time=0):
         super().__init__()
-    
+
         self._file_path = file_path
         self._live_mode = live_mode
         self._start_time = start_time
@@ -41,8 +41,11 @@ class CSVCollector(Collector):
         if self._last_timestamp is not None:
             elapsed_time = data[0] / 1000.0 - self._last_timestamp
             time_since_last_dispatch = time.time() - self._last_dispatch_time
+
             if elapsed_time > time_since_last_dispatch:
                 time.sleep(elapsed_time - time_since_last_dispatch)
+            else:
+                print("Data is being processed too slowly")
 
         self._last_timestamp = data[0] / 1000.0
         self._last_dispatch_time = time.time()

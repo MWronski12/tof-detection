@@ -19,3 +19,6 @@ class Component(ABC):
 
     def reset(self) -> None:
         self._mediator.handle_reset()
+
+    def gui_update(self, n_seconds: int) -> None:
+        self._mediator.handle_gui_update(n_seconds)

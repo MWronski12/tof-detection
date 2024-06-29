@@ -1,5 +1,6 @@
 from component import Component
 from mediator import Mediator
+from config import NUM_ZONES
 
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -7,10 +8,10 @@ from matplotlib.widgets import Slider
 from matplotlib.gridspec import GridSpec
 from matplotlib.artist import Artist
 
-import numpy as np
-
 from abc import ABC, abstractmethod
-from collections import deque
+from datetime import datetime
+
+import numpy as np
 import threading
 
 
@@ -20,7 +21,7 @@ class Animator(ABC):
         self._ax = ax
 
     @abstractmethod
-    def update(self, data) -> list[Artist]:
+    def update(self, data: np.ndarray) -> list[Artist]:
         pass
 
 
@@ -48,8 +49,8 @@ class DepthMapAnimator(Animator):
         if len(data) == 0:
             return []
 
-        zone_distances = data[-1][1]
-        zone_distances = np.array(zone_distances).reshape(3, 3)
+        zone_distances = data[-1][2:]
+        zone_distances = zone_distances.reshape(3, 3)
         zone_distances[zone_distances == -1] = 5000
 
         self._im.set_data(zone_distances)
@@ -83,19 +84,16 @@ class CenterZoneAnimator(Animator):
         if len(data) < 2:
             return []
 
-        center_zone_data = [(timestamp, distances[4]) for timestamp, distances in data]
+        center_zone_data = data[:, [0, 2 + NUM_ZONES // 2]]  # timestamp, center_zone_distance
 
         t_now = center_zone_data[-1][0]
-        left = t_now - self._time_span_s * 3 / 4
-        right = t_now + self._time_span_s * 1 / 4
+        left = t_now - self._time_span_s * 3 / 4 * 1000
+        right = t_now + self._time_span_s * 1 / 4 * 1000
         self._ax.set_xlim(left, right)
 
         self._scatter.set_offsets(center_zone_data)
 
         return [self._scatter]
-
-
-from datetime import datetime
 
 
 class WidgetAnimator(Animator):
@@ -119,8 +117,8 @@ class WidgetAnimator(Animator):
         if len(data) == 0:
             return []
 
-        timestamp = data[-1][0]
-        distance = data[-1][1][4]
+        timestamp = data[-1][0] / 1000.0
+        distance = data[-1][2 + NUM_ZONES // 2]
         time = datetime.fromtimestamp(timestamp).strftime("%H:%M:%S.%f")[:-3]
 
         self._timestamp.set_text(f"timestamp: {int(timestamp * 1000)} ms")
@@ -131,11 +129,14 @@ class WidgetAnimator(Animator):
 
 
 class GUI(Component):
-    def __init__(self, mediator: Mediator, buffer_size):
+    def __init__(self, mediator: Mediator):
         super().__init__(mediator)
 
+        self._center_zone_time_span_s = 5
+        self._refresh_interval_ms = 41
+
         self._data_lock = threading.Lock()
-        self._data = deque(maxlen=buffer_size)
+        self._data = np.array([], dtype=np.int64)
 
         self._fig = plt.figure()
         gs = GridSpec(3, 5, figure=self._fig)
@@ -144,13 +145,13 @@ class GUI(Component):
         self._center_zone_ax = self._fig.add_subplot(gs[1:, :3])
         self._depth_map_ax = self._fig.add_subplot(gs[:, 3:])
 
-        self._animators = [
+        self._animators: list[Animator] = [
             WidgetAnimator(self._fig, self._widgets_ax),
-            CenterZoneAnimator(self._fig, self._center_zone_ax),
+            CenterZoneAnimator(self._fig, self._center_zone_ax, self._center_zone_time_span_s),
             DepthMapAnimator(self._fig, self._depth_map_ax),
         ]
 
-        self._ani = FuncAnimation(self._fig, self._animate, interval=100, save_count=1000)
+        self._ani = FuncAnimation(self._fig, self._animate, interval=self._refresh_interval_ms, save_count=200)
 
         self._seek_ax = self._fig.add_axes([0.1, 0.02, 0.8, 0.02])
         self._slider = Slider(
@@ -174,21 +175,14 @@ class GUI(Component):
         plt.show()
 
     def _animate(self, frame):
-        with self._data_lock:
-            return [animator.update(self._data) for animator in self._animators]
+        self.gui_update(self._center_zone_time_span_s)
 
     # -------------------------- Zone Distances Conusmer ------------------------- #
 
-    def append_data(self, sample):
-        with self._data_lock:
-            timestamp = sample[0]
-            distances = sample[1]
-            self._data.append((timestamp, distances))
-
     def update_data(self, data):
         with self._data_lock:
-            self._data.clear()
-            self._data.extend(data)
+            for animator in self._animators:
+                animator.update(data)
 
     # --------------------------------- Component -------------------------------- #
 

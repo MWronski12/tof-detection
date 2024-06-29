@@ -16,3 +16,7 @@ class Mediator(ABC):
     def handle_reset(self) -> None:
         print("Mediator: Reset event not implemented")
         pass
+
+    def handle_gui_update(self, n_seconds: int) -> None:
+        print("Mediator: GUI update event not implemented")
+        pass
