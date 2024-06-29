@@ -1,8 +1,8 @@
 from buffer import Buffer
 from gui import GUI
 from mediator import Mediator
-from event import Event, EventType
 from collector import Collector
+from overrides import overrides
 
 
 SPAN = 150  # How many data points at once will be fetched from buffer and passed to GUI
@@ -10,13 +10,6 @@ SPAN = 150  # How many data points at once will be fetched from buffer and passe
 
 class Controller(Mediator):
     def __init__(self, collector: Collector, default_strategy="confidence"):
-        self._handlers = {
-            EventType.REWIND: self._handle_rewind,
-            EventType.FAST_FORWARD: self._handle_fast_forward,
-            EventType.SEEK: self._handle_seek,
-            EventType.RESET: self._handle_reset,
-        }
-
         self._collector = collector
         self._is_playing = True
 
@@ -43,28 +36,28 @@ class Controller(Mediator):
             sample = data[0] / 1000.0, distances
             self._gui.append_data(sample)
 
-    # ------------------------------ Event handlers ------------------------------ #
+    # ----------------------------- Mediator handlers ---------------------------- #
 
-    def handle_event(self, event: Event) -> None:
-        if event.type in self._handlers:
-            self._handlers[event.type](event)
-
-    def _handle_rewind(self, event: Event) -> None:
+    @overrides
+    def handle_rewind(self) -> None:
         self._is_playing = False
         self._buffer.rewind()
         self._update_data()
 
-    def _handle_fast_forward(self, event: Event) -> None:
+    @overrides
+    def handle_fast_forward(self) -> None:
         self._is_playing = False
         self._buffer.fast_forward()
         self._update_data()
 
-    def _handle_seek(self, event: Event) -> None:
+    @overrides
+    def handle_seek(self, value: int) -> None:
         self._is_playing = False
-        self._buffer.seek(event.data)
+        self._buffer.seek(value)
         self._update_data()
 
-    def _handle_reset(self, event: Event) -> None:
+    @overrides
+    def handle_reset(self) -> None:
         self._buffer.reset()
         self._update_data()
         self._is_playing = True

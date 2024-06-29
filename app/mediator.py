@@ -1,8 +1,18 @@
-from abc import ABC, abstractmethod
-from event import Event
-
+from abc import ABC
 
 class Mediator(ABC):
-    @abstractmethod
-    def handle_event(self, event: Event) -> None:
+    def handle_seek(self, value: int) -> None:
+        print("Mediator: Seek event not implemented")
+        pass
+
+    def handle_rewind(self) -> None:
+        print("Mediator: Rewind event not implemented")
+        pass
+
+    def handle_fast_forward(self) -> None:
+        print("Mediator: Fast forward event not implemented")
+        pass
+
+    def handle_reset(self) -> None:
+        print("Mediator: Reset event not implemented")
         pass

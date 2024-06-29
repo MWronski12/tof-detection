@@ -1,5 +1,4 @@
 from component import Component
-from event import Event, EventType
 from mediator import Mediator
 
 from matplotlib import pyplot as plt
@@ -13,7 +12,6 @@ import numpy as np
 from abc import ABC, abstractmethod
 from collections import deque
 import threading
-import copy
 
 
 class Animator(ABC):
@@ -196,12 +194,14 @@ class GUI(Component):
 
     def _on_key_press(self, event):
         if event.key == "left":
-            self.dispatch(Event(type=EventType.REWIND, data=None))
+            self.rewind()
+
         elif event.key == "right":
-            self.dispatch(Event(type=EventType.FAST_FORWARD, data=None))
+            self.fast_forward()
+
         elif event.key == "r":
             self._slider.set_val(100)
-            self.dispatch(Event(type=EventType.RESET, data=None))
+            self.reset()
 
     def _on_seek_submit(self, value):
-        self.dispatch(Event(type=EventType.SEEK, data=value))
+        self.seek(value)
