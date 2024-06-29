@@ -9,16 +9,15 @@ SPAN = 150  # How many data points at once will be fetched from buffer and passe
 
 
 class Controller(Mediator):
-    def __init__(self, default_strategy="confidence"):
+    def __init__(self, collector: Collector, default_strategy="confidence"):
         self._handlers = {
-            EventType.MEASUREMENT: self._handle_measurement,
             EventType.REWIND: self._handle_rewind,
             EventType.FAST_FORWARD: self._handle_fast_forward,
             EventType.SEEK: self._handle_seek,
             EventType.RESET: self._handle_reset,
         }
 
-        self._collector = None
+        self._collector = collector
         self._is_playing = True
 
         self._buffer = Buffer(span=SPAN)
@@ -31,26 +30,24 @@ class Controller(Mediator):
         }
         self._strategy = default_strategy
 
-    def set_collector(self, collector: Collector):
-        self._collector = collector
-
     def start(self):
+        self._collector.subscribe(self._handle_collector_data)
         self._collector.start()
         self._gui.start()
+
+    def _handle_collector_data(self, data) -> None:
+        self._buffer.append(data)
+
+        if self._is_playing:
+            distances = self._choose_zone_distances(data)
+            sample = data[0] / 1000.0, distances
+            self._gui.append_data(sample)
 
     # ------------------------------ Event handlers ------------------------------ #
 
     def handle_event(self, event: Event) -> None:
         if event.type in self._handlers:
             self._handlers[event.type](event)
-
-    def _handle_measurement(self, event: Event) -> None:
-        self._buffer.append(event.data)
-
-        if self._is_playing:
-            distances = self._choose_zone_distances(event.data)
-            sample = event.data[0] / 1000.0, distances
-            self._gui.append_data(sample)
 
     def _handle_rewind(self, event: Event) -> None:
         self._is_playing = False

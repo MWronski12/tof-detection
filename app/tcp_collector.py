@@ -1,6 +1,4 @@
 from collector import Collector
-from mediator import Mediator
-from event import Event, EventType
 
 import socket
 import struct
@@ -10,8 +8,8 @@ MESSAGE_SIZE = 8 + 4 + 4 * 18 + 4 * 18 + 4
 
 
 class TCPCollector(Collector):
-    def __init__(self, mediator: Mediator, host, port):
-        super().__init__(mediator)
+    def __init__(self, host, port):
+        super().__init__()
 
         self._host = host
         self._port = port
@@ -37,7 +35,7 @@ class TCPCollector(Collector):
                     continue
 
     def _recv_msg(self, sock, size):
-        data = b''
+        data = b""
         while len(data) < size:
             packet = sock.recv(size - len(data))
             if not packet:
@@ -55,4 +53,4 @@ class TCPCollector(Collector):
         data = [timestamp_ms, ambient_light]
         data += [measurement for pair in zip(confidences, distances) for measurement in pair]
 
-        self.dispatch(Event(type=EventType.MEASUREMENT, data=data))
+        self.dispatch(data)

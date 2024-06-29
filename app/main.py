@@ -28,6 +28,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--start-time",
         type=int,
+        default=0,
         help="Epoch timestamp in milliseconds to start reading from (only for csv files)",
     )
     args = parser.parse_args()
@@ -36,13 +37,11 @@ def parse_args() -> argparse.Namespace:
 
 def main():
     args = parse_args()
-    controller = Controller()
 
     if args.csv:
         file_path = args.csv
         print(f"Reading from CSV file: {file_path}")
         collector = CSVCollector(
-            mediator=controller,
             file_path=file_path,
             live_mode=args.live_mode,
             start_time=args.start_time,
@@ -53,12 +52,11 @@ def main():
         port = int(port_str)
         print(f"Connecting to TCP server at {host}:{port}")
         collector = TCPCollector(
-            mediator=controller,
             host=host,
             port=port,
         )
 
-    controller.set_collector(collector)
+    controller = Controller(collector)
     controller.start()
 
 

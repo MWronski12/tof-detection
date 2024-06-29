@@ -1,14 +1,12 @@
 from collector import Collector
-from mediator import Mediator
-from event import Event, EventType
 
 import time
 
 
 class CSVCollector(Collector):
-    def __init__(self, mediator: Mediator, file_path, live_mode=False, start_time=0):
-        super().__init__(mediator)
-
+    def __init__(self, file_path, live_mode=False, start_time=0):
+        super().__init__()
+    
         self._file_path = file_path
         self._live_mode = live_mode
         self._start_time = start_time
@@ -37,7 +35,7 @@ class CSVCollector(Collector):
         if self._live_mode:
             self._simulate_live_data(data)
 
-        self.dispatch(event=Event(EventType.MEASUREMENT, data=data))
+        self.dispatch(data)
 
     def _simulate_live_data(self, data):
         if self._last_timestamp is not None:

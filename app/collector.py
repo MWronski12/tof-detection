@@ -1,16 +1,13 @@
 import threading
-from component import Component
-from mediator import Mediator
 
 from abc import abstractmethod
 
 
-class Collector(Component):
-    def __init__(self, mediator: Mediator):
-        super().__init__(mediator)
-
+class Collector:
+    def __init__(self):
         self._event = threading.Event()
         self._worker = None
+        self._subscribers = []
 
     def start(self):
         if self._worker is None or not self._worker.is_alive():
@@ -21,6 +18,16 @@ class Collector(Component):
 
     def stop(self):
         self._event.clear()
+
+    def subscribe(self, callback):
+        self._subscribers.append(callback)
+
+    def unsubscribe(self, callback):
+        self._subscribers.remove(callback)
+
+    def dispatch(self, data):
+        for subscriber in self._subscribers:
+            subscriber(data)
 
     @abstractmethod
     def _start(self):
