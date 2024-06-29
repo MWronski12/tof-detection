@@ -7,9 +7,12 @@ This repository contains all the resources for implementation of bicycle detecti
 
 
 - [ ] Data aquisition
-    - [ ] Prepare test protocol (test branch has some start, should we gather some interfered samples!?)
-    - [ ] Gather data
+    - [x] Prepare test protocol (test branch has some start, should we gather some interfered samples!?)
+    - [x] Gather data
     - [ ] Label data (Video/GPS)
+        - [x] Proof of concept query gps data velocity by timestamp
+        - [x] Proof of concept query video for velocity by timestamp
+        - [x] Script that will repeatedly ask for a timestamp and display both gps and video velocity
 
 
 - [ ] Detection algorithm
@@ -22,6 +25,7 @@ This repository contains all the resources for implementation of bicycle detecti
     - [ ] Make Collector independent (not a component)
 
     - [ ] Improve buffer
+        - [ ] Rewind to next 
         - [ ] Use numpy/pandas
         - [ ] Rewind per frame or per n_seconds
         - [ ] Get last n_seconds of data

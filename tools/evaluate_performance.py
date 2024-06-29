@@ -121,7 +121,7 @@ def target0_strategy(row):
 
 import numpy as np
 
-strategy = weighted_mean_strategy
+strategy = target0_strategy
 zone = CENTER_ZONE
 a = 1300
 
@@ -142,15 +142,27 @@ print(f"Mean dt: {df['dt'].mean()} +- {df['dt'].std()} [{df['dt'].min()} - {df['
 
 # ---------------------------------------------------------------------------- #
 
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
-# x = df.index - df.index.min()
-# y1 = df["d"].replace(pd.NA, 0)
-# y2 = df["velocity"].replace(pd.NA, 0)
+x = df.index - df.index.min()
+y1 = df["d"].replace(pd.NA, 0)
+y2 = df["velocity"].replace(pd.NA, 0)
 
-# fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6, 10))
-# ax1.scatter(x, y1, c="orange")
-# ax2.scatter(x, y2, c="blue")
+# Custom function to calculate the average of non-zero, non-NaN values in a window
+def custom_avg(series):
+    # Filter out both NaN and 0 values before calculating the mean
+    filtered_series = series[series < 0]
+    return filtered_series.mean()
 
-# plt.show()
+# Apply the custom function to a rolling window of the last 100 values
+# Ensure the column is numeric before applying rolling
+y3 = pd.to_numeric(y2, downcast='float').rolling(window=100, min_periods=1).apply(custom_avg, raw=False)
+
+# Continue with the plotting as before
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6, 10))
+ax1.scatter(x, y1, c="orange")
+ax2.scatter(x, y2, c="blue")
+ax2.plot(x, y3, c="red")  # Plotting y3 to visualize the rolling average
+
+plt.show()

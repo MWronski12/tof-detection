@@ -1,0 +1,95 @@
+HIPERPARAMETRY:
+
+{a} = 1.5m +- 0.75m - odległość czujnika od osi ścieżki
+{phi} = 60deg - kat ustawienia czujnika
+{iterations} = 400000 - liczba iteracji w presecie
+
+
+POTRZEBNE RZECZY:
+
+[x] Tyton i zapalniczka
+[x] stojak obrotowy
+[x] urzadzenie pomiarowe
+[x] naładowany powerbank
+[x] kabel miniusb
+[x] naładowany laptop
+[x] taśma srebrna widoczna
+[x] metr
+
+[x] rower
+    [x] uchwyt na telefon
+    [x] skalibrowany prędkościomierz
+
+[x] 2 naładowane telefony:
+    [x] do udostępniania sieci, rpi musi mieć skonfigurowane połączenie z siecią telefonu 1190
+    [x] do nagrywania prędkościomierza i zbierania danych z GPS, telefon musi mieć zainstalowaną aplikację GPS tracker i mieścić się w uchwycie
+
+[x] zalecane:
+    [x] biała koszulka
+    [x] zmrok
+
+
+PROTOKÓŁ:
+
+CONNECTION CONFIGURATION:
+
+[x] Postawić czujnik na stojaku obrotowym na wysokosci klatki piersiowej (95cm)
+[x] Włączyć udostępnianie sieci wifi
+[x] Telefon hotspot zostawic przy czujniku i nie ruszac  
+[x] Włączyć czujnik
+[x] Połączyć się laptopem z siecią wifi (czujnik łączy się automatycznie)
+[x] Zeskanować sieć angry IP scannerem i wpisac IP do main.py
+[x] Połączyc sie z czujnikiem
+[x] Wyczyscic folder out
+
+
+TEST ENVIRONMENT REGISTRATION:
+
+[x] Odnotowac max range czujnika 5200mm
+[x] Odnotować {a}, {phi} 1,5m 60deg
+[x] Odnotowac wysokosc zamieszenia czujnika 95cm
+[x] Wyznaczyć oś ścieżki rowerowej odległej o {a} metrów od czujnika za pomoca metra:
+    [x] odmierzyc {a} w linii prostej i zaznaczyc tasma
+    [x] Zaznaczyc krawedzie {a - 0.75m}, {a + 0.75m}
+    [x] Zaznaczyc te same punkty w miejscu osi sciezki, gdzie odleglosc od czujnika wynosi {a / cos(phi)} 3000mm
+
+[x] Potwierdzic wyniki na podstawie odczytow z czujnika i odnotowac:
+    [x] odleglosc od osi sciezki pod katem 90deg
+    [x] odleglosc do osi sciezki pod katem {phi deg} 60deg
+
+[x] Przejechac testowo po krawedziach i osi sciezki oraz upewnic sie ze przejazdy sa poprawnie rejestrowane. 
+    [x] Jesli nie sa, zwęż ścieżkę do 1.5m i spróbuj ponownie <-- Trzeba było tak zrobic
+
+
+BICYCLE, GPS AND CAMERA:
+
+[x] Wylacz wygaszacz ekranu
+[x] Załoz biala bluzke
+[x] Zamontuj telefon w uchwycie z widokiem na predkosciomierz
+[x] Potwierdz, ze da sie rozczytac wskazywana predkosc
+
+[x] Uruchom GPS trackera w tle
+[x] Uruchom nagrywanie
+
+
+SENSOR:
+
+[x] Ustawic liczbe iteracji
+[x] Uruchomic headless main
+[x] Nagrac pare testowych przejazdow pushujacych limity
+[x] Dostroic liczbe iteracji, szerokosc sciezki w ramach braku zasiegow
+[x] Wyczyscic folder out
+[x] Usunac pliki GPS
+[x] Usunac nagrania
+
+
+DATA COLLECTION:
+
+[x] Wlaczyc headless main
+[x] Wlaczyc GPS trackera
+[x] Wlaczyc nagrywanie
+[x] Zaczac jezdzic i nagrac w osobnych plikach:
+    [x] 50 po osi "center-1p5" 24min recording
+    [x] 50 ogolem po sciezce
+    [x] Losowy ruch
+    [x] Ruch pieszych
