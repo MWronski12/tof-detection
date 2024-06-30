@@ -42,14 +42,17 @@ This repository contains all the resources for implementation of bicycle detecti
         - [x] Use numpy/pandas
         - [ ] Rewind per frame or per n_seconds
         - [ ] Get last n_seconds of data
+    - [ ] Live strategy change in controller
     - [x] Drop double buffer in GUI, just emit refresh events for n_seconds of data
     - [x] Extract strategy for transform
         - [x] Add tranform possibility of aggregated transform like 'confidence --> bias --> EMA'
+    - [x] Use numpy already in the data collector
     - [ ] Add SpeedEstimator component
         - [ ] Consume each sample
         - [ ] Or update all samples
         - [ ] Communicate result to GUI for display
     - [ ] Add Signalizer component
+    - [ ] Unit tests
 
 
 - [ ] Final functional tests

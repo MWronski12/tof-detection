@@ -4,7 +4,7 @@ from abc import ABC
 
 
 class Component(ABC):
-    def __init__(self, mediator: Mediator):
+    def __init__(self, mediator: Mediator) -> None:
         self._mediator: Mediator = mediator
 
     def rewind(self) -> None:

@@ -44,7 +44,7 @@ def main():
         collector = CSVCollector(
             file_path=file_path,
             live_mode=args.live_mode,
-            start_time=args.start_time,
+            start_time_ms=args.start_time,
         )
 
     elif args.tcp:

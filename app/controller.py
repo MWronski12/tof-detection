@@ -6,26 +6,23 @@ from overrides import overrides
 from strategy import ZoneDistaceStrategy, TargetZeroStrategy, ConfidenceStrategy
 from config import NUM_ZONES
 
-import numpy as np
-
 
 class Controller(Mediator):
-    def __init__(self, collector: Collector, strategy: ZoneDistaceStrategy = ConfidenceStrategy()):
+    def __init__(self, collector: Collector, strategy: ZoneDistaceStrategy = ConfidenceStrategy()) -> None:
         self._collector = collector
         self._strategy = strategy
 
         self._buffer = Buffer(span=150)
         self._gui = GUI(mediator=self)
 
-        self._is_playing = True
+        self._is_playing: bool = True
 
-    def start(self):
+    def start(self) -> None:
         self._collector.subscribe(self._handle_collector_data)
         self._collector.start()
         self._gui.start()
 
-    def _handle_collector_data(self, sample: list[int]) -> None:
-        sample = np.array(sample, dtype=np.int64)
+    def _handle_collector_data(self, sample: Collector.DataSample) -> None:
         self._buffer.append(sample)
 
         if self._is_playing:
@@ -34,6 +31,12 @@ class Controller(Mediator):
             distance_data = data[0][2:]
             center_zone_distance = distance_data[NUM_ZONES // 2]
             # self._detector.update(timestamp, center_zone_distance)
+
+    def _update_data(self) -> None:
+        data = self._buffer.get_data()
+        data = self._strategy.transform(data)
+        self._gui.update_data(data)
+        # self._detector.update_data(data)
 
     # ----------------------------- Mediator handlers ---------------------------- #
 
@@ -64,11 +67,3 @@ class Controller(Mediator):
     @overrides
     def handle_gui_update(self, n_seconds: int) -> None:
         self._update_data()
-
-    # --------------------------------- Strategy --------------------------------- #
-
-    def _update_data(self):
-        data = self._buffer.get_data()
-        data = self._strategy.transform(data)
-        self._gui.update_data(data)
-        # self._detector.update_data(data)

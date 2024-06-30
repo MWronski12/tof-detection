@@ -10,6 +10,7 @@ from matplotlib.artist import Artist
 
 from abc import ABC, abstractmethod
 from datetime import datetime
+from overrides import overrides
 
 import numpy as np
 import threading
@@ -45,7 +46,8 @@ class DepthMapAnimator(Animator):
         self._ax.set_yticks(np.arange(0, zone_distances.shape[0] + 1, 1))
         self._ax.grid(True, linestyle="--")
 
-    def update(self, data):
+    @overrides
+    def update(self, data: np.ndarray) -> list[Artist]:
         if len(data) == 0:
             return []
 
@@ -80,7 +82,8 @@ class CenterZoneAnimator(Animator):
 
         self._scatter = self._ax.scatter([0], [0], color="orange", s=20)
 
-    def update(self, data):
+    @overrides
+    def update(self, data: np.ndarray) -> list[Artist]:
         if len(data) < 2:
             return []
 
@@ -113,7 +116,8 @@ class WidgetAnimator(Animator):
         self._distance = self._ax.text(0, 0.5, "distance: 0 mm", **args)
         self._timestamp = self._ax.text(0, 0.1, "timestamp: 0 ms", **args)
 
-    def update(self, data):
+    @overrides
+    def update(self, data: np.ndarray) -> list[Artist]:
         if len(data) == 0:
             return []
 
@@ -125,11 +129,11 @@ class WidgetAnimator(Animator):
         self._distance.set_text(f"distance: {distance} mm")
         self._time.set_text(f"time: {time}")
 
-        return self._ax.texts
+        return [self._ax.texts]
 
 
 class GUI(Component):
-    def __init__(self, mediator: Mediator):
+    def __init__(self, mediator: Mediator) -> None:
         super().__init__(mediator)
 
         self._center_zone_time_span_s = 5
@@ -171,22 +175,22 @@ class GUI(Component):
 
     # ------------------------------------ GUI ----------------------------------- #
 
-    def start(self):
+    def start(self) -> None:
         plt.show()
 
-    def _animate(self, frame):
+    def _animate(self, frame) -> None:
         self.gui_update(self._center_zone_time_span_s)
 
     # -------------------------- Zone Distances Conusmer ------------------------- #
 
-    def update_data(self, data):
+    def update_data(self, data: np.ndarray) -> None:
         with self._data_lock:
             for animator in self._animators:
                 animator.update(data)
 
     # --------------------------------- Component -------------------------------- #
 
-    def _on_key_press(self, event):
+    def _on_key_press(self, event) -> None:
         if event.key == "left":
             self.rewind()
 
@@ -197,5 +201,5 @@ class GUI(Component):
             self._slider.set_val(100)
             self.reset()
 
-    def _on_seek_submit(self, value):
+    def _on_seek_submit(self, value: int) -> None:
         self.seek(value)
