@@ -1,6 +1,7 @@
 NUM_ZONES = 9
 NUM_TARGETS = 2
 CENTER_ZONE = 5
+CENTER_ZONE_IDX = CENTER_ZONE - 1
 
 ZONE_DISTANCE_COLUMNS = [
     f"zone{zone_idx}_dist{target_idx}" for zone_idx in range(1, NUM_ZONES + 1) for target_idx in range(NUM_TARGETS)

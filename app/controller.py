@@ -12,14 +12,14 @@ class Controller(Mediator):
         self._collector = collector
         self._strategy = strategy
 
-        self._buffer = Buffer(span=150)
+        self._buffer = Buffer(span=160)
         self._gui = GUI(mediator=self)
 
-        self._is_playing: bool = True
+        self._is_playing: bool = False
 
     def start(self) -> None:
         self._collector.subscribe(self._handle_collector_data)
-        self._collector.start()
+        self._start_live_data()
         self._gui.start()
 
     def _handle_collector_data(self, sample: Collector.DataSample) -> None:
@@ -38,23 +38,31 @@ class Controller(Mediator):
         self._gui.update_data(data)
         # self._detector.update_data(data)
 
+    def _stop_live_data(self) -> None:
+        self._is_playing = False
+        self._collector.stop()
+
+    def _start_live_data(self) -> None:
+        self._is_playing = True
+        self._collector.start()
+
     # ----------------------------- Mediator handlers ---------------------------- #
 
     @overrides
     def handle_rewind(self) -> None:
-        self._is_playing = False
+        self._stop_live_data()
         self._buffer.rewind()
         self._update_data()
 
     @overrides
     def handle_fast_forward(self) -> None:
-        self._is_playing = False
+        self._stop_live_data()
         self._buffer.fast_forward()
         self._update_data()
 
     @overrides
     def handle_seek(self, value: int) -> None:
-        self._is_playing = False
+        self._stop_live_data()
         self._buffer.seek(value)
         self._update_data()
 
@@ -62,8 +70,17 @@ class Controller(Mediator):
     def handle_reset(self) -> None:
         self._buffer.reset()
         self._update_data()
-        self._is_playing = True
+        self._start_live_data()
 
     @overrides
     def handle_gui_update(self, n_seconds: int) -> None:
+        self._update_data()
+
+    @overrides
+    def handle_rewind_to_next_motion(self, direction: int = 1) -> None:
+        if self._is_playing:
+            print("Cannot rewind to next motion while playing")
+            return
+
+        self._buffer.skip_to_next_motion(direction)
         self._update_data()

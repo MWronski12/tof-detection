@@ -22,3 +22,8 @@ class Component(ABC):
 
     def gui_update(self, n_seconds: int) -> None:
         self._mediator.handle_gui_update(n_seconds)
+
+    def rewind_to_next_motion(self, direction: int = 1) -> None:
+        self._mediator.handle_rewind_to_next_motion(direction)
+
+    

@@ -2,7 +2,7 @@ import threading
 
 import numpy as np
 
-from config import COLUMNS
+from config import COLUMNS, CENTER_ZONE_IDX
 
 
 class Buffer:
@@ -25,10 +25,10 @@ class Buffer:
             return
 
         with self._lock:
-            actual_size = min(self._buffer_size, self._data_index + 1)
-            oldest_index = max(0, self._data_index - self._buffer_size)
-            offset = int(value / 100.0 * actual_size)
-            self._observed_index = (oldest_index + offset) % self._buffer_size
+            data_length = self._get_data_length()
+            start_index = self._get_data_start_index()
+            offset = int(value / 100.0 * data_length)
+            self._observed_index = (start_index + offset) % self._buffer_size
 
     def rewind(self) -> None:
         with self._lock:
@@ -45,6 +45,19 @@ class Buffer:
     def reset(self) -> None:
         with self._lock:
             self._observed_index = -1
+
+    def skip_to_next_motion(self, direction: int = 1) -> None:
+        with self._lock:
+            if self._empty() or self._is_running_live():
+                return
+
+            index = self._observed_index
+            index = self._get_current_motion_end_index(index, direction)
+            index = self._get_next_motion_start_index(index, direction)
+            if direction == 1:
+                index = self._get_current_motion_end_index(index, direction)
+
+            self._observed_index = index
 
     def get_data(self) -> np.ndarray:
         with self._lock:
@@ -75,3 +88,33 @@ class Buffer:
             return self._buffer[start_index:end_index]
         else:
             return np.concatenate((self._buffer[start_index:], self._buffer[:end_index]))
+
+    def _get_data_length(self) -> int:
+        return min(self._buffer_size, self._data_index + 1)
+
+    def _get_data_start_index(self) -> int:
+        return max(0, self._data_index - self._buffer_size)
+
+    def _get_current_motion_end_index(self, index: int, direction: int = 1) -> int:
+        end_index = self._data_index % self._buffer_size
+
+        while index != end_index and self._motion_is_present_in_center_zone(index):
+            index = (index + direction) % self._buffer_size
+
+        return index
+
+    def _get_next_motion_start_index(self, index: int, direction: int = 1) -> int:
+        end_index = self._data_index % self._buffer_size
+
+        while index != end_index and not self._motion_is_present_in_center_zone(index):
+            index = (index + direction) % self._buffer_size
+
+        return index
+
+    def _motion_is_present_in_center_zone(self, index: int) -> bool:
+        if index < 0 or index >= self._buffer_size or index > self._data_index:
+            raise ValueError("Invalid index")
+
+        _, dist0, _, dist1 = self._buffer[index][2:].reshape(-1, 4)[CENTER_ZONE_IDX]
+
+        return dist0 != -1 or dist1 != -1

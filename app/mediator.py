@@ -20,3 +20,7 @@ class Mediator(ABC):
     def handle_gui_update(self, n_seconds: int) -> None:
         print("Mediator: GUI update event not implemented")
         pass
+
+    def handle_rewind_to_next_motion(self, direction: int = 1) -> None:
+        print("Mediator: Rewind to next motion event not implemented")
+        pass

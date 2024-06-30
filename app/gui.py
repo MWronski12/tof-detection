@@ -137,7 +137,7 @@ class GUI(Component):
         super().__init__(mediator)
 
         self._center_zone_time_span_s = 5
-        self._refresh_interval_ms = 41
+        self._refresh_interval_ms = 100
 
         self._data_lock = threading.Lock()
         self._data = np.array([], dtype=np.int64)
@@ -200,6 +200,12 @@ class GUI(Component):
         elif event.key == "r":
             self._slider.set_val(100)
             self.reset()
+        
+        elif event.key == "n":
+            self.rewind_to_next_motion(direction=1)
+
+        elif event.key == "b":
+            self.rewind_to_next_motion(direction=-1)
 
     def _on_seek_submit(self, value: int) -> None:
         self.seek(value)
