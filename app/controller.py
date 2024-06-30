@@ -1,5 +1,6 @@
 from buffer import Buffer
 from gui import GUI
+from detector import Detector
 from mediator import Mediator
 from collector import Collector
 from overrides import overrides
@@ -14,6 +15,7 @@ class Controller(Mediator):
 
         self._buffer = Buffer(span=160)
         self._gui = GUI(mediator=self)
+        self._detector = Detector(mediator=self)
 
         self._is_playing: bool = False
 
@@ -27,16 +29,13 @@ class Controller(Mediator):
 
         if self._is_playing:
             data = self._strategy.transform(sample.reshape(1, -1))
-            timestamp = data[0][0]
-            distance_data = data[0][2:]
-            center_zone_distance = distance_data[NUM_ZONES // 2]
-            # self._detector.update(timestamp, center_zone_distance)
+            self._detector.append(data)
 
     def _update_data(self) -> None:
         data = self._buffer.get_data()
         data = self._strategy.transform(data)
         self._gui.update_data(data)
-        # self._detector.update_data(data)
+        self._detector.update_data(data)
 
     def _stop_live_data(self) -> None:
         self._is_playing = False

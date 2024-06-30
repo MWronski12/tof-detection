@@ -19,8 +19,7 @@ def parse_args() -> None:
 
 
 def load_data(file: str) -> pd.DataFrame:
-    df = pd.read_csv(file, names=["timestamp_ms", "gps_velocity_kmh", "video_velocity_kmh"], skiprows=1)
-    return df
+    return pd.read_csv(file, names=["timestamp_ms", "gps_velocity_kmh", "video_velocity_kmh"], skiprows=1)
 
 
 def plot_velocity_labels(df: pd.DataFrame) -> None:
@@ -30,8 +29,8 @@ def plot_velocity_labels(df: pd.DataFrame) -> None:
     video_positions = indices + bar_width / 2
 
     # Plot bars
-    plt.bar(gps_positions, df["gps_velocity_kmh"], width=bar_width, color='red', label='GPS Velocity')
-    plt.bar(video_positions, df["video_velocity_kmh"], width=bar_width, color='blue', label='Video Velocity')
+    plt.bar(gps_positions, df["gps_velocity_kmh"], width=bar_width, color="red", label="GPS Velocity")
+    plt.bar(video_positions, df["video_velocity_kmh"], width=bar_width, color="blue", label="Video Velocity")
 
     # Add labels, title, and legend
     plt.xlabel("Sample index")
