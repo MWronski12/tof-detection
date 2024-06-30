@@ -1,4 +1,8 @@
 from abc import ABC
+from typing import Literal
+
+from strategy import Strategy
+
 
 class Mediator(ABC):
     def handle_seek(self, value: int) -> None:
@@ -23,4 +27,8 @@ class Mediator(ABC):
 
     def handle_rewind_to_next_motion(self, direction: int = 1) -> None:
         print("Mediator: Rewind to next motion event not implemented")
+        pass
+
+    def handle_change_strategy(self, strategy: Strategy) -> None:
+        print("Mediator: Change strategy event not implemented")
         pass

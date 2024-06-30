@@ -3,12 +3,12 @@ from gui import GUI
 from mediator import Mediator
 from collector import Collector
 from overrides import overrides
-from strategy import ZoneDistaceStrategy, TargetZeroStrategy, ConfidenceStrategy
+from strategy import Strategy, ZoneDistaceStrategy, TargetZeroStrategy, ConfidenceStrategy
 from config import NUM_ZONES
 
 
 class Controller(Mediator):
-    def __init__(self, collector: Collector, strategy: ZoneDistaceStrategy = ConfidenceStrategy()) -> None:
+    def __init__(self, collector: Collector, strategy: ZoneDistaceStrategy = TargetZeroStrategy()) -> None:
         self._collector = collector
         self._strategy = strategy
 
@@ -83,4 +83,18 @@ class Controller(Mediator):
             return
 
         self._buffer.skip_to_next_motion(direction)
+        self._update_data()
+
+    @overrides
+    def handle_change_strategy(self, strategy: Strategy) -> None:
+        self._stop_live_data()
+
+        if strategy == "target_0":
+            print("Changing strategy to TargetZeroStrategy")
+            self._strategy = TargetZeroStrategy()
+
+        elif strategy == "confidence":
+            print("Changing strategy to ConfidenceStrategy")
+            self._strategy = ConfidenceStrategy()
+
         self._update_data()

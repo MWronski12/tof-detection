@@ -173,39 +173,39 @@ class GUI(Component):
         self._fig.canvas.mpl_connect("key_press_event", self._on_key_press)
         self._slider.on_changed(self._on_seek_submit)
 
-    # ------------------------------------ GUI ----------------------------------- #
-
     def start(self) -> None:
         plt.show()
-
-    def _animate(self, frame) -> None:
-        self.gui_update(self._center_zone_time_span_s)
-
-    # -------------------------- Zone Distances Conusmer ------------------------- #
 
     def update_data(self, data: np.ndarray) -> None:
         with self._data_lock:
             for animator in self._animators:
                 animator.update(data)
 
-    # --------------------------------- Component -------------------------------- #
+    def _animate(self, frame) -> None:
+        self.gui_update(self._center_zone_time_span_s)
 
     def _on_key_press(self, event) -> None:
-        if event.key == "left":
+        if event.key == "a":
             self.rewind()
 
-        elif event.key == "right":
+        elif event.key == "d":
             self.fast_forward()
 
         elif event.key == "r":
             self._slider.set_val(100)
             self.reset()
-        
+
         elif event.key == "n":
             self.rewind_to_next_motion(direction=1)
 
         elif event.key == "b":
             self.rewind_to_next_motion(direction=-1)
+
+        elif event.key == "1":
+            self.change_strategy("target_0")
+
+        elif event.key == "2":
+            self.change_strategy("confidence")
 
     def _on_seek_submit(self, value: int) -> None:
         self.seek(value)

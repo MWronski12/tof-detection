@@ -1,6 +1,8 @@
 from mediator import Mediator
+from strategy import Strategy
 
 from abc import ABC
+from typing import Literal
 
 
 class Component(ABC):
@@ -26,4 +28,5 @@ class Component(ABC):
     def rewind_to_next_motion(self, direction: int = 1) -> None:
         self._mediator.handle_rewind_to_next_motion(direction)
 
-    
+    def change_strategy(self, strategy: Strategy) -> None:
+        self._mediator.handle_change_strategy(strategy)

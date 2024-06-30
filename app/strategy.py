@@ -1,9 +1,13 @@
 from abc import ABC, abstractmethod
 from overrides import overrides
+from typing import Literal
 
 import numpy as np
 
 from config import NUM_ZONES, NUM_TARGETS, COLUMNS
+
+
+Strategy = Literal["target_0", "confidence"]
 
 
 class ZoneDistaceStrategy(ABC):

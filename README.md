@@ -38,7 +38,7 @@ This repository contains all the resources for implementation of bicycle detecti
     - [x] Make Collector independent (not a component)
     - [x] Remove Event and add methods in Component base class
     - [ ] Improve buffer
-        - [ ] Rewind to next motion
+        - [x] Rewind to next motion
         - [x] Use numpy/pandas
         - [ ] Rewind per frame or per n_seconds
         - [ ] Get last n_seconds of data
