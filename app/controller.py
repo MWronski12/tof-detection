@@ -27,15 +27,15 @@ class Controller(Mediator):
     def _handle_collector_data(self, sample: Collector.DataSample) -> None:
         self._buffer.append(sample)
 
-        if self._is_playing:
-            data = self._strategy.transform(sample.reshape(1, -1))
-            self._detector.append(data)
+        # if self._is_playing:
+        #     data = self._strategy.transform(sample.reshape(1, -1))
+        #     self._detector.append(data)
 
     def _update_data(self) -> None:
         data = self._buffer.get_data()
         data = self._strategy.transform(data)
         self._gui.update_data(data)
-        self._detector.update_data(data)
+        # self._detector.update_data(data)
 
     def _stop_live_data(self) -> None:
         self._is_playing = False

@@ -42,7 +42,7 @@ def split_to_monotonic_sequences(samples: list[Tuple[int, int]]) -> list[list[Tu
     return result
 
 
-def split_to_non_zero_monotonic_series(samples: list[Tuple[int, int]], min_samples=0) -> list[list[Tuple[int, int]]]:
+def split_to_non_zero_monotonic_series(samples: list[Tuple[int, int]], min_samples=1) -> list[list[Tuple[int, int]]]:
 
     def skip_to_next_motion(i) -> int:
         while i < len(samples) and samples[i][1] == -1:
@@ -50,9 +50,13 @@ def split_to_non_zero_monotonic_series(samples: list[Tuple[int, int]], min_sampl
 
         return i
 
+    def flush(result: list[list[Tuple[int, int]]], start: int, end: int) -> None:
+        series = samples[start:end]
+        if len(series) >= min_samples:
+            result.append(series)
+
     result = []
     prev_direction = None
-
     i = skip_to_next_motion(0)
     j = i + 1
 
@@ -64,27 +68,18 @@ def split_to_non_zero_monotonic_series(samples: list[Tuple[int, int]], min_sampl
                 prev_direction = direction
 
             elif prev_direction != direction:
-                series = samples[i:j]
-                if len(series) >= min_samples:
-                    result.append(series)
-
+                flush(result, i, j)
                 prev_direction = None
                 i = j
 
             j += 1
 
         elif samples[j][1] == -1:
-            series = samples[i:j]
-            if len(series) >= min_samples:
-                result.append(series)
-
+            flush(result, i, j)
             prev_direction = None
             i = skip_to_next_motion(j)
             j = i + 1
 
-    if i < len(samples):
-        series = samples[i:]
-        if len(series) >= min_samples:
-            result.append(series)
+    flush(result, i, j)
 
     return result

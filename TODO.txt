@@ -1,0 +1,31 @@
+
+Detection algorithm approaches:
+
+
+DATA PIPELINE:
+
+
+- Train test split data
+- Evalauate
+
+
+ALGORITHMIC EVALUATION
+  
+1) Simple
+
+- Detect series of at least 3, non-zero, strictly monotonic measurements
+- Calculate average velocity in each series
+- Merge neighbouring series and average velocity estimation
+
+2) Advanced
+
+- Account for dropouts - try to fit fill the line with missing points
+- Account for pedestrian and random movements - add logic to determine that motion is too slow, too long etc
+- Account for multiple objects in the field of view - add more sophisticated logic to decide if neighbouring series should be merged
+- Improve speed estimation - replace outlier measurements with samples fitting the line perfectly
+
+
+MACHINE LEARNING TECHNIQUES
+
+1) Raw 1 second sliding window, starting at the first non-zero measurement
+2) Extract features from a sliding window
