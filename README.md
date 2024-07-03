@@ -6,7 +6,7 @@ This repository contains all the resources for implementation of bicycle detecti
 ## ROADMAP:
 
 
-- [x] TMF8828
+- [x] TMF8828 Data Source
     - [x] Driver installation
     - [x] Reading sensor data
     - [x] Custom sensor configuration
@@ -14,27 +14,35 @@ This repository contains all the resources for implementation of bicycle detecti
     - [x] Saving data to CSV file
 
 
-- [ ] Data aquisition
+- [ ] Data Aquisition
     - [x] Prepare test protocol
     - [x] Gather data
-    - [ ] Label data (Video/GPS)
+    - [x] Label data (Video/GPS)
         - [x] Proof of concept query gps data velocity by timestamp
         - [x] Proof of concept query video for velocity by timestamp
         - [x] Script that will repeatedly ask for a timestamp and display both gps and video velocity
-        - [ ] Prepare csv file with timestamp, gps_velocity, video_velocity
+        - [x] Prepare csv file with timestamp, gps_velocity, video_velocity
+        - [ ] Handle pedestrian data
+        - [ ] Handle random movement data
+
+- [ ] Detection Algorithm
+    - [ ] Describe collected data sets
+    - [ ] Create a batch data pipeline template for algorithm evaluation
+        - [x] Load data
+        - [x] Transform with distance selection strategy
+        - [x] Apply partitioning function
+        - [ ] Apply merging function
+        - [ ] Prepare set of training samples
+    - [ ] Adjust data pipeline to implement and evaluate detection algorithm
+        - [ ] Use algorithmic approach
+            - [ ] Detect series of at least 3, non-zero, strictly monotonic measurements
+            - [ ] Calculate average velocity in each series
+            - [ ] Merge neighbouring series and average velocity estimation
+            - [ ] Evaluate estimation
+    - [ ] Translate algorithm to real-time detection
 
 
-- [ ] Detection algorithm
-    - [ ] Implement simple averaged, scaled derrivative
-        - [ ] Account for different distances from the sensor
-        - [ ] Account for interferences
-    - [ ] Implement ML algorithms
-        - [ ] Extract features from samples
-        - [ ] Start with linear regression
-        - [ ] Algorithms comparrison
-
-
-- [ ] Controller architecture improvements
+- [ ] Controller Architecture Improvements
     - [x] Make Collector independent (not a component)
     - [x] Remove Event and add methods in Component base class
     - [ ] Improve buffer
@@ -42,7 +50,7 @@ This repository contains all the resources for implementation of bicycle detecti
         - [x] Use numpy/pandas
         - [ ] Rewind per frame or per n_seconds
         - [ ] Get last n_seconds of data
-    - [ ] Live strategy change in controller
+    - [x] Live strategy change in controller
     - [x] Drop double buffer in GUI, just emit refresh events for n_seconds of data
     - [x] Extract strategy for transform
         - [x] Add tranform possibility of aggregated transform like 'confidence --> bias --> EMA'
@@ -55,10 +63,10 @@ This repository contains all the resources for implementation of bicycle detecti
     - [ ] Unit tests
 
 
-- [ ] Final functional tests
+- [ ] Final Functional Tests
 
 
-- [ ] Thesis documentation
+- [ ] Thesis Documentation
     - [x] LaTex template
     - [ ] Conspect
     - [ ] Document
