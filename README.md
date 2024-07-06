@@ -31,13 +31,16 @@ This repository contains all the resources for implementation of bicycle detecti
         - [x] Load data
         - [x] Transform with distance selection strategy
         - [x] Apply partitioning function
-        - [ ] Apply merging function
-        - [ ] Prepare set of training samples
+        - [x] Apply merging function
+            - [x] Use objects for estimated velocity motion representation
+        - [x] Prepare set of training samples
     - [ ] Adjust data pipeline to implement and evaluate detection algorithm
+        - [ ] Come up with a single metric that can be applied for testing detection
         - [ ] Use algorithmic approach
             - [ ] Detect series of at least 3, non-zero, strictly monotonic measurements
             - [ ] Calculate average velocity in each series
             - [ ] Merge neighbouring series and average velocity estimation
+            - [ ] Improve merging not to account unmatching direction series and too high variance series in motion velocity estimation
             - [ ] Evaluate estimation
     - [ ] Translate algorithm to real-time detection
 

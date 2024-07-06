@@ -1,5 +1,4 @@
-from typing import Callable, Tuple
-from utils import split_to_non_zero_monotonic_series
+from typing import Callable, Tuple, Optional
 from config import COLUMNS, CENTER_ZONE_IDX, DIST_TO_PATH
 import pandas as pd
 import numpy as np
@@ -20,7 +19,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--labels",
-        required=True,
+        # required=True,
         type=str,
         help="Path of the velocity labels CSV file",
     )
@@ -45,6 +44,9 @@ def load_velocity_labels(file: str) -> pd.DataFrame:
 # --------------------- APPLY DISTANCE SELECTION STRATEGY -------------------- #
 
 
+DistanceSelectionStrategy = Callable[[pd.Series], pd.Int64Dtype]
+
+
 def confidence_strategy(zone_data: pd.Series) -> pd.Int64Dtype:
     conf0, dist0, conf1, dist1 = zone_data
     return dist0 if conf0 >= conf1 else dist1
@@ -65,54 +67,221 @@ def select_center_zone_distance(df: pd.DataFrame, strategy: Callable[[pd.Series]
 # ------ PARTITION DISTANCE MEASUREMENTS INTO NON-ZERO MONOTONIC SERIES ------ #
 
 
-def partition_center_zone_distance_measurements(df: pd.DataFrame, min_samples: int = 0) -> list[list[Tuple[int, int]]]:
+class MonotonicSeries:
+    def __init__(self, samples: list[Tuple[int, int]]) -> None:
+        self._samples = samples
+        self._validate_monotonicity()
+
+        self.time_start = samples[0][0]
+        self.time_end = samples[-1][0]
+        self.time_total = self.time_end - self.time_start
+
+        self.dist_start = samples[0][1]
+        self.dist_end = samples[-1][1]
+        self.dist_avg = sum(dist for _, dist in samples) / len(samples)
+
+        self.direction = 1 if self.dist_end > self.dist_start else -1
+        self.velocity = self._calculate_avg_velocity()
+
+    def __len__(self) -> int:
+        return len(self._samples)
+
+    def _validate_monotonicity(self) -> None:
+        if len(self._samples) < 2:
+            raise ValueError("Series must have at least 2 samples")
+
+        direction = self._samples[1] > self._samples[0]
+        for i in range(1, len(self._samples)):
+            if (self._samples[i] > self._samples[i - 1]) != direction:
+                raise ValueError("Monotonicity violated")
+
+    def _calculate_avg_velocity(self) -> float:
+        velocities = []
+        for i in range(1, len(self._samples)):
+            t1, d1 = self._samples[i - 1]
+            t2, d2 = self._samples[i]
+
+            dt = t2 - t1
+            dd = d2 - d1
+
+            if (dt == 0) or (d2**2 - DIST_TO_PATH**2 <= 0):
+                print("WARNING: Zero division would occur, skipping sample")
+                continue
+
+            velocity = d2 / np.sqrt(d2**2 - DIST_TO_PATH**2) * dd / dt * 3.6
+            velocities.append(velocity)
+
+        if np.std(velocities) > 5:
+            print(f"WARNING: High velocity standard deviation: " f"{np.mean(velocities)} +- {np.std(velocities)} kmh")
+
+        return abs(sum(velocities) / len(velocities))
+
+
+def split_to_non_zero_monotonic_series(samples: list[Tuple[int, int]], min_samples=1) -> list[list[Tuple[int, int]]]:
+
+    def skip_to_next_motion(i) -> int:
+        while i < len(samples) and samples[i][1] == -1:
+            i += 1
+
+        return i
+
+    def flush(result: list[list[Tuple[int, int]]], start: int, end: int) -> None:
+        series = samples[start:end]
+        if len(series) >= min_samples:
+            result.append(series)
+
+    result = []
+    prev_direction = None
+    i = skip_to_next_motion(0)
+    j = i + 1
+
+    while j < len(samples):
+        if samples[j][1] != -1:
+            direction = samples[j][1] > samples[j - 1][1]
+
+            if prev_direction == None:
+                prev_direction = direction
+
+            elif prev_direction != direction:
+                flush(result, i, j)
+                prev_direction = None
+                i = j
+
+            j += 1
+
+        elif samples[j][1] == -1:
+            flush(result, i, j)
+            prev_direction = None
+            i = skip_to_next_motion(j)
+            j = i + 1
+
+    flush(result, i, j)
+
+    return result
+
+
+def partition_center_zone_distance_measurements(df: pd.DataFrame, min_samples: int = 2) -> list[MonotonicSeries]:
     samples = df[["timestamp_ms", f"zone{CENTER_ZONE_IDX}_distance"]].values.tolist()
-    return split_to_non_zero_monotonic_series(samples, min_samples=min_samples)
+    series = split_to_non_zero_monotonic_series(samples, min_samples=min_samples)
+    return [MonotonicSeries(s) for s in series]
 
 
-# ----------------------------- ESTIMATE VELOCITY ---------------------------- #
+# ------------ MERGE ADJECENT MONOTONIC SERIES INTO MOTION OBJECTS ----------- #
 
 
-def estimate_velocity(series: list[Tuple[int, int]]) -> Tuple[int, float]:
-    velocities = []
+class Motion:
+    def __init__(self, series: list[MonotonicSeries], max_time_delta_ms: int = 100) -> None:
+        self._monotonic_series = series
+        self._max_time_delta_ms = max_time_delta_ms
+        self._validate_series()
 
-    for i in range(1, len(series)):
-        s1 = series[i - 1]
-        s2 = series[i]
+        self.num_series = len(series)
+        self.num_samples_total = sum(len(series) for series in series)
 
-        dt = s2[0] - s1[0]
-        if dt == 0:
-            continue
+        self.time_start = series[0].time_start
+        self.time_end = series[-1].time_end
+        self.time_total = self.time_end - self.time_start
 
-        dd = s2[1] - s1[1]
+        self.dist_start = series[0].dist_start
+        self.dist_end = series[-1].dist_end
+        self.dist_avg = sum(series.dist_avg for series in series) / len(series)
 
-        velocity = s2[1] / np.sqrt(s2[1] ** 2 - DIST_TO_PATH**2) * dd / dt * 3.6
-        velocities.append(velocity)
+        self.direction = series[0].direction
+        self.velocity = sum(series.velocity for series in series) / len(series)
 
-    return series[-1][0], abs(sum(velocities) / len(velocities))
+    def _validate_series(self) -> None:
+        if len(self._monotonic_series) < 1:
+            raise ValueError("Empty list of series")
+
+        if not all(s.direction == self._monotonic_series[0].direction for s in self._monotonic_series):
+            print("WARNING: Series must have the same direction")
+
+        for i in range(1, len(self._monotonic_series)):
+            if (
+                self._monotonic_series[i].time_start - self._monotonic_series[i - 1].time_end
+            ) > self._max_time_delta_ms:
+                raise ValueError("Series must be adjacent")
 
 
-def merge_adjecent_velocities(data: list[Tuple[int, float]]) -> list[Tuple[int, float]]:
-    results = []
-    temp = []
+def merge_adjecent_series(series: list[MonotonicSeries], max_time_delta_ms: int = 100) -> list[Motion]:
+    results: list[Motion] = []
+    temp: list[MonotonicSeries] = []
 
-    for timestamp_ms, velocity_kmh in data:
+    for s in series:
         if len(temp) != 0:
-            if abs(timestamp_ms - temp[-1][0]) > 1000:
-                t = temp[-1][0]
-                v = sum(velocity for _, velocity in temp) / len(temp)
-                results.append((t, v))
+            if abs(s.time_start - temp[-1].time_end) > max_time_delta_ms:
+                results.append(Motion(temp, max_time_delta_ms))
                 temp = []
 
-        temp.append((timestamp_ms, velocity_kmh))
+        temp.append(s)
 
     return results
 
 
-def estimate_velocities(partitioned_data: list[list[Tuple[int, int]]]) -> list[Tuple[int, float]]:
-    results = [estimate_velocity(series) for series in partitioned_data]
-    results = merge_adjecent_velocities(results)
-    return results
+# --------------------------- PREPARE TRAINING DATA -------------------------- #
+
+
+def extract_motions(
+    tmf8828_data: pd.DataFrame,
+    distStrategy: DistanceSelectionStrategy = confidence_strategy,
+    min_samples=2,
+    max_series_delta_time_ms=100,
+) -> list[Motion]:
+    zone_distance = select_center_zone_distance(tmf8828_data, strategy=distStrategy)
+    partitioned_data = partition_center_zone_distance_measurements(zone_distance, min_samples=min_samples)
+    motions = merge_adjecent_series(partitioned_data, max_time_delta_ms=max_series_delta_time_ms)
+
+    return motions
+
+
+# Maps gps, video velocities to single velocity
+VelocityLabelStrategy = Callable[[float, float], float]
+
+gps_strategy = lambda gps_v, _: gps_v
+video_strategy = lambda _, video_v: video_v
+average_strategy = lambda gps_v, video_v: (gps_v + video_v) / 2
+
+
+def find_matching_velocity_label(motion: Motion, velocity_labels: pd.DataFrame) -> Optional[Tuple[int, float, float]]:
+    idx = (velocity_labels["timestamp_ms"] - motion.time_start).abs().idxmin()
+    row = velocity_labels.loc[idx, ["timestamp_ms", "gps_velocity_kmh", "video_velocity_kmh"]]
+    if abs(row["timestamp_ms"] - motion.time_start) > 5000:
+        print("WARNING: No matching velocity label found")
+        return None
+
+    return tuple(row.values)
+
+
+def prepare_labeled_data(
+    tmf8828_data: pd.DataFrame,
+    velocity_labels: pd.DataFrame,
+    distStrategy: DistanceSelectionStrategy = confidence_strategy,
+    velocityLabelStrategy: VelocityLabelStrategy = video_strategy,
+    min_samples=2,
+    max_series_delta_time_ms=100,
+) -> Tuple[list[Motion], list[float]]:
+
+    motions = extract_motions(
+        tmf8828_data,
+        distStrategy=distStrategy,
+        min_samples=min_samples,
+        max_series_delta_time_ms=max_series_delta_time_ms,
+    )
+
+    labels = [find_matching_velocity_label(motion, velocity_labels) for motion in motions]
+    labels = [velocityLabelStrategy(label[1], label[2]) if label is not None else None for label in labels]
+
+    filtered_motions = []
+    filtered_labels = []
+
+    for motion, label in zip(motions, labels):
+        if label is not None:
+            filtered_motions.append(motion)
+            filtered_labels.append(label)
+        else:
+            print(f"WARNING: Skipping motion with no matching velocity label: {motion.time_start}")
+
+    return filtered_motions, filtered_labels
 
 
 # ----------------------------------- PLOT ----------------------------------- #
@@ -120,42 +289,34 @@ def estimate_velocities(partitioned_data: list[list[Tuple[int, int]]]) -> list[T
 from matplotlib import pyplot as plt
 
 
-def plot(partitioned_data: list[list[Tuple[int, int]]], velocity_labels: list[Tuple[int, float, float]]) -> None:
-    velocities = estimate_velocities(partitioned_data)
+def plot(X: list[Motion], y: list[float]) -> None:
 
-    fig, ax1 = plt.subplots()
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1)
 
-    for sequence in partitioned_data:
-        timestamps = [sample[0] for sample in sequence]
-        distances = [sample[1] for sample in sequence]
+    for motion in X:
+        for series in motion._monotonic_series:
+            timestamps = [sample[0] for sample in series._samples]
+            distances = [sample[1] for sample in series._samples]
 
-        color = "red" if distances[-1] < distances[0] else "blue"
-        label = "Approaching" if color == "red" else "Moving away"
+            color = "red" if series.direction == 1 else "blue"
+            label = "Approaching" if color == "red" else "Moving away"
 
-        ax1.scatter(timestamps, distances, color="black", s=5)
-        ax1.plot(timestamps, distances, color=color, label=label)
+            ax1.scatter(timestamps, distances, color="black", s=5)
+            ax1.plot(timestamps, distances, color=color, label=label)
 
-    ax2 = ax1.twinx()  # Create a second y-axis for the velocities
-    ax2.set_ylabel("Velocity (km/h)", color="green")  # Label for the velocity y-axis
-    ax2.tick_params(axis="y", labelcolor="green")  # Set the color of the velocity y-axis ticks
+        ax2.scatter(series.time_end, motion.velocity, color="green", s=5, label="Estimated motion velocity")
+        ax2.set_ylim([0, 30])
 
-    # Plot each velocity sample with a label
-    for t, v in velocities:
-        ax2.plot(t, v, "ro", label="Estimated velocity", markersize=4)  # 'go' for green circles
+    ax3.scatter([motion.time_end for motion in X], y, color="purple", s=5, label="Real motion velocity")
+    ax3.set_ylim([0, 30])
 
-    # Plot GPS and video velocities with different markers
-    for t, gps_v, video_v in velocity_labels:
-        ax2.plot(t, gps_v, "gs", label="GPS velocity", markersize=4)  # 'rs' for red squares
-        ax2.plot(t, video_v, "gs", label="Video velocity", markersize=4)  # 'bs' for blue squares
-
-    # Update the legend to include new markers
     # Collect labels and handles and remove duplicates
     handles, labels = ax1.get_legend_handles_labels()
     handles2, labels2 = ax2.get_legend_handles_labels()
-    by_label = dict(zip(labels + labels2, handles + handles2))
-    ax2.legend(by_label.values(), by_label.keys(), loc="upper left")
+    handles3, labels3 = ax3.get_legend_handles_labels()
+    by_label = dict(zip(labels + labels2 + labels3, handles + handles2 + handles3))
+    fig.legend(by_label.values(), by_label.keys())
 
-    fig.tight_layout()  # Adjust the layout to make room for the second y-axis
     plt.show()
 
 
@@ -170,11 +331,11 @@ def main():
     velocity_labels = load_velocity_labels(args.labels)
     print(velocity_labels.head())
 
-    zone_distance = select_center_zone_distance(tmf8828_data, confidence_strategy)
-    partitioned_data = partition_center_zone_distance_measurements(zone_distance, min_samples=2)
+    X, y = prepare_labeled_data(tmf8828_data, velocity_labels, min_samples=5, velocityLabelStrategy=gps_strategy)
+    assert len(X) == len(y)
+    print("Data set size:", len(X))
 
-    plot(partitioned_data, velocity_labels.values.tolist())
-    plt.show()
+    plot(X, y)
 
 
 if __name__ == "__main__":
