@@ -117,7 +117,11 @@ class MonotonicSeries:
         return abs(sum(velocities) / len(velocities))
 
 
-def split_to_non_zero_monotonic_series(samples: list[Tuple[int, int]], min_samples=1) -> list[list[Tuple[int, int]]]:
+def split_to_non_zero_monotonic_series(
+    samples: list[Tuple[int, int]],
+    min_samples: int,
+    max_dd: int,
+) -> list[list[Tuple[int, int]]]:
 
     def skip_to_next_motion(i) -> int:
         while i < len(samples) and samples[i][1] == -1:
@@ -127,7 +131,10 @@ def split_to_non_zero_monotonic_series(samples: list[Tuple[int, int]], min_sampl
 
     def flush(result: list[list[Tuple[int, int]]], start: int, end: int) -> None:
         series = samples[start:end]
-        if len(series) >= min_samples:
+        if (
+            all(abs(series[i][1] - series[i - 1][1]) < max_dd for i in range(1, len(series)))
+            and len(series) >= min_samples
+        ):
             result.append(series)
 
     result = []
@@ -136,7 +143,13 @@ def split_to_non_zero_monotonic_series(samples: list[Tuple[int, int]], min_sampl
     j = i + 1
 
     while j < len(samples):
-        if samples[j][1] != -1:
+        if samples[j][1] == -1:
+            flush(result, i, j)
+            prev_direction = None
+            i = skip_to_next_motion(j)
+            j = i + 1
+
+        else:
             direction = samples[j][1] > samples[j - 1][1]
 
             if prev_direction == None:
@@ -149,20 +162,16 @@ def split_to_non_zero_monotonic_series(samples: list[Tuple[int, int]], min_sampl
 
             j += 1
 
-        elif samples[j][1] == -1:
-            flush(result, i, j)
-            prev_direction = None
-            i = skip_to_next_motion(j)
-            j = i + 1
-
     flush(result, i, j)
 
     return result
 
 
-def partition_center_zone_distance_measurements(df: pd.DataFrame, min_samples: int = 2) -> list[MonotonicSeries]:
+def partition_center_zone_distance_measurements(
+    df: pd.DataFrame, min_samples: int, max_dd: int
+) -> list[MonotonicSeries]:
     samples = df[["timestamp_ms", f"zone{CENTER_ZONE_IDX}_distance"]].values.tolist()
-    series = split_to_non_zero_monotonic_series(samples, min_samples=min_samples)
+    series = split_to_non_zero_monotonic_series(samples, min_samples=min_samples, max_dd=max_dd)
     return [MonotonicSeries(s) for s in series]
 
 
@@ -170,10 +179,10 @@ def partition_center_zone_distance_measurements(df: pd.DataFrame, min_samples: i
 
 
 class Motion:
-    def __init__(self, series: list[MonotonicSeries], max_time_delta_ms: int = 100) -> None:
+    def __init__(self, series: list[MonotonicSeries], max_time_delta_ms: int) -> None:
+        self._validate_series(series, max_time_delta_ms)
+        series = self._filter_opposite_directions(series)
         self._monotonic_series = series
-        self._max_time_delta_ms = max_time_delta_ms
-        self._validate_series()
 
         self.num_series = len(series)
         self.num_samples_total = sum(len(series) for series in series)
@@ -189,21 +198,23 @@ class Motion:
         self.direction = series[0].direction
         self.velocity = sum(series.velocity for series in series) / len(series)
 
-    def _validate_series(self) -> None:
-        if len(self._monotonic_series) < 1:
+    def _filter_opposite_directions(self, series: list[MonotonicSeries]) -> list[MonotonicSeries]:
+        longest_series = max(series, key=lambda s: len(s))
+        return [s for s in series if s.direction == longest_series.direction]
+
+    def _validate_series(self, series: list[MonotonicSeries], max_time_delta_ms: int) -> None:
+        if len(series) < 1:
             raise ValueError("Empty list of series")
 
-        if not all(s.direction == self._monotonic_series[0].direction for s in self._monotonic_series):
+        if not all(s.direction == series[0].direction for s in series):
             print("WARNING: Series must have the same direction")
 
-        for i in range(1, len(self._monotonic_series)):
-            if (
-                self._monotonic_series[i].time_start - self._monotonic_series[i - 1].time_end
-            ) > self._max_time_delta_ms:
+        for i in range(1, len(series)):
+            if (series[i].time_start - series[i - 1].time_end) > max_time_delta_ms:
                 raise ValueError("Series must be adjacent")
 
 
-def merge_adjecent_series(series: list[MonotonicSeries], max_time_delta_ms: int = 100) -> list[Motion]:
+def merge_adjecent_series(series: list[MonotonicSeries], max_time_delta_ms: int) -> list[Motion]:
     results: list[Motion] = []
     temp: list[MonotonicSeries] = []
 
@@ -215,6 +226,9 @@ def merge_adjecent_series(series: list[MonotonicSeries], max_time_delta_ms: int 
 
         temp.append(s)
 
+    if len(temp) != 0:
+        results.append(Motion(temp, max_time_delta_ms))
+
     return results
 
 
@@ -223,14 +237,16 @@ def merge_adjecent_series(series: list[MonotonicSeries], max_time_delta_ms: int 
 
 def extract_motions(
     tmf8828_data: pd.DataFrame,
-    distStrategy: DistanceSelectionStrategy = confidence_strategy,
-    min_samples=2,
-    max_series_delta_time_ms=100,
+    distStrategy: DistanceSelectionStrategy,
+    min_samples: int,
+    max_dd: int,
+    max_series_delta_time_ms: int,
 ) -> list[Motion]:
     zone_distance = select_center_zone_distance(tmf8828_data, strategy=distStrategy)
-    partitioned_data = partition_center_zone_distance_measurements(zone_distance, min_samples=min_samples)
+    partitioned_data = partition_center_zone_distance_measurements(
+        zone_distance, min_samples=min_samples, max_dd=max_dd
+    )
     motions = merge_adjecent_series(partitioned_data, max_time_delta_ms=max_series_delta_time_ms)
-
     return motions
 
 
@@ -242,10 +258,12 @@ video_strategy = lambda _, video_v: video_v
 average_strategy = lambda gps_v, video_v: (gps_v + video_v) / 2
 
 
-def find_matching_velocity_label(motion: Motion, velocity_labels: pd.DataFrame) -> Optional[Tuple[int, float, float]]:
+def find_matching_velocity_label(
+    motion: Motion, velocity_labels: pd.DataFrame, max_delta_time_ms: int
+) -> Optional[Tuple[int, float, float]]:
     idx = (velocity_labels["timestamp_ms"] - motion.time_start).abs().idxmin()
     row = velocity_labels.loc[idx, ["timestamp_ms", "gps_velocity_kmh", "video_velocity_kmh"]]
-    if abs(row["timestamp_ms"] - motion.time_start) > 5000:
+    if abs(row["timestamp_ms"] - motion.time_start) > max_delta_time_ms:
         print("WARNING: No matching velocity label found")
         return None
 
@@ -258,17 +276,20 @@ def prepare_labeled_data(
     distStrategy: DistanceSelectionStrategy = confidence_strategy,
     velocityLabelStrategy: VelocityLabelStrategy = video_strategy,
     min_samples=2,
-    max_series_delta_time_ms=100,
+    max_dd=200,
+    max_series_delta_time_ms=500,
+    max_label_delta_time_ms=1500,
 ) -> Tuple[list[Motion], list[float]]:
 
     motions = extract_motions(
         tmf8828_data,
         distStrategy=distStrategy,
         min_samples=min_samples,
+        max_dd=max_dd,
         max_series_delta_time_ms=max_series_delta_time_ms,
     )
 
-    labels = [find_matching_velocity_label(motion, velocity_labels) for motion in motions]
+    labels = [find_matching_velocity_label(motion, velocity_labels, max_label_delta_time_ms) for motion in motions]
     labels = [velocityLabelStrategy(label[1], label[2]) if label is not None else None for label in labels]
 
     filtered_motions = []
@@ -291,7 +312,7 @@ from matplotlib import pyplot as plt
 
 def plot(X: list[Motion], y: list[float]) -> None:
 
-    fig, (ax1, ax2, ax3) = plt.subplots(3, 1)
+    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 
     for motion in X:
         for series in motion._monotonic_series:
@@ -304,17 +325,22 @@ def plot(X: list[Motion], y: list[float]) -> None:
             ax1.scatter(timestamps, distances, color="black", s=5)
             ax1.plot(timestamps, distances, color=color, label=label)
 
-        ax2.scatter(series.time_end, motion.velocity, color="green", s=5, label="Estimated motion velocity")
-        ax2.set_ylim([0, 30])
+    ax2.scatter(
+        [motion.time_end for motion in X],
+        [motion.velocity for motion in X],
+        color="green",
+        s=5,
+        label="Real motion velocity",
+    )
+    ax2.plot([motion.time_end for motion in X], [motion.velocity for motion in X], color="green")
 
-    ax3.scatter([motion.time_end for motion in X], y, color="purple", s=5, label="Real motion velocity")
-    ax3.set_ylim([0, 30])
+    ax2.scatter([motion.time_end for motion in X], y, color="purple", s=5, label="Estimated motion velocity")
+    ax2.plot([motion.time_end for motion in X], y, color="purple")
 
     # Collect labels and handles and remove duplicates
     handles, labels = ax1.get_legend_handles_labels()
     handles2, labels2 = ax2.get_legend_handles_labels()
-    handles3, labels3 = ax3.get_legend_handles_labels()
-    by_label = dict(zip(labels + labels2 + labels3, handles + handles2 + handles3))
+    by_label = dict(zip(labels + labels2, handles + handles2))
     fig.legend(by_label.values(), by_label.keys())
 
     plt.show()
@@ -322,8 +348,14 @@ def plot(X: list[Motion], y: list[float]) -> None:
 
 # ----------------------------------- MAIN ----------------------------------- #
 
+from sklearn.model_selection import KFold
+from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.svm import SVR
+from sklearn.model_selection import train_test_split
 
-def main():
+
+def ml_solution():
     args = parse_args()
     tmf8828_data = load_tmf8828_data(args.data)
     print(tmf8828_data.head())
@@ -331,11 +363,89 @@ def main():
     velocity_labels = load_velocity_labels(args.labels)
     print(velocity_labels.head())
 
-    X, y = prepare_labeled_data(tmf8828_data, velocity_labels, min_samples=5, velocityLabelStrategy=gps_strategy)
-    assert len(X) == len(y)
-    print("Data set size:", len(X))
+    X, y = prepare_labeled_data(
+        tmf8828_data,
+        velocity_labels,
+        distStrategy=confidence_strategy,
+        velocityLabelStrategy=video_strategy,
+        min_samples=2,
+        max_dd=200,
+        max_series_delta_time_ms=1000,
+        max_label_delta_time_ms=2000,
+    )
+    X = [[m.time_total, m.dist_avg, m.direction, m.velocity] for m in X]
+    X, y = np.array(X), np.array(y)
+    print("Detection percentage:", len(X) / len(velocity_labels) * 100, "%")
+
+    n_splits = 5
+    kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
+
+    mae_scores = []
+    for train_index, test_index in kf.split(X):
+        # Splitting the data for this fold
+        X_train, X_test = [X[i] for i in train_index], [X[i] for i in test_index]
+        y_train, y_test = y[train_index], y[test_index]
+
+        # Initialize and fit the model
+        model = LinearRegression()
+        # model = Lasso()
+        # model = Ridge()
+        # model = ElasticNet()
+        # model = RandomForestRegressor()
+        # model = SVR()
+        model.fit(X_train, y_train)
+
+        # Make predictions and evaluate
+        y_pred = model.predict(X_test)
+        mae = sum(abs((y_pred - y_test) / y_test)) / len(y_pred)
+        mae_scores.append(mae)
+
+    # Calculate and print the average MAE across all folds
+    average_mae = sum(mae_scores) / n_splits
+    average_velocity = sum(y) / len(y)
+    print(f"Average velocity: {average_velocity}")
+    print(f"Average MAE across {n_splits} folds: {average_mae}")
+
+
+def algorithmic_solution():
+    args = parse_args()
+    tmf8828_data = load_tmf8828_data(args.data)
+    print(tmf8828_data.head())
+
+    velocity_labels = load_velocity_labels(args.labels)
+    print(velocity_labels.head())
+
+    X, y = prepare_labeled_data(
+        tmf8828_data,
+        velocity_labels,
+        distStrategy=confidence_strategy,
+        velocityLabelStrategy=gps_strategy,
+        min_samples=2,
+        max_dd=200,
+        max_series_delta_time_ms=1000,
+        max_label_delta_time_ms=2000,
+    )
+
+    X, y = np.array(X), np.array(y)
+
+    print("Detection percentage:", len(X) / len(velocity_labels) * 100, "%")
+
+    average_velocity = sum(y) / len(y)
+    print(f"Average velocity: {average_velocity}")
+    print(
+        "MAE:",
+        (
+            sum([abs((motion.velocity - velocity_label) / velocity_label) for motion, velocity_label in zip(X, y)])
+            / len(X)
+        ),
+    )
 
     plot(X, y)
+
+
+def main():
+    ml_solution()
+    # algorithmic_solution()
 
 
 if __name__ == "__main__":

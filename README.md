@@ -31,8 +31,9 @@ This repository contains all the resources for implementation of bicycle detecti
         - [x] Load data
         - [x] Transform with distance selection strategy
         - [x] Apply partitioning function
-        - [x] Apply merging function
+        - [ ] Apply merging function
             - [x] Use objects for estimated velocity motion representation
+            - [ ] Improve logic for merging (handle high variance, 
         - [x] Prepare set of training samples
     - [ ] Adjust data pipeline to implement and evaluate detection algorithm
         - [ ] Come up with a single metric that can be applied for testing detection
