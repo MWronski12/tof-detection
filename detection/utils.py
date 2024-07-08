@@ -2,28 +2,6 @@ from typing import Callable, Tuple, Optional
 from config import COLUMNS, CENTER_ZONE_IDX, DIST_TO_PATH
 import pandas as pd
 import numpy as np
-import argparse
-
-# ----------------------------------- ARGS ----------------------------------- #
-
-
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Script for visualizing velocity labels from GPS and video.",
-    )
-    parser.add_argument(
-        "--data",
-        required=True,
-        type=str,
-        help="Path of the tmf8828 data CSV file",
-    )
-    parser.add_argument(
-        "--labels",
-        # required=True,
-        type=str,
-        help="Path of the velocity labels CSV file",
-    )
-    return parser.parse_args()
 
 
 # --------------------------------- LOAD DATA -------------------------------- #
@@ -60,8 +38,10 @@ def target_0_strategy(zone_data: pd.Series) -> pd.Int64Dtype:
 def select_center_zone_distance(df: pd.DataFrame, strategy: Callable[[pd.Series], pd.Int64Dtype]) -> pd.Series:
     select_zone_data = lambda zone_idx: df.filter(like=f"zone{zone_idx}")
     zone_data = select_zone_data(CENTER_ZONE_IDX)
-    df[f"zone{CENTER_ZONE_IDX}_distance"] = zone_data.apply(strategy, axis=1)
-    return df
+    new_df = pd.DataFrame()
+    new_df["timestamp_ms"] = df["timestamp_ms"]
+    new_df[f"zone{CENTER_ZONE_IDX}_distance"] = zone_data.apply(strategy, axis=1)
+    return new_df
 
 
 # ------ PARTITION DISTANCE MEASUREMENTS INTO NON-ZERO MONOTONIC SERIES ------ #
@@ -305,15 +285,31 @@ def prepare_labeled_data(
     return filtered_motions, filtered_labels
 
 
+def prepare_unlabeled_data(
+    tmf8828_data: pd.DataFrame,
+    distStrategy: DistanceSelectionStrategy = confidence_strategy,
+    min_samples=2,
+    max_dd=200,
+    max_series_delta_time_ms=500,
+) -> Tuple[list[Motion]]:
+
+    return extract_motions(
+        tmf8828_data,
+        distStrategy=distStrategy,
+        min_samples=min_samples,
+        max_dd=max_dd,
+        max_series_delta_time_ms=max_series_delta_time_ms,
+    )
+
+
 # ----------------------------------- PLOT ----------------------------------- #
 
+
 from matplotlib import pyplot as plt
+from typing import Any
 
 
-def plot(X: list[Motion], y: list[float]) -> None:
-
-    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
-
+def plot_samples_partitioning(X: list[Motion], ax: Any) -> None:
     for motion in X:
         for series in motion._monotonic_series:
             timestamps = [sample[0] for sample in series._samples]
@@ -322,131 +318,47 @@ def plot(X: list[Motion], y: list[float]) -> None:
             color = "red" if series.direction == 1 else "blue"
             label = "Approaching" if color == "red" else "Moving away"
 
-            ax1.scatter(timestamps, distances, color="black", s=5)
-            ax1.plot(timestamps, distances, color=color, label=label)
+            ax.scatter(timestamps, distances, color="black", s=5)
+            ax.plot(timestamps, distances, color=color, label=label)
 
-    ax2.scatter(
+
+def plot_calculated_velocity(X: list[Motion], ax: Any) -> None:
+    ax.scatter(
         [motion.time_end for motion in X],
         [motion.velocity for motion in X],
+        color="orange",
+        s=5,
+        label="Calcualted motion velocity",
+    )
+    ax.plot([motion.time_end for motion in X], [motion.velocity for motion in X], color="orange")
+
+
+def plot_estimated_velocity(X: list[Motion], y: list[float], ax: Any) -> None:
+    ax.scatter(
+        [motion.time_end for motion in X],
+        y,
+        color="purple",
+        s=5,
+        label="Estimated motion velocity",
+    )
+    ax.plot([motion.time_end for motion in X], y, color="purple")
+
+
+def plot_real_velocity(X: list[Motion], y: list[float], ax: Any) -> None:
+    ax.scatter(
+        [motion.time_end for motion in X],
+        y,
         color="green",
         s=5,
         label="Real motion velocity",
     )
-    ax2.plot([motion.time_end for motion in X], [motion.velocity for motion in X], color="green")
-
-    ax2.scatter([motion.time_end for motion in X], y, color="purple", s=5, label="Estimated motion velocity")
-    ax2.plot([motion.time_end for motion in X], y, color="purple")
-
-    # Collect labels and handles and remove duplicates
-    handles, labels = ax1.get_legend_handles_labels()
-    handles2, labels2 = ax2.get_legend_handles_labels()
-    by_label = dict(zip(labels + labels2, handles + handles2))
-    fig.legend(by_label.values(), by_label.keys())
-
-    plt.show()
+    ax.plot([motion.time_end for motion in X], y, color="green")
 
 
-# ----------------------------------- MAIN ----------------------------------- #
+def plot_legend(fig: Any, *axes: Any) -> None:
+    by_label = {}
+    for ax in axes:
+        handles, labels = ax.get_legend_handles_labels()
+        by_label.update(dict(zip(labels, handles)))
 
-from sklearn.model_selection import KFold
-from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.svm import SVR
-from sklearn.model_selection import train_test_split
-
-
-def ml_solution():
-    args = parse_args()
-    tmf8828_data = load_tmf8828_data(args.data)
-    print(tmf8828_data.head())
-
-    velocity_labels = load_velocity_labels(args.labels)
-    print(velocity_labels.head())
-
-    X, y = prepare_labeled_data(
-        tmf8828_data,
-        velocity_labels,
-        distStrategy=confidence_strategy,
-        velocityLabelStrategy=video_strategy,
-        min_samples=2,
-        max_dd=200,
-        max_series_delta_time_ms=1000,
-        max_label_delta_time_ms=2000,
-    )
-    X = [[m.time_total, m.dist_avg, m.direction, m.velocity] for m in X]
-    X, y = np.array(X), np.array(y)
-    print("Detection percentage:", len(X) / len(velocity_labels) * 100, "%")
-
-    n_splits = 5
-    kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
-
-    mae_scores = []
-    for train_index, test_index in kf.split(X):
-        # Splitting the data for this fold
-        X_train, X_test = [X[i] for i in train_index], [X[i] for i in test_index]
-        y_train, y_test = y[train_index], y[test_index]
-
-        # Initialize and fit the model
-        model = LinearRegression()
-        # model = Lasso()
-        # model = Ridge()
-        # model = ElasticNet()
-        # model = RandomForestRegressor()
-        # model = SVR()
-        model.fit(X_train, y_train)
-
-        # Make predictions and evaluate
-        y_pred = model.predict(X_test)
-        mae = sum(abs((y_pred - y_test) / y_test)) / len(y_pred)
-        mae_scores.append(mae)
-
-    # Calculate and print the average MAE across all folds
-    average_mae = sum(mae_scores) / n_splits
-    average_velocity = sum(y) / len(y)
-    print(f"Average velocity: {average_velocity}")
-    print(f"Average MAE across {n_splits} folds: {average_mae}")
-
-
-def algorithmic_solution():
-    args = parse_args()
-    tmf8828_data = load_tmf8828_data(args.data)
-    print(tmf8828_data.head())
-
-    velocity_labels = load_velocity_labels(args.labels)
-    print(velocity_labels.head())
-
-    X, y = prepare_labeled_data(
-        tmf8828_data,
-        velocity_labels,
-        distStrategy=confidence_strategy,
-        velocityLabelStrategy=gps_strategy,
-        min_samples=2,
-        max_dd=200,
-        max_series_delta_time_ms=1000,
-        max_label_delta_time_ms=2000,
-    )
-
-    X, y = np.array(X), np.array(y)
-
-    print("Detection percentage:", len(X) / len(velocity_labels) * 100, "%")
-
-    average_velocity = sum(y) / len(y)
-    print(f"Average velocity: {average_velocity}")
-    print(
-        "MAE:",
-        (
-            sum([abs((motion.velocity - velocity_label) / velocity_label) for motion, velocity_label in zip(X, y)])
-            / len(X)
-        ),
-    )
-
-    plot(X, y)
-
-
-def main():
-    ml_solution()
-    # algorithmic_solution()
-
-
-if __name__ == "__main__":
-    main()
+    fig.legend(by_label.values(), by_label.keys(), loc="upper center")

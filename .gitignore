@@ -4,6 +4,7 @@ out
 build
 
 __pycache__
+.pytest_cache
 *.pyc
 
 calib.bin
