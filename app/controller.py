@@ -2,10 +2,11 @@ from buffer import Buffer
 from gui import GUI
 from detector import Detector
 from mediator import Mediator
+from motion import Motion
 from collector import Collector
 from overrides import overrides
 from strategy import Strategy, ZoneDistaceStrategy, TargetZeroStrategy, ConfidenceStrategy
-from config import NUM_ZONES
+from copy import deepcopy
 
 
 class Controller(Mediator):
@@ -27,15 +28,16 @@ class Controller(Mediator):
     def _handle_collector_data(self, sample: Collector.DataSample) -> None:
         self._buffer.append(sample)
 
-        # if self._is_playing:
-        #     data = self._strategy.transform(sample.reshape(1, -1))
-        #     self._detector.append(data)
+        if self._is_playing:
+            sample = self._strategy.transform(sample.reshape(1, -1))[0]
+            self._detector.append_sample(sample)
 
     def _update_data(self) -> None:
         data = self._buffer.get_data()
         data = self._strategy.transform(data)
-        self._gui.update_data(data)
-        # self._detector.update_data(data)
+        self._detector.update_data(data)
+        motion = self._detector.get_motion()
+        self._gui.update_data(data, motion)
 
     def _stop_live_data(self) -> None:
         self._is_playing = False
@@ -97,3 +99,8 @@ class Controller(Mediator):
             self._strategy = ConfidenceStrategy()
 
         self._update_data()
+
+    @overrides
+    def handle_signal_bicycle(self, motion: Motion) -> None:
+        # print(f"Bicycle {"approaching" if motion.direction == 1 else "moving away"} {motion.velocity:.2f} kmh detected!")
+        pass

@@ -1,7 +1,7 @@
-from abc import ABC
-from typing import Literal
-
+from motion import Motion
 from strategy import Strategy
+
+from abc import ABC
 
 
 class Mediator(ABC):
@@ -31,4 +31,8 @@ class Mediator(ABC):
 
     def handle_change_strategy(self, strategy: Strategy) -> None:
         print("Mediator: Change strategy event not implemented")
+        pass
+
+    def handle_signal_bicycle(self, motion: Motion) -> None:
+        print("Mediator: Signal bicycle event not implemented")
         pass

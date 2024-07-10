@@ -1,82 +1,119 @@
 from component import Component
 from mediator import Mediator
-from config import DIST_TO_PATH, CENTER_ZONE_IDX
+from motion import Motion
+from monotonic_series import MonotonicSeries
+from config import BICYCLE_VELOCITY_THRESHOLD_KMH, CENTER_ZONE_IDX
 
 import numpy as np
+import threading
 
-from typing import Literal, Optional
-from dataclasses import dataclass
-
-
-Direction = Literal["approaching", "departing"]
-
-
-@dataclass
-class Motion:
-
-    @dataclass
-    class Sample:
-        timestamp_ms: int
-        distance_mm: int
-
-    direction: Direction
-    samples: list[Sample]
-
-    def calculate_velocity_kmh(self) -> float:
-        if len(self.samples) < 2:
-            return -1
-
-        start = self.samples[0]
-        end = self.samples[-1]
-
-        dd = end.distance_mm - start.distance_mm
-        dt = end.timestamp_ms - start.timestamp_ms
-
-        velocity = (end / np.sqrt(end**2 - DIST_TO_PATH**2)) * (dd / dt) * 3.6
-
-        return velocity if self.direction == "approaching" else -velocity
+from copy import deepcopy
+from typing import Tuple, Optional
 
 
 class Detector(Component):
-    def __init__(self, mediator: Mediator) -> None:
+    def __init__(
+        self, mediator: Mediator, min_samples: int = 2, max_dd: int = 200, max_series_time_delta_ms: int = 200
+    ) -> None:
         super().__init__(mediator)
 
-        self._samples: list[Motion.Sample] = []
-        self._last_motion: Optional[Motion] = None
-        self._direction: Optional[Direction] = None
+        self._min_samples: int = min_samples
+        self._max_dd: int = max_dd
+        self._max_series_time_delta_ms: int = max_series_time_delta_ms
+
+        self._samples: list[Tuple[int, int]] = []
+        self._prev_direction: int = None
+        self._processing_series = False
+        self._series: list[MonotonicSeries] = []
+
+        self._motion_lock = threading.Lock()
+        self._motion: Optional[Motion] = None
+
+    def append_sample(self, sample: np.ndarray) -> None:
+        timestamp_ms, cener_zone_dist_mm = sample[0], sample[2 + CENTER_ZONE_IDX]
+
+        # Make detected motion valid for 3 seconds after detection
+        with self._motion_lock:
+            if self._motion:
+                dt = timestamp_ms - self._motion.time_end
+                if dt > 3000 or dt < 0:
+                    self._motion = None
+
+        # Flush detected monotonic series into motion
+        if (
+            not self._processing_series
+            and len(self._series) > 0
+            and timestamp_ms - self._series[-1].time_end > self._max_series_time_delta_ms
+        ):
+            self._flush_series()
+
+        self._process_sample((timestamp_ms, cener_zone_dist_mm))
 
     def update_data(self, data: np.ndarray) -> None:
-        self._samples.clear()
+        self._samples = []
+        self._prev_direction = None
+        self._processing_series = False
+        self._series = []
+
         for sample in data:
-            self.append(sample)
+            self.append_sample(sample)
 
-    def append(self, sample: np.ndarray) -> None:
-        sample = Motion.Sample(timestamp_ms=sample[0], distance_mm=sample[2 + CENTER_ZONE_IDX])
+    def get_motion(self) -> Optional[Motion]:
+        with self._motion_lock:
+            return deepcopy(self._motion)
 
-        if len(self._samples) == 0:
-            self._samples.append(sample)
+    def _validate_series_samples(self, samples: list[Tuple[int, int]]) -> bool:
+        max_dd_ok = all(abs(samples[i][1] - samples[i - 1][1]) < self._max_dd for i in range(1, len(samples)))
+        min_samples_ok = len(samples) >= self._min_samples
 
-        elif len(self._samples) == 1:
-            self._samples.append(sample)
-            sample0 = self._samples[0]
-            sample1 = self._samples[1]
-            self._direction = self._determine_direction(sample0, sample1)
+        return max_dd_ok and min_samples_ok
+
+    def _process_sample(self, sample: Tuple[int, int]) -> None:
+        _, distance_mm = sample
+
+        if distance_mm == -1:
+            self._processing_series = False
+
+            if len(self._samples) == 0:
+                return
+
+            # End of processed series detected
+            if self._validate_series_samples(self._samples):
+                series = MonotonicSeries(self._samples)
+                self._series.append(series)
+
+            self._samples = []
+            self._prev_direction = None
 
         else:
-            previous_sample = self._samples[-1]
-            direction = self._determine_direction(previous_sample, sample)
+            self._processing_series = True
 
-            if direction == self._direction:
+            # First sample of a motion
+            if len(self._samples) == 0:
                 self._samples.append(sample)
+                return
 
-            else:
-                motion = Motion(direction=self._direction, samples=self._samples)
-                self._evaluate_motion(motion)
-                self._direction = None
-                self._samples.clear()
+            direction = self._samples[-1][1] > distance_mm
 
-    def _evaluate_motion(self, motion: Motion):
-        print(motion.calculate_velocity_kmh())
+            # Second sample of a motion
+            if len(self._samples) == 1:
+                self._prev_direction = direction
 
-    def _determine_direction(self, first: Motion.Sample, second: Motion.Sample) -> Direction:
-        return "approaching" if second.distance_mm > first.distance_mm else "departing"
+            # Next consecutive sample of a motion
+            elif self._prev_direction != direction or abs(self._samples[-1][1] - distance_mm) > self._max_dd:
+                if self._validate_series_samples(self._samples):
+                    series = MonotonicSeries(self._samples)
+                    self._series.append(series)
+
+                self._samples = []
+                self._prev_direction = None
+
+            self._samples.append(sample)
+
+    def _flush_series(self):
+        with self._motion_lock:
+            self._motion = Motion(self._series, self._max_series_time_delta_ms)
+            if self._motion.velocity > BICYCLE_VELOCITY_THRESHOLD_KMH:
+                self.signal_bicycle(deepcopy(self._motion))
+
+        self._series = []

@@ -49,7 +49,7 @@ def select_center_zone_distance(df: pd.DataFrame, strategy: Callable[[pd.Series]
 
 class MonotonicSeries:
     def __init__(self, samples: list[Tuple[int, int]]) -> None:
-        self._validate_monotonicity()
+        self._validate_monotonicity(samples)
         self._samples = samples
 
         self.time_start = samples[0][0]
@@ -60,18 +60,18 @@ class MonotonicSeries:
         self.dist_end = samples[-1][1]
         self.dist_avg = sum(dist for _, dist in samples) / len(samples)
 
-        self.direction = 1 if self.dist_end > self.dist_start else -1
+        self.direction = -1 if self.dist_start < self.dist_end else 1
         self.velocity = self._calculate_avg_velocity()
 
     def __len__(self) -> int:
         return len(self._samples)
 
-    def _validate_monotonicity(self) -> None:
-        assert len(self._samples) >= 2
+    def _validate_monotonicity(self, samples: list[Tuple[int, int]]) -> None:
+        assert len(samples) >= 2
 
-        direction = self._samples[1] > self._samples[0]
-        for i in range(1, len(self._samples)):
-            assert (self._samples[i] > self._samples[i - 1]) == direction
+        direction = samples[1] > samples[0]
+        for i in range(1, len(samples)):
+            assert (samples[i] > samples[i - 1]) == direction
 
     def _calculate_avg_velocity(self) -> float:
         velocities = []
@@ -136,7 +136,7 @@ def split_to_non_zero_monotonic_series(
             if prev_direction == None:
                 prev_direction = direction
 
-            elif prev_direction != direction:
+            elif prev_direction != direction or abs(samples[j][1] - samples[j-1][1]) > max_dd:
                 flush(result, i, j)
                 prev_direction = None
                 i = j
@@ -161,11 +161,7 @@ def partition_center_zone_distance_measurements(
 
 class Motion:
     def __init__(self, series: list[MonotonicSeries], max_time_delta_ms: int) -> None:
-        assert len(series) > 0
-        assert all(
-            abs(series[i].time_start - series[i - 1].time_end) < max_time_delta_ms for i in range(1, len(series))
-        )
-
+        self._validate_series(series, max_time_delta_ms)
         series = self._filter_opposite_directions(series)
         self._monotonic_series = series
 
@@ -186,6 +182,12 @@ class Motion:
     def _filter_opposite_directions(self, series: list[MonotonicSeries]) -> list[MonotonicSeries]:
         longest_series = max(series, key=lambda s: len(s))
         return [s for s in series if s.direction == longest_series.direction]
+
+    def _validate_series(self, series: list[MonotonicSeries], max_time_delta_ms: int):
+        assert len(series) > 0
+        assert all(
+            abs(series[i].time_start - series[i - 1].time_end) < max_time_delta_ms for i in range(1, len(series))
+        )
 
 
 def merge_adjecent_series(series: list[MonotonicSeries], max_time_delta_ms: int) -> list[Motion]:

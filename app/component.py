@@ -1,8 +1,8 @@
 from mediator import Mediator
 from strategy import Strategy
+from motion import Motion
 
 from abc import ABC
-from typing import Literal
 
 
 class Component(ABC):
@@ -30,3 +30,6 @@ class Component(ABC):
 
     def change_strategy(self, strategy: Strategy) -> None:
         self._mediator.handle_change_strategy(strategy)
+
+    def signal_bicycle(self, motion: Motion) -> None:
+        self._mediator.handle_signal_bicycle(motion)

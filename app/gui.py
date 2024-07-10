@@ -1,5 +1,6 @@
 from component import Component
 from mediator import Mediator
+from motion import Motion
 from config import NUM_ZONES
 
 from matplotlib import pyplot as plt
@@ -8,6 +9,7 @@ from matplotlib.widgets import Slider
 from matplotlib.gridspec import GridSpec
 from matplotlib.artist import Artist
 
+from typing import Optional
 from abc import ABC, abstractmethod
 from datetime import datetime
 from overrides import overrides
@@ -22,7 +24,7 @@ class Animator(ABC):
         self._ax = ax
 
     @abstractmethod
-    def update(self, data: np.ndarray) -> list[Artist]:
+    def update(self, data: np.ndarray, motion: Optional[Motion]) -> list[Artist]:
         pass
 
 
@@ -47,7 +49,7 @@ class DepthMapAnimator(Animator):
         self._ax.grid(True, linestyle="--")
 
     @overrides
-    def update(self, data: np.ndarray) -> list[Artist]:
+    def update(self, data: np.ndarray, motion: Optional[Motion]) -> list[Artist]:
         if len(data) == 0:
             return []
 
@@ -83,9 +85,15 @@ class CenterZoneAnimator(Animator):
         self._scatter = self._ax.scatter([0], [0], color="orange", s=20)
 
     @overrides
-    def update(self, data: np.ndarray) -> list[Artist]:
+    def update(self, data: np.ndarray, motion: Optional[Motion]) -> list[Artist]:
         if len(data) < 2:
             return []
+
+        if motion != None:
+            self.update_motion(motion)
+        else:
+            for line in self._ax.get_lines():
+                line.remove()
 
         center_zone_data = data[:, [0, 2 + NUM_ZONES // 2]]  # timestamp, center_zone_distance
 
@@ -97,6 +105,15 @@ class CenterZoneAnimator(Animator):
         self._scatter.set_offsets(center_zone_data)
 
         return [self._scatter]
+
+    def update_motion(self, motion: Motion) -> None:
+        for s in motion._monotonic_series:
+            color = "red" if s.dist_end < s.dist_start else "blue"
+            self._ax.plot(
+                [sample[0] for sample in s._samples],
+                [sample[1] for sample in s._samples],
+                color=color,
+            )
 
 
 class WidgetAnimator(Animator):
@@ -112,14 +129,20 @@ class WidgetAnimator(Animator):
             "verticalalignment": "bottom",
         }
 
-        self._time = self._ax.text(0, 0.9, "time: ", **args)
-        self._distance = self._ax.text(0, 0.5, "distance: 0 mm", **args)
-        self._timestamp = self._ax.text(0, 0.1, "timestamp: 0 ms", **args)
+        self._time = self._ax.text(0, 0.75, "time: -1", **args)
+        self._distance = self._ax.text(0, 0.5, "distance: -1", **args)
+        self._timestamp = self._ax.text(0, 0.25, "timestamp: -1", **args)
+        self._motion_velocity = self._ax.text(0, 0, "velocity: -1", **args)
 
     @overrides
-    def update(self, data: np.ndarray) -> list[Artist]:
+    def update(self, data: np.ndarray, motion: Optional[Motion]) -> list[Artist]:
         if len(data) == 0:
             return []
+
+        if motion != None:
+            self._motion_velocity.set_text(f"velocity: {motion.velocity:.2f} kmh")
+        else:
+            self._motion_velocity.set_text(f"velocity: -1")
 
         timestamp = data[-1][0] / 1000.0
         distance = data[-1][2 + NUM_ZONES // 2]
@@ -149,10 +172,13 @@ class GUI(Component):
         self._center_zone_ax = self._fig.add_subplot(gs[1:, :3])
         self._depth_map_ax = self._fig.add_subplot(gs[:, 3:])
 
+        self._widget_animator = WidgetAnimator(self._fig, self._widgets_ax)
+        self._center_zone_animator = CenterZoneAnimator(self._fig, self._center_zone_ax, self._center_zone_time_span_s)
+        self._depth_map_animator = DepthMapAnimator(self._fig, self._depth_map_ax)
         self._animators: list[Animator] = [
-            WidgetAnimator(self._fig, self._widgets_ax),
-            CenterZoneAnimator(self._fig, self._center_zone_ax, self._center_zone_time_span_s),
-            DepthMapAnimator(self._fig, self._depth_map_ax),
+            self._widget_animator,
+            self._center_zone_animator,
+            self._depth_map_animator,
         ]
 
         self._ani = FuncAnimation(self._fig, self._animate, interval=self._refresh_interval_ms, save_count=200)
@@ -176,10 +202,10 @@ class GUI(Component):
     def start(self) -> None:
         plt.show()
 
-    def update_data(self, data: np.ndarray) -> None:
+    def update_data(self, data: np.ndarray, motion: Optional[Motion]) -> None:
         with self._data_lock:
             for animator in self._animators:
-                animator.update(data)
+                animator.update(data, motion)
 
     def _animate(self, frame) -> None:
         self.gui_update(self._center_zone_time_span_s)
