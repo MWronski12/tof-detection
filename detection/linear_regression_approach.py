@@ -92,14 +92,14 @@ def main() -> None:
         velocity_labels,
         distStrategy=confidence_strategy,
         velocityLabelStrategy=video_strategy,
-        min_samples=2,
+        min_samples=3,
         max_dd=200,
-        max_series_delta_time_ms=200,
-        max_label_delta_time_ms=2000,
+        max_series_delta_time_ms=300,
+        max_label_delta_time_ms=1000,
     )
 
     # Apply calibration offset
-    y = [velocity - 4 for velocity in y]
+    # y = [velocity - 4 for velocity in y]
 
     print("Detection percentage:", len(y) / len(velocity_labels) * 100, "%")
 

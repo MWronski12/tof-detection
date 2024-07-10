@@ -92,7 +92,10 @@ class MonotonicSeries:
             velocities.append(velocity)
 
         if np.std(velocities) > 5:
-            print(f"WARNING: High velocity standard deviation: " f"{np.mean(velocities)} +- {np.std(velocities)} kmh")
+            print(
+                f"WARNING: High velocity standard deviation: "
+                f"{np.mean(velocities):.2f} +- {np.std(velocities):.2f} kmh at t={t2}"
+            )
 
         return abs(sum(velocities) / len(velocities))
 

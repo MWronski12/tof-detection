@@ -46,15 +46,19 @@ def main() -> None:
         tmf8828_data,
         velocity_labels,
         distStrategy=confidence_strategy,
-        velocityLabelStrategy=video_strategy,
-        min_samples=2,
+        velocityLabelStrategy=gps_strategy,
+        min_samples=3,
         max_dd=200,
-        max_series_delta_time_ms=200,
+        max_series_delta_time_ms=300,
         max_label_delta_time_ms=2000,
     )
 
+    # Apply calibration offset
+    # y = [velocity - 4 for velocity in y]
+
     # TEST BIKE VELOCITY CALCULATION ACCURACY
     average_velocity = sum(y) / len(y)
+    print(len(X))
     print(f"Data average velocity: {average_velocity}")
     print("Detection percentage:", len(X) / float(len(velocity_labels)) * 100)
     print(
