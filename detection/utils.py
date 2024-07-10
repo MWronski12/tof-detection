@@ -49,8 +49,8 @@ def select_center_zone_distance(df: pd.DataFrame, strategy: Callable[[pd.Series]
 
 class MonotonicSeries:
     def __init__(self, samples: list[Tuple[int, int]]) -> None:
-        self._samples = samples
         self._validate_monotonicity()
+        self._samples = samples
 
         self.time_start = samples[0][0]
         self.time_end = samples[-1][0]
@@ -67,13 +67,11 @@ class MonotonicSeries:
         return len(self._samples)
 
     def _validate_monotonicity(self) -> None:
-        if len(self._samples) < 2:
-            raise ValueError("Series must have at least 2 samples")
+        assert len(self._samples) >= 2
 
         direction = self._samples[1] > self._samples[0]
         for i in range(1, len(self._samples)):
-            if (self._samples[i] > self._samples[i - 1]) != direction:
-                raise ValueError("Monotonicity violated")
+            assert (self._samples[i] > self._samples[i - 1]) == direction
 
     def _calculate_avg_velocity(self) -> float:
         velocities = []
@@ -163,7 +161,11 @@ def partition_center_zone_distance_measurements(
 
 class Motion:
     def __init__(self, series: list[MonotonicSeries], max_time_delta_ms: int) -> None:
-        self._validate_series(series, max_time_delta_ms)
+        assert len(series) > 0
+        assert all(
+            abs(series[i].time_start - series[i - 1].time_end) < max_time_delta_ms for i in range(1, len(series))
+        )
+
         series = self._filter_opposite_directions(series)
         self._monotonic_series = series
 
@@ -184,17 +186,6 @@ class Motion:
     def _filter_opposite_directions(self, series: list[MonotonicSeries]) -> list[MonotonicSeries]:
         longest_series = max(series, key=lambda s: len(s))
         return [s for s in series if s.direction == longest_series.direction]
-
-    def _validate_series(self, series: list[MonotonicSeries], max_time_delta_ms: int) -> None:
-        if len(series) < 1:
-            raise ValueError("Empty list of series")
-
-        if not all(s.direction == series[0].direction for s in series):
-            print("WARNING: Series must have the same direction")
-
-        for i in range(1, len(series)):
-            if (series[i].time_start - series[i - 1].time_end) > max_time_delta_ms:
-                raise ValueError("Series must be adjacent")
 
 
 def merge_adjecent_series(series: list[MonotonicSeries], max_time_delta_ms: int) -> list[Motion]:
