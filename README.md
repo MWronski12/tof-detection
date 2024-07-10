@@ -14,7 +14,7 @@ This repository contains all the resources for implementation of bicycle detecti
     - [x] Saving data to CSV file
 
 
-- [ ] Data Aquisition
+- [x] Data Aquisition
     - [x] Prepare test protocol
     - [x] Gather data
     - [x] Label data (Video/GPS)
@@ -22,28 +22,32 @@ This repository contains all the resources for implementation of bicycle detecti
         - [x] Proof of concept query video for velocity by timestamp
         - [x] Script that will repeatedly ask for a timestamp and display both gps and video velocity
         - [x] Prepare csv file with timestamp, gps_velocity, video_velocity
-        - [ ] Handle pedestrian data
-        - [ ] Handle random movement data
+        - [x] Handle pedestrian data
+        - [x] Handle random movement data
 
 - [ ] Detection Algorithm
     - [ ] Describe collected data sets
-    - [ ] Create a batch data pipeline template for algorithm evaluation
+    - [x] Create a batch data pipeline template for algorithm evaluation
         - [x] Load data
         - [x] Transform with distance selection strategy
         - [x] Apply partitioning function
-        - [ ] Apply merging function
+        - [x] Apply merging function
             - [x] Use objects for estimated velocity motion representation
-            - [ ] Improve logic for merging (handle high variance, 
         - [x] Prepare set of training samples
-    - [ ] Adjust data pipeline to implement and evaluate detection algorithm
-        - [ ] Come up with a single metric that can be applied for testing detection
-        - [ ] Use algorithmic approach
-            - [ ] Detect series of at least 3, non-zero, strictly monotonic measurements
-            - [ ] Calculate average velocity in each series
-            - [ ] Merge neighbouring series and average velocity estimation
-            - [ ] Improve merging not to account unmatching direction series and too high variance series in motion velocity estimation
-            - [ ] Evaluate estimation
+    - [x] Adjust data pipeline to implement and evaluate detection algorithm
+        - [x] Come up with a single metric that can be applied for testing detection
+        - [x] Use algorithmic approach
+            - [x] Detect series of at least 3, non-zero, strictly monotonic measurements
+            - [x] Calculate average velocity in each series
+            - [x] Merge neighbouring series and average velocity estimation
+            - [x] Improve merging not to account unmatching direction series and too high variance series in motion velocity estimation
+            - [x] Evaluate estimation
     - [ ] Translate algorithm to real-time detection
+        - [ ] Write a pseudo code algorithm for live data partitioning
+        - [ ] Write a real algorithm
+        - [ ] Create a procedure for estimating velocity of a partitioned motion sample
+            - [ ] Use algorithmic to determine if velocity is above bicycle threshold
+            - [ ] Use linear regression for bicycle velocity estimation 
 
 
 - [ ] Controller Architecture Improvements
@@ -62,7 +66,8 @@ This repository contains all the resources for implementation of bicycle detecti
     - [ ] Add SpeedEstimator component
         - [ ] Consume each sample
         - [ ] Or update all samples
-        - [ ] Communicate result to GUI for display
+        - [ ] Dispatch bicycle detection event with estimated velocity
+        - [ ] Test in simulated live data environment
     - [ ] Add Signalizer component
     - [ ] Unit tests
 
