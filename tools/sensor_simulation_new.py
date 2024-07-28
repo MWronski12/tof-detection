@@ -24,8 +24,6 @@ from matplotlib import pyplot as plt
 from collections import namedtuple
 from typing import List, Union, Tuple
 
-from optimal_config_search import get_optimal_beta, get_range_covered
-
 
 class Point:
     x: float
@@ -231,34 +229,30 @@ class Sensor:
             color="dimgrey",
             **kwargs,
         )
+        plt.axvline(
+            x=self.L + self.d / 2,
+            linestyle="--",
+            color="lightblue",
+            **kwargs,
+        )
 
     def plot_fov(self, **kwargs):
         """Plots the sensor's field of view as red solid lines."""
         self.left_fov_limit.plot(
             x_range=(0, self.max_range * np.cos(self.alpha + self.beta)),
-            linestyle="--",
+            linestyle="-",
             color="red",
             label="FOV boundary",
         )
         self.right_fov_limit.plot(
             x_range=(0, self.max_range * np.cos(self.beta)),
-            linestyle="--",
+            linestyle="-",
             color="red",
         )
 
     def plot_normal_line(self, **kwargs):
         "Plots line perpendicular to the bike path"
         plt.axhline(y=0, color="black", **kwargs)
-
-    # def plot_zone_boundaries(self):
-    #     """Plots the zone boundaries as grey dashed lines."""
-    #     r = self.max_range
-    #     for i in range(self.n_zones):
-    #         label = "zone boundaries" if i == 0 else ""
-    #         beta = self._zone_beta_angle(i) - self.alpha / self.n_zones / 2
-    #         x = r * math.cos(beta)
-    #         y = r * math.sin(beta)
-    #         plt.plot([0, x], [0, y], color="red", linestyle="--", label=label)
 
 
 def kmh_to_ms(kmh: float) -> float:
@@ -267,25 +261,11 @@ def kmh_to_ms(kmh: float) -> float:
 
 def main():
     alpha = math.radians(9.428)
-    max_dist = 1.5  # L + d
-    max_range = 3.5
-    beta = get_optimal_beta(
-        max_dist=max_dist,
-        max_range=max_range,
-        alpha=alpha,
-        margin=0.1,
-    )
-    path_width = 0.75
+    max_dist = 2.25  # L + d
+    max_range = 5
+    beta = math.radians(60) - alpha / 2
+    path_width = 1.5
     dist_to_path = max_dist - path_width
-
-    mount_angle_deg = round(math.degrees(beta + alpha / 2), 2)
-    min_range_covered = round(get_range_covered(alpha, beta, dist_to_path), 2)
-    max_range_covered = round(
-        get_range_covered(alpha, beta, dist_to_path + path_width), 2
-    )
-    print(f"Sensor mount angle: {mount_angle_deg:.2f} deg")
-    print(f"Sensor min range covered: {min_range_covered:.2f} m")
-    print(f"Sensor max range covered: {max_range_covered:.2f} m")
 
     sensor = Sensor(
         alpha=alpha,

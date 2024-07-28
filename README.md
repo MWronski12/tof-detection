@@ -25,6 +25,7 @@ This repository contains all the resources for implementation of bicycle detecti
         - [x] Handle pedestrian data
         - [x] Handle random movement data
 
+
 - [ ] Detection Algorithm
     - [ ] Describe collected data sets
     - [x] Create a batch data pipeline template for algorithm evaluation
@@ -42,37 +43,41 @@ This repository contains all the resources for implementation of bicycle detecti
             - [x] Merge neighbouring series and average velocity estimation
             - [x] Improve merging not to account unmatching direction series and too high variance series in motion velocity estimation
             - [x] Evaluate estimation
-    - [ ] Translate algorithm to real-time detection
-        - [ ] Write a pseudo code algorithm for live data partitioning
-        - [ ] Write a real algorithm
-        - [ ] Create a procedure for estimating velocity of a partitioned motion sample
-            - [ ] Use algorithmic to determine if velocity is above bicycle threshold
-            - [ ] Use linear regression for bicycle velocity estimation 
+    - [x] Translate algorithm to real-time detection
+        - [x] Write a pseudo code algorithm for live data partitioning
+        - [x] Write a real algorithm
+        - [x] Create a procedure for estimating velocity of a partitioned motion sample
+            - [x] Use algorithmic to determine if velocity is above bicycle threshold
+            - [x] Use linear regression for bicycle velocity estimation 
 
 
 - [ ] Controller Architecture Improvements
     - [x] Make Collector independent (not a component)
     - [x] Remove Event and add methods in Component base class
-    - [ ] Improve buffer
+    - [x] Improve buffer
         - [x] Rewind to next motion
         - [x] Use numpy/pandas
-        - [ ] Rewind per frame or per n_seconds
-        - [ ] Get last n_seconds of data
     - [x] Live strategy change in controller
     - [x] Drop double buffer in GUI, just emit refresh events for n_seconds of data
     - [x] Extract strategy for transform
         - [x] Add tranform possibility of aggregated transform like 'confidence --> bias --> EMA'
     - [x] Use numpy already in the data collector
-    - [ ] Add SpeedEstimator component
-        - [ ] Consume each sample
-        - [ ] Or update all samples
-        - [ ] Dispatch bicycle detection event with estimated velocity
-        - [ ] Test in simulated live data environment
+    - [x] Add Detector component
+        - [x] Consume each sample
+        - [x] Or update all samples
+        - [x] Dispatch bicycle detection event with estimated velocity
+        - [x] Test in simulated live data environment
     - [ ] Add Signalizer component
-    - [ ] Unit tests
+
+
+- [ ] Final touches
+    - [ ] Solve problem of gui triggering detector update all on refresh
+    - [ ] Fix RT motion partitioner
+    - [ ] Move tmf server C code to a separate folder
 
 
 - [ ] Final Functional Tests
+    - [ ] Test for behavior with multiple objects in the fov
 
 
 - [ ] Thesis Documentation
