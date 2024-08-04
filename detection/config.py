@@ -15,3 +15,5 @@ ZONE_CONFIDENCE_COLUMNS = [
 ZONE_COLUMNS = [item for pair in zip(ZONE_CONFIDENCE_COLUMNS, ZONE_DISTANCE_COLUMNS) for item in pair]
 
 COLUMNS = ["timestamp_ms", "ambient_light"] + ZONE_COLUMNS
+
+THRESHOLD_KMH = 7

@@ -13,7 +13,7 @@ from typing import Tuple, Optional
 
 class Detector(Component):
     def __init__(
-        self, mediator: Mediator, min_samples: int = 2, max_dd: int = 200, max_series_time_delta_ms: int = 200
+        self, mediator: Mediator, min_samples: int = 3, max_dd: int = 200, max_series_time_delta_ms: int = 500
     ) -> None:
         super().__init__(mediator)
 

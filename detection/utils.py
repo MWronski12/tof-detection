@@ -305,6 +305,13 @@ from matplotlib import pyplot as plt
 from typing import Any
 
 
+def plot_raw_data(tmf8828_data: pd.DataFrame, ax: Any) -> None:
+    data = select_center_zone_distance(tmf8828_data, confidence_strategy)
+    ax.scatter(data["timestamp_ms"], data[f"zone{CENTER_ZONE_IDX}_distance"], color="orange", s=6)
+
+def plot_velocity_threshold(threshold_kmh: float, ax: Any) -> None:
+    ax.axhline(y=threshold_kmh, color='r', linestyle='--', label=f'Classification threshold: {threshold_kmh} km/h')
+
 def plot_samples_partitioning(X: list[Motion], ax: Any) -> None:
     for motion in X:
         for series in motion._monotonic_series:
