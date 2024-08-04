@@ -99,7 +99,7 @@ def main() -> None:
     )
 
     # Apply calibration offset
-    # y = [velocity - 4 for velocity in y]
+    y = [velocity - 4 for velocity in y]
 
     print("Detection percentage:", len(y) / len(velocity_labels) * 100, "%")
 

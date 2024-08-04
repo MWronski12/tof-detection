@@ -46,10 +46,10 @@ def main() -> None:
         tmf8828_data,
         velocity_labels,
         distStrategy=confidence_strategy,
-        velocityLabelStrategy=gps_strategy,
+        velocityLabelStrategy=average_strategy,
         min_samples=3,
         max_dd=200,
-        max_series_delta_time_ms=300,
+        max_series_delta_time_ms=200,
         max_label_delta_time_ms=2000,
     )
 

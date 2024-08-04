@@ -27,6 +27,7 @@ class Motion:
 
     def _validate_series(self, series: list[MonotonicSeries], max_time_delta_ms: int):
         assert len(series) > 0
-        assert all(
+        if not all(
             abs(series[i].time_start - series[i - 1].time_end) < max_time_delta_ms for i in range(1, len(series))
-        )
+        ):
+            print("Warning: time_delta invalid")

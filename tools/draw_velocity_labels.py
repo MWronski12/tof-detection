@@ -19,7 +19,9 @@ def parse_args() -> None:
 
 
 def load_data(file: str) -> pd.DataFrame:
-    return pd.read_csv(file, names=["timestamp_ms", "gps_velocity_kmh", "video_velocity_kmh"], skiprows=1)
+    df = pd.read_csv(file, names=["timestamp_ms", "gps_velocity_kmh", "video_velocity_kmh"], skiprows=1)
+    print(df.describe())
+    return df
 
 
 def plot_velocity_labels(df: pd.DataFrame) -> None:
@@ -45,7 +47,7 @@ def plot_velocity_labels(df: pd.DataFrame) -> None:
 
 def main() -> None:
     args = parse_args()
-    df = pd.read_csv(args.file)
+    df = load_data(args.file)
     plot_velocity_labels(df)
 
 

@@ -21,6 +21,7 @@ class Detector(Component):
         self._max_dd: int = max_dd
         self._max_series_time_delta_ms: int = max_series_time_delta_ms
 
+        self._latest_timestamp: int = -1
         self._samples: list[Tuple[int, int]] = []
         self._prev_direction: int = None
         self._processing_series = False
@@ -50,6 +51,9 @@ class Detector(Component):
         self._process_sample((timestamp_ms, cener_zone_dist_mm))
 
     def update_data(self, data: np.ndarray) -> None:
+        if self._latest_timestamp == data[-1][0]:
+            return
+
         self._samples = []
         self._prev_direction = None
         self._processing_series = False
@@ -57,6 +61,8 @@ class Detector(Component):
 
         for sample in data:
             self.append_sample(sample)
+
+        self._latest_timestamp = data[-1][0]
 
     def get_motion(self) -> Optional[Motion]:
         with self._motion_lock:
